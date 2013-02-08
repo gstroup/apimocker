@@ -1,7 +1,7 @@
 {
     "name": "apimocker",
     "description": "Simple HTTP server using express, for server API mocking.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "author": {
         "name": "Greg Stroup",
         "email": "gstroup@gmail.com"
@@ -12,5 +12,9 @@
         "underscore": ">=1"
     },
     "bin": "./bin/apimocker.js",
-    "files": "./samplemocks"
+    "files": "./samplemocks",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gstroup/apimocker.git"
+    }
 }

@@ -1,0 +1,16 @@
+{
+    "name": "apimocker",
+    "description": "Simple HTTP server using express, for server API mocking.",
+    "version": "0.0.2",
+    "author": {
+        "name": "Greg Stroup",
+        "email": "gstroup@gmail.com"
+    },
+    "dependencies": {
+        "express": ">=3.1",
+        "commander": ">=1",
+        "underscore": ">=1"
+    },
+    "bin": "./bin/apimocker.js",
+    "files": "./samplemocks"
+}

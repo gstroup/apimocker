@@ -1,0 +1,20 @@
+{
+    "note": "This is a sample config file.",
+    "jsonMocksPath": "/usr/local/lib/node_modules/apimocker/samplemocks/",
+    "output": true,
+    "port": "7878", 
+    "webServices": {
+        "get": {
+            "first": "king.json",
+            "second": "king.json",
+            "nested/ace": "ace.json",
+            "var/:id": "queen.xml"
+        },
+        "post": {
+            "king": "king.json"
+        },
+        "all": {
+            "queen": "queen.xml"
+        }
+    }
+}

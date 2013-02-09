@@ -66,3 +66,6 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 
 ### /admin/reload
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
+
+## Acknowledgements
+Big thanks to magalhas for his httpd-mock project.  This gave me a great starting point.

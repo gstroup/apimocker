@@ -1,6 +1,6 @@
 {
-    "note": "This is a sample config file.",
-    "jsonMocksPath": "/usr/local/lib/node_modules/apimocker/samplemocks/",
+    "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
+    "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
     "output": true,
     "port": "7878", 
     "webServices": {
@@ -14,7 +14,7 @@
             "king": "king.json"
         },
         "all": {
-            "queen": "queen.xml"
+            "queen": "xml/queen.xml"
         }
     }
 }

@@ -1,7 +1,7 @@
 {
     "name": "apimocker",
     "description": "Simple HTTP server using express, for server API mocking.",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "author": {
         "name": "Greg Stroup",
         "email": "gstroup@gmail.com"

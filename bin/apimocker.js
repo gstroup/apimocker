@@ -6,7 +6,7 @@ var pkg = require("../package.json"),
 commander
     .version(pkg.version)
     .option("-c, --config <path>", "Absolute path to config file.", __dirname + "/../config.json")
-    .option("-O, --show-output", "Enable console logging. Default is false.")
+    .option("-O, --show-output", "Enable console logging. Default is true.", true)
     .option("-p, --port <port>", "Port that the http mock server will use. Default is 8888.", "8888")
     .parse(process.argv);
 

@@ -15,7 +15,7 @@ That will install globally, and allow for easier usage.
         apimocker [-c, --config \<path\>] [-O, --output] [-p \<port\>]
 
 Out of the box, you can just run "apimocker" with no arguments.  
-(Except on window.  See below.)
+(Except on windows, you'll need to edit config.json first.  See below.)
 
 Then you can visit "http://localhost:7878/first" in your browser to see it work.
 The output and port options can also be set in the config.json file. 
@@ -30,6 +30,8 @@ Change the "mockDirectory" to point to this location.
 (Or another location where you put the mock responses.)
         mockDirectory: /Users/xxxxx/AppData/Roaming/npm/node_modules/apimocker/samplemocks
 
+### Help
+        apimocker -h
 
 ## Configuration
 On startup, config values are loaded from the config.json file.  

@@ -39,13 +39,14 @@ Change the "mockDirectory" to point to this location.
 On startup, config values are loaded from the config.json file.  
 During runtime, mock services can be configured on the fly.
 See the sample config.json file in this package. Latency (ms) can be set to simulate slow service responses.
-mockDirectory value should be an absolute path.
+mockDirectory value should be an absolute path. Allowed domains can be set to restrict CORS requests to certain domains. 
 ```js
 {
     "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
     "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
     "output": true,
     "port": "7878", 
+    "allowedDomains": ["*"],
     "latency": 500,
     "webServices": {
         "get": {

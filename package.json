@@ -11,6 +11,9 @@
         "commander": ">=1",
         "underscore": ">=1"
     },
+    "devDependencies": {
+        "mocha": ">=1.8.2"
+    },
     "bin": "./bin/apimocker.js",
     "files": "./samplemocks",
     "keywords": [

@@ -1,7 +1,7 @@
 {
     "name": "apimocker",
-    "description": "Simple HTTP server using express, for server API mocking.",
-    "version": "0.1.4",
+    "description": "Simple HTTP server that returns mock service API responses to your front end.",
+    "version": "0.1.5",
     "author": {
         "name": "Greg Stroup",
         "email": "gstroup@gmail.com"
@@ -12,12 +12,18 @@
         "underscore": ">=1"
     },
     "devDependencies": {
-        "mocha": ">=1.8.2"
+        "mocha": ">=1.8.2",
+        "grunt": "~0.4.0",
+        "grunt-simple-mocha": ">=0.3.2",
+        "grunt-contrib-watch": ">=0.3.1",
+        "grunt-contrib-jshint": "~0.1.1",
+        "chai": ">=1.5.0",
+        "sinon": ">=1.6.0"
     },
     "bin": "./bin/apimocker.js",
     "files": "./samplemocks",
     "keywords": [
-        "express", "mock", "stub",
+        "express", "mock", "stub", "REST", "SOAP",
         "testing", "functional", "api"
     ],    
     "repository": {

@@ -12,15 +12,15 @@ That will install globally, and allow for easier usage.
 (On Windows, you don't need "sudo".)
 
 ## Usage
-        apimocker [-c, --config \<path\>] [-O, --output] [-p \<port\>]
+        apimocker [-c, --config \<path\>] [-q, --quiet] [-p \<port\>]
 
 Out of the box, you can just run "apimocker" with no arguments.  
 (Except on windows, you'll need to edit config.json first.  See below.)
 
 Then you can visit "http://localhost:7878/first" in your browser to see it work.
-The output and port options can also be set in the config.json file. 
+The quiet and port options can also be set in the config.json file. 
 Values from config.json will override values from command line.
-After you get up and running, you should put your mock responses in a better location.
+After you get up and running, you should put your config.json and mock responses in a better location.
 It's not a good idea to keep them under the "node_modules" directory.
 Make sure another process is not already using the port you want. 
 If you want port 80, you may need to use "sudo" on Mac OSX.
@@ -81,7 +81,8 @@ Request can be a post containing a JSON object in the body:
 {
 	"verb":"get",
 	"serviceUrl":"third",
-	"mockFile":"queen.xml"
+	"mockFile":"queen.xml",
+    "latency": 100   
 }
 ```		
 		
@@ -90,6 +91,9 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 
 ### /admin/reload
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
+
+## Contributors
+Run "grunt" in the root "apimocker" directory to start the grunt watch task.  This will run JSHint and mocha tests.
 
 ## Acknowledgements
 Big thanks to magalhas for his httpd-mock project.  This gave me a great starting point.

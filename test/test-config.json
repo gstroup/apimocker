@@ -1,9 +1,9 @@
 {
     "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
     "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
-    "quiet": false,
-    "port": "7878",
-    "latency": 50, 
+    "quiet": true,
+    "port": "7879",
+    "latency": 0, 
     "webServices": {
         "get": {
             "first": "king.json",

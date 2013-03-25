@@ -6,13 +6,13 @@ var pkg = require("../package.json"),
 commander
     .version(pkg.version)
     .option("-c, --config <path>", "Path to config.json file.", __dirname + "/../config.json")
-    .option("-O, --show-output", "Enable console logging. Default is true.", true)
+    .option("-q, --quiet", "Disable console logging")
     .option("-p, --port <port>", "Port that the http mock server will use. Default is 8888.", "8888")
     .parse(process.argv);
 
 var options = {};
-commander.port && (options.serverPort = commander.port);
-commander.showOutput && (options.output = commander.showOutput);
+options.port = commander.port;
+options.quiet = !!commander.quiet;
 
 var apiMocker = ApiMocker.createServer(options)
     .setConfigFile(commander.config)

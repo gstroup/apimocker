@@ -1,10 +1,9 @@
 {
     "note": "used for functional tests.",
     "mockDirectory": "./samplemocks/",
-    "quiet": false,
+    "quiet": true,
     "port": "7879",
     "latency": 0,
-    "allowedDomains": ["abc"],
     "webServices": {
         "get": {
             "first": "king.json",

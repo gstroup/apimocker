@@ -28,7 +28,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       res.setEncoding('utf8');
       res.on('data', function (chunk) {
         //expect(JSON.parse(chunk)).to.deep.equal(expected);
-        console.log(chunk);
+        // console.log(chunk);
         done();
       });
     });
@@ -131,9 +131,9 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       req.end();
     });
 
-    xit('allows domains specified in config file', function(done) {
+    it('allows domains specified in config file', function(done) {
       var reqOptions = httpReqOptions("/first");
-      verifyResponseHeaders(reqOptions, {"Access-Control-Allow-Origin": "abc"}, done);
+      verifyResponseHeaders(reqOptions, {'access-control-allow-origin': "abc"}, done);
     });
   });
 });

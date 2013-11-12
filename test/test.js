@@ -1,5 +1,5 @@
 // run "grunt test", or run "mocha" in this test directory to execute.
-describe('unit tests', function() {
+describe('unit tests: ', function() {
   var chai = require("chai"),  // better assertions than node offers.
       apiMocker = require("../lib/apimocker.js"),
       path = require("path"),
@@ -7,7 +7,7 @@ describe('unit tests', function() {
       assert = chai.assert,
       expect = chai.expect,
       sinon = require("sinon"),
-      testConfig = {
+      oldTestConfig = {
           "mockDirectory": "foo/bar/samplemocks/",
           "quiet": true,
           "port": "7879",
@@ -20,24 +20,48 @@ describe('unit tests', function() {
                   "var/:id": "xml/queen.xml"
               },
               "post": {
-                  "king": "king.json"
+                  "first": "king.json"
               },
               "all": {
                   "queen": "xml/queen.xml"
               }
           }
+      },
+      testConfig = {
+          "mockDirectory": "foo/bar/samplemocks/",
+          "quiet": true,
+          "port": "7879",
+          "latency": 50,
+          "allowedDomains": ["abc"],
+          "webServices": {
+            "first": {
+              "mockFile": "king.json",
+              "verbs": ["get","post"]
+            },
+            "nested/ace": {
+              "mockFile": "ace.json",
+              "verbs": ["get"]
+            },
+            "var/:id": {
+              "mockFile": "xml/queen.xml",
+              "verbs": ["get"]
+            },
+            "queen": {
+              "mockFile": "xml/queen.xml",
+              "verbs": ["all"]
+            }
+          }
       };
       chai.Assertion.includeStack = true;
 
-  describe('createServer', function() {
+  describe('createServer: ', function() {
     it('sets defaults when no options are passed in', function() {
       var mocker = apiMocker.createServer();
       expect(mocker.options.port).to.equal("8888");
       expect(mocker.options.mockDirectory).to.equal("./mocks/");
       expect(mocker.options.allowedDomains.length).to.equal(1);
       expect(mocker.options.allowedDomains[0]).to.equal("*");
-      expect(mocker.options.webServices.get).to.be.an('object');
-      expect(mocker.options.webServices.post).to.be.an('object');
+      expect(mocker.options.quiet).to.equal(undefined);
     });
 
     it('overrides defaults with command line args', function() {
@@ -45,14 +69,12 @@ describe('unit tests', function() {
       expect(mocker.options.port).to.equal(1234);
       expect(mocker.options.mockDirectory).to.equal("./mocks/");
       expect(mocker.options.allowedDomains[0]).to.equal("*");
-      expect(mocker.options.webServices.get).to.be.an('object');
-      expect(mocker.options.webServices.post).to.be.an('object');
       expect(mocker.options.quiet).to.equal(true);
       expect(mocker.options.foo).to.equal("bar");
     });
   });
 
-  describe('setConfigFile', function() {
+  describe('setConfigFile: ', function() {
     var mocker = apiMocker.createServer();
 
     beforeEach(function() {
@@ -78,7 +100,7 @@ describe('unit tests', function() {
     });
   });
 
-  describe("loadConfigFile", function() {
+  describe("loadConfigFile: ", function() {
     var fsStub;
 
     beforeEach(function createFsStub() {
@@ -89,11 +111,10 @@ describe('unit tests', function() {
       fsStub.restore();
     });
 
-    it("sets options from mock in-memory config file", function() {
+    it("sets options from new format mock config file", function() {
       var mocker = apiMocker.createServer({quiet: true});
       fsStub.returns(JSON.stringify(testConfig));
       mocker.setConfigFile("any value");
-
       mocker.loadConfigFile();
       expect(mocker.options.port).to.equal(testConfig.port);
       expect(mocker.options.mockDirectory).to.equal(testConfig.mockDirectory);
@@ -101,6 +122,20 @@ describe('unit tests', function() {
       expect(mocker.options.webServices).to.deep.equal(testConfig.webServices);
       expect(mocker.options.quiet).to.equal(true);
       expect(mocker.options.latency).to.equal(testConfig.latency);
+    });
+
+    it("sets options from old format mock in-memory config file, stores in new format", function() {
+      var mocker = apiMocker.createServer({quiet: true});
+      fsStub.returns(JSON.stringify(oldTestConfig));
+      mocker.setConfigFile("any value");
+
+      mocker.loadConfigFile();
+      expect(mocker.options.port).to.equal(oldTestConfig.port);
+      expect(mocker.options.mockDirectory).to.equal(oldTestConfig.mockDirectory);
+      expect(mocker.options.allowedDomains[0]).to.equal(oldTestConfig.allowedDomains[0]);
+      expect(mocker.options.webServices).to.deep.equal(testConfig.webServices);
+      expect(mocker.options.quiet).to.equal(true);
+      expect(mocker.options.latency).to.equal(oldTestConfig.latency);
     });
 
     it("combines values from defaults, options, and config file", function() {

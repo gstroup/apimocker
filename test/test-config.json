@@ -1,21 +1,22 @@
 {
-    "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
-    "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
-    "quiet": true,
-    "port": "7879",
-    "latency": 0, 
-    "webServices": {
-        "get": {
-            "first": "king.json",
-            "second": "king.json",
-            "nested/ace": "ace.json",
-            "var/:id": "xml/queen.xml"
-        },
-        "post": {
-            "king": "king.json"
-        },
-        "all": {
-            "queen": "xml/queen.xml"
-        }
+  "note": "used for functional tests.",
+  "mockDirectory": "./samplemocks/",
+  "quiet": false,
+  "port": "7879",
+  "latency": 0,
+  "webServices": {
+    "first": {
+      "mockFile": "king.json",
+      "contentType": "foobar",
+      "verbs": ["get"]
+    },
+    "nested/ace": {
+      "mockFile": "ace.json",
+      "verbs": ["post", "get"]
+    },
+    "var/:id": {
+      "mockFile": "xml/queen.xml",
+      "verbs": ["all"]
     }
+  }
 }

@@ -9,7 +9,8 @@ module.exports = function (grunt) {
     'use strict';
 
     grunt.initConfig({
-        simplemocha: {
+
+        mochacli: {
             options: {
               globals: ['should'],
               timeout: 3000,
@@ -39,12 +40,12 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-simple-mocha');
+    grunt.loadNpmTasks('grunt-mocha-cli');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.registerTask('test', [
-        'simplemocha'
+        'mochacli'
     ]);
 
     grunt.registerTask('default', [

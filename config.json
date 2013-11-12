@@ -1,21 +1,27 @@
 {
-    "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
-    "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
-    "quiet": false,
-    "port": "7878",
-    "latency": 50, 
-    "webServices": {
-        "get": {
-            "first": "king.json",
-            "second": "king.json",
-            "nested/ace": "ace.json",
-            "var/:id": "xml/queen.xml"
-        },
-        "post": {
-            "king": "king.json"
-        },
-        "all": {
-            "queen": "xml/queen.xml"
-        }
+  "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
+  "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
+  "quiet": false,
+  "port": "7878",
+  "latency": 50,
+  "webServices": {
+    "first": {
+      "mockFile": "king.json",
+      "latency": 20,
+      "verbs": ["get"]
+    },
+    "second": {
+      "mockFile": "king.json",
+      "contentType": "foobar",
+      "verbs": ["post"]
+    },
+    "nested/ace": {
+      "mockFile": "ace.json",
+      "verbs": ["post", "get"]
+    },
+    "var/:id": {
+      "mockFile": "xml/queen.xml",
+      "verbs": ["all"]
     }
+  }
 }

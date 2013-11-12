@@ -40,11 +40,13 @@ Change the "mockDirectory" to point to this location.
 On startup, config values are loaded from the config.json file.
 During runtime, mock services can be configured on the fly.
 See the sample config.json file in this package.
+
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated, but still functioning.)
 * Content-type for a service response can be set for each service.  If not set, content-type defaults to applicatoin/xml for .xml files, and application/json for .json files.
 * Latency (ms) can be set to simulate slow service responses.  Latency can be set for a single service, or globally for all services.
 * mockDirectory value should be an absolute path.
 * Allowed domains can be set to restrict CORS requests to certain domains.
+
 ```js
 {
   "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",

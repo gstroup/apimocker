@@ -91,10 +91,11 @@ In your configuration, you can set up a "switch" parameter for each service.  If
   "customerId": 1234
 }
 ```
-will return data from the mock file called "customerId1234.json".  Switch values can also be passed in as query parameters:
+will return data from the mock file called "customerId1234ace.json".  Switch values can also be passed in as query parameters:
     http://localhost:7878/nested/ace?customerId=1234
 or as part of the URL, if you have configured your service to handle variables, like the "var/:id" service above:
     http://localhost:7878/var/789
+If the specific file, such as "customerId1234ace.json" is not found, then apimocker will attempt to return the base file: "ace.json".
 
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.
@@ -122,6 +123,8 @@ If the config.json file is edited, you can send an http request to /admin/reload
 ## Versions
 ### 0.1.6
 New config file format was introduced, allowing for custom content-types and more fine grained control over services.
+### 0.1.8
+New "switch" feature added, allowing different responses based on a request parameter.
 
 ## Contributors
 Run "grunt watch" in the root "apimocker" directory to start the grunt watch task.  This will run JSHint and mocha tests.

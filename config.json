@@ -17,11 +17,13 @@
     },
     "nested/ace": {
       "mockFile": "ace.json",
-      "verbs": ["post", "get"]
+      "verbs": ["post", "get"],
+      "switch": "customerId"
     },
     "var/:id": {
       "mockFile": "xml/queen.xml",
-      "verbs": ["all"]
+      "verbs": ["all"],
+      "switch": "id"
     }
   }
 }

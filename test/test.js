@@ -1,3 +1,5 @@
+/* global describe, it, beforeEach, afterEach, after */
+
 // run "grunt test", or run "mocha" in this test directory to execute.
 describe('unit tests: ', function() {
   var chai = require("chai"),  // better assertions than node offers.
@@ -152,6 +154,43 @@ describe('unit tests: ', function() {
       expect(mocker.options.webServices).to.deep.equal(mocker.defaults.webServices);
       // value from options passed in to createServer:
       expect(mocker.options.test).to.equal("fun");
+    });
+  });
+
+  describe("setMockFile: ", function() {
+    var mocker, svcOptions, reqStub;
+
+    beforeEach(function createMocker() {
+      mocker = apiMocker.createServer({quiet: true});
+      svcOptions = {switch: "productId", mockFile: "base"};
+      reqStub = {
+        param: function() {return null;},
+        body: {}
+      };
+    });
+
+    it("does not set mock file path if switch is not found in request", function() {
+      mocker.setMockFile(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("base");
+    });
+
+    it("sets correct mock file path if switch is found in query string", function() {
+      reqStub.param = function() {return "123";};
+      mocker.setMockFile(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("productId123.base");
+    });
+
+    it("sets correct mock file path if switch is found in json body", function() {
+      reqStub.body.productId = "678";
+      mocker.setMockFile(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("productId678.base");
+    });
+
+    it("sets correct mock file path with switch and nested path", function() {
+      reqStub.body.productId="678";
+      svcOptions.mockFile = "path/to/base";
+      mocker.setMockFile(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("path/to/productId678.base");
     });
   });
 

@@ -41,11 +41,12 @@ On startup, config values are loaded from the config.json file.
 During runtime, mock services can be configured on the fly.
 See the sample config.json file in this package.
 
-* config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated, but still functioning.)
-* Content-type for a service response can be set for each service.  If not set, content-type defaults to applicatoin/xml for .xml files, and application/json for .json files.
+* config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
+* Content-type for a service response can be set for each service.  If not set, content-type defaults to application/xml for .xml files, and application/json for .json files.
 * Latency (ms) can be set to simulate slow service responses.  Latency can be set for a single service, or globally for all services.
 * mockDirectory value should be an absolute path.
 * Allowed domains can be set to restrict CORS requests to certain domains.
+* Services can be configured to return different responses, depending on a request parameter.
 
 ```js
 {
@@ -68,11 +69,13 @@ See the sample config.json file in this package.
     },
     "nested/ace": {
       "mockFile": "ace.json",
-      "verbs": ["post", "get"]
+      "verbs": ["post", "get"],
+      "switch": "customerId"
     },
     "var/:id": {
       "mockFile": "xml/queen.xml",
-      "verbs": ["all"]
+      "verbs": ["all"],
+      "switch": "id"
     }
   }
 }
@@ -80,6 +83,18 @@ See the sample config.json file in this package.
 The most interesting part of the configuration file is the webServices section.
 This section contains a JSON object describing each service.  The key for each service object is the service URL (endpoint.)  Inside each service object, the "mockFile" and "verbs" are required.  "latency" and "contentType" are optional.
 For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay.
+
+### Switches
+In your configuration, you can set up a "switch" parameter for each service.  If set, apimocker will check the request for this parameter, and return a different file based on the value.  For instance, if you set up a switch as seen above for "nested/ace", then you can will get different responses based on the request sent to apimocker.  A JSON POST request to the URL "http://localhost:7878/nested/ace" with this data:
+```js
+{
+  "customerId": 1234
+}
+```
+will return data from the mock file called "customerId1234.json".  Switch values can also be passed in as query parameters:
+    http://localhost:7878/nested/ace?customerId=1234
+or as part of the URL, if you have configured your service to handle variables, like the "var/:id" service above:
+    http://localhost:7878/var/789
 
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.

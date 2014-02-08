@@ -1,3 +1,5 @@
+/* global describe, it, before */
+
 describe('Functional tests using an http client to test "end-to-end": ', function() {
 
   var chai = require("chai"),
@@ -13,32 +15,42 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
           path: path
         };
       },
+      httpPostOptions = function(path, data) {
+        return {
+          hostname: 'localhost',
+          port: 7879,
+          method: 'POST',
+          path: path,
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length
+          }
+        };
+      },
       mocker;
 
   // This doesn't seem to help...
   chai.Assertion.includeStack = true;
 
-  before(function startMockerForFuncTests() {
-    mocker = apiMocker.createServer({quiet: false}).setConfigFile("test/test-old-config.json");
-    mocker.start();
-  });
-
-  function verifyResponseBody(httpReqOptions, expected, done) {
+  function verifyResponseBody(httpReqOptions, postData, expected, done) {
     var req = http.request(httpReqOptions, function(res) {
       res.setEncoding('utf8');
       res.on('data', function (chunk) {
-        //expect(JSON.parse(chunk)).to.deep.equal(expected);
+        expect(JSON.parse(chunk)).to.deep.equal(expected);
         // console.log(chunk);
         done();
       });
     });
+    if (postData) {
+      req.write(postData);
+    }
     req.end();
   }
 
   function verifyResponseHeaders(httpReqOptions, expected, done) {
     var req = http.request(httpReqOptions, function(res) {
       res.setEncoding('utf8');
-      res.on('data', function (chunk) {
+      res.on('data', function () { //chunk) {
         // console.log(res.headers);
         var expectedKeys = _.keys(expected);
         _.each(expectedKeys, function(key) {
@@ -50,42 +62,49 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     req.end();
   }
 
-  it('returns correct data for basic get request', function(done) {
-    var reqOptions = httpReqOptions("/first");
-    verifyResponseBody(reqOptions, {"king": "greg"}, done);
-  });
-
-  it('returns correct content-type for json response', function(done) {
-    var reqOptions = httpReqOptions("/first");
-    verifyResponseHeaders(reqOptions, {"content-type": "application/json"}, done);
-  });
-
-  it('returns correct content-type for xml response', function(done) {
-    var reqOptions = httpReqOptions("/queen");
-    verifyResponseHeaders(reqOptions, {"content-type": "application/xml"}, done);
-  });
-
-  it('returns correct data for basic post request', function(done) {
-    var reqOptions = httpReqOptions("/king");
-    reqOptions.method = "POST";
-    verifyResponseBody(reqOptions, {"king": "greg"}, done);
-  });
-
-  it('returns 404 for incorrect path', function(done) {
-    var req, reqOptions = httpReqOptions();
-    reqOptions.method = "POST";
-    reqOptions.path = "/first";
-    req = http.request(reqOptions, function(res) {
-      res.setEncoding('utf8');
-      res.on('data', function (chunk) {
-        expect(res.statusCode).to.equal(404);
-        done();
-      });
+  describe("old file format", function() {
+    before(function startMockerForFuncTests() {
+      mocker = apiMocker.createServer({quiet: false}).setConfigFile("test/test-old-config.json");
+      mocker.start();
     });
-    req.end();
+
+    it('returns correct data for basic get request', function(done) {
+      var reqOptions = httpReqOptions("/first");
+      verifyResponseBody(reqOptions, null, {"king": "greg"}, done);
+    });
+
+    it('returns correct content-type for json response', function(done) {
+      var reqOptions = httpReqOptions("/first");
+      verifyResponseHeaders(reqOptions, {"content-type": "application/json"}, done);
+    });
+
+    it('returns correct content-type for xml response', function(done) {
+      var reqOptions = httpReqOptions("/queen");
+      verifyResponseHeaders(reqOptions, {"content-type": "application/xml"}, done);
+    });
+
+    it('returns correct data for basic post request', function(done) {
+      var reqOptions = httpReqOptions("/king");
+      reqOptions.method = "POST";
+      verifyResponseBody(reqOptions, null, {"king": "greg"}, done);
+    });
+
+    it('returns 404 for incorrect path', function(done) {
+      var req, reqOptions = httpReqOptions();
+      reqOptions.method = "POST";
+      reqOptions.path = "/first";
+      req = http.request(reqOptions, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function () {  //chunk) {
+          expect(res.statusCode).to.equal(404);
+          done();
+        });
+      });
+      req.end();
+    });
   });
 
-  describe('new config file format', function(done) {
+  describe('new config file format', function() {
     before(function(done) {
       mocker.setConfigFile("test/test-config.json");
 
@@ -93,7 +112,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       reqOptions.path = "/admin/reload";
       req = http.request(reqOptions, function(res) {
         res.setEncoding('utf8');
-        res.on('data', function (chunk) {
+        res.on('data', function () {
           expect(res.statusCode).to.equal(200);
           done();
         });
@@ -104,7 +123,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     it('sets a basic route', function(done) {
       var reqOptions = httpReqOptions("/first");
       reqOptions.method = "get";
-      verifyResponseBody(reqOptions, {"king": "greg"}, done);
+      verifyResponseBody(reqOptions, null, {"king": "greg"}, done);
     });
 
     it('returns a custom content type', function(done) {
@@ -123,7 +142,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       reqOptions.path = "/king";
       req = http.request(reqOptions, function(res) {
         res.setEncoding('utf8');
-        res.on('data', function (chunk) {
+        res.on('data', function () {
           expect(res.statusCode).to.equal(404);
           done();
         });
@@ -134,6 +153,43 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     it('allows domains specified in config file', function(done) {
       var reqOptions = httpReqOptions("/first");
       verifyResponseHeaders(reqOptions, {'access-control-allow-origin': "abc"}, done);
+    });
+
+    it('returns correct file for switch param in json request', function(done) {
+      var postData = '{"customerId": 1234}',
+          postOptions =  httpPostOptions("/nested/ace", postData),
+          expected = {
+            "ace": "greg",
+            "note": "request contained customerId = 1234"
+          };
+      verifyResponseBody(postOptions, postData, expected, done);
+    });
+
+    it('returns base file when no match for switch param in json request', function(done) {
+      var postData = '{"customerId": 124}',
+          postOptions =  httpPostOptions("/nested/ace", postData),
+          expected = {
+            "ace": "greg"
+          };
+      verifyResponseBody(postOptions, postData, expected, done);
+    });
+
+    it('returns base file when no switch param passed in json request', function(done) {
+      var postData = '{"phonenumber": 124}',
+          postOptions =  httpPostOptions("/nested/ace", postData),
+          expected = {
+            "ace": "greg"
+          };
+      verifyResponseBody(postOptions, postData, expected, done);
+    });
+
+    it('returns correct file for swtich param in query string', function(done) {
+      var reqOptions =  httpReqOptions("/nested/ace?customerId=1234"),
+          expected = {
+            "ace": "greg",
+            "note": "request contained customerId = 1234"
+          };
+      verifyResponseBody(reqOptions, null, expected, done);
     });
   });
 });

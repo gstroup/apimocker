@@ -5,7 +5,7 @@
   "engines": {"node": ">=0.10.0"},
   "author": "Greg Stroup <gstroup@gmail.com>",
   "dependencies": {
-    "express": ">=3.1",
+    "express": "^3.1",
     "commander": ">=1",
     "underscore": ">=1"
   },

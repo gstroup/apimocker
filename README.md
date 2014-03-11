@@ -26,6 +26,10 @@ It's not a good idea to keep them under the "node_modules" directory.
 Make sure another process is not already using the port you want.
 If you want port 80, you may need to use "sudo" on Mac OSX.
 
+### With Grunt
+If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:
+https://github.com/gstroup/grunt-apimocker
+
 ### Windows note
 After installing from npm, you'll need to edit this file:
         /Users/xxxxx/AppData/Roaming/npm/node_modules/apimocker/config.json
@@ -92,9 +96,9 @@ In your configuration, you can set up a "switch" parameter for each service.  If
 }
 ```
 will return data from the mock file called "customerId1234ace.json".  Switch values can also be passed in as query parameters:
-    http://localhost:7878/nested/ace?customerId=1234
+        http://localhost:7878/nested/ace?customerId=1234
 or as part of the URL, if you have configured your service to handle variables, like the "var/:id" service above:
-    http://localhost:7878/var/789
+        http://localhost:7878/var/789
 If the specific file, such as "customerId1234ace.json" is not found, then apimocker will attempt to return the base file: "ace.json".
 
 ## Runtime configuration

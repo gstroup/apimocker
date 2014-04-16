@@ -210,4 +210,51 @@ describe('unit tests: ', function() {
     });
   });
 
+  describe("setRoutes:", function() {
+    var am = apiMocker.createServer(),
+        setRouteMock;
+
+    beforeEach(function () {
+      setRouteMock = sinon.mock(am, "setRoute");
+    });
+
+    afterEach(function restoreFs() {
+      setRouteMock.restore();
+    });
+
+    it("calls setRoute with a simple service definition", function() {
+      var webServices = {
+        "first": {
+          "mockFile": "king.json",
+          "latency": 20,
+          "verbs": ["get", "post"]
+        }
+      };
+      setRouteMock.expects("setRoute").withExactArgs({ latency: 20, mockFile: "king.json", serviceUrl: "first", verb: "get" });
+      setRouteMock.expects("setRoute").withExactArgs({ latency: 20, mockFile: "king.json", serviceUrl: "first", verb: "post" });
+      am.setRoutes(webServices);
+      setRouteMock.verify();
+    });
+
+    it("calls setRoute with complex service definition", function() {
+      var webServices = {
+        "second": {
+          "verbs": ["delete", "post"],
+          "responses": {
+            "delete": {"httpStatus": 204},
+            "post": {
+              "contentType": "foobar",
+              "mockFile": "king.json"
+            }
+          }
+        }
+      };
+
+      setRouteMock.expects("setRoute").withExactArgs({ httpStatus: 204, latency: 0, serviceUrl: "second", verb: "delete" });
+      setRouteMock.expects("setRoute").withExactArgs({ latency: 0, serviceUrl: "second", verb: "post", contentType: "foobar", mockFile: "king.json" });
+      am.setRoutes(webServices);
+      setRouteMock.verify();
+    });
+  });
+
 });

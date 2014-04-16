@@ -11,13 +11,14 @@
       "verbs": ["get"]
     },
     "second": {
-      "httpStatus": 204,
-      "verbs": ["delete"]
-    },
-    "third": {
-      "mockFile": "king.json",
-      "contentType": "foobar",
-      "verbs": ["post"]
+      "verbs": ["delete", "post"],
+      "responses": {
+        "delete": {"httpStatus": 204},
+        "post": {
+          "contentType": "foobar",
+          "mockFile": "king.json"
+        }
+      }
     },
     "nested/ace": {
       "mockFile": "ace.json",

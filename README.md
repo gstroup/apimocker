@@ -68,13 +68,14 @@ See the sample config.json file in this package.
       "verbs": ["get"]
     },
     "second": {
-      "httpStatus": 204,
-      "verbs": ["delete"]
-    },
-    "third": {
-      "mockFile": "king.json",
-      "contentType": "foobar",
-      "verbs": ["post"]
+      "verbs": ["delete", "post"],
+      "responses": {
+        "delete": {"httpStatus": 204},
+        "post": {
+          "contentType": "foobar",
+          "mockFile": "king.json"
+        }
+      }
     },
     "nested/ace": {
       "mockFile": "ace.json",
@@ -92,6 +93,7 @@ See the sample config.json file in this package.
 The most interesting part of the configuration file is the webServices section.
 This section contains a JSON object describing each service.  The key for each service object is the service URL (endpoint.)  Inside each service object, the "mockFile" and "verbs" are required.  "latency" and "contentType" are optional.
 For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay.
+If you'd like to return different responses for a single URL with different HTTP verbs ("get", "post", etc) then you'll need to add the "responses" object.  See above for the "second" service.  The "responses" object should contain keys for the HTTP verbs, and values describing the response for each verb.
 
 ### Switches
 In your configuration, you can set up a "switch" parameter for each service.  If set, apimocker will check the request for this parameter, and return a different file based on the value.  For instance, if you set up a switch as seen above for "nested/ace", then you can will get different responses based on the request sent to apimocker.  A JSON POST request to the URL "http://localhost:7878/nested/ace" with this data:

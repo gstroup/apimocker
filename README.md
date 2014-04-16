@@ -47,6 +47,7 @@ See the sample config.json file in this package.
 
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
 * Content-type for a service response can be set for each service.  If not set, content-type defaults to application/xml for .xml files, and application/json for .json files.
+* HTTP Status code can be set for each service.
 * Latency (ms) can be set to simulate slow service responses.  Latency can be set for a single service, or globally for all services.
 * mockDirectory value should be an absolute path.
 * Allowed domains can be set to restrict CORS requests to certain domains.
@@ -67,6 +68,10 @@ See the sample config.json file in this package.
       "verbs": ["get"]
     },
     "second": {
+      "httpStatus": 204,
+      "verbs": ["delete"]
+    },
+    "third": {
       "mockFile": "king.json",
       "contentType": "foobar",
       "verbs": ["post"]

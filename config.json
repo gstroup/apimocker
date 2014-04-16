@@ -11,6 +11,10 @@
       "verbs": ["get"]
     },
     "second": {
+      "httpStatus": 204,
+      "verbs": ["delete"]
+    },
+    "third": {
       "mockFile": "king.json",
       "contentType": "foobar",
       "verbs": ["post"]

@@ -62,7 +62,26 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     req.end();
   }
 
-  describe("old file format", function() {
+  function verifyResponseStatus(httpReqOptions, postData, expectedStatus, done) {
+    var req = http.request(httpReqOptions, function(res) {
+      res.setEncoding('utf8');
+      res.on('data', function() {
+        // console.log("data event, status: " + res.statusCode);
+        expect(res.statusCode).to.equal(expectedStatus);
+      });
+      res.on('end', function() {
+        // console.log("status: " + res.statusCode);
+        expect(res.statusCode).to.equal(expectedStatus);
+        done();
+      });
+    });
+    if (postData) {
+      req.write(postData);
+    }
+    req.end();
+  }
+
+  describe("old file format:", function() {
     before(function startMockerForFuncTests() {
       mocker = apiMocker.createServer({quiet: false}).setConfigFile("test/test-old-config.json");
       mocker.start();
@@ -90,21 +109,13 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     });
 
     it('returns 404 for incorrect path', function(done) {
-      var req, reqOptions = httpReqOptions();
+      var reqOptions = httpReqOptions("/first");
       reqOptions.method = "POST";
-      reqOptions.path = "/first";
-      req = http.request(reqOptions, function(res) {
-        res.setEncoding('utf8');
-        res.on('data', function () {  //chunk) {
-          expect(res.statusCode).to.equal(404);
-          done();
-        });
-      });
-      req.end();
+      verifyResponseStatus(reqOptions, "{}", 404, done);
     });
   });
 
-  describe('new config file format', function() {
+  describe('new config file format:', function() {
     before(function(done) {
       mocker.setConfigFile("test/test-config.json");
 
@@ -137,17 +148,10 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     });
 
     it('returns 404 for incorrect path, after reload', function(done) {
-      var req, reqOptions = httpReqOptions();
+      var reqOptions = httpReqOptions();
       reqOptions.method = "post";
       reqOptions.path = "/king";
-      req = http.request(reqOptions, function(res) {
-        res.setEncoding('utf8');
-        res.on('data', function () {
-          expect(res.statusCode).to.equal(404);
-          done();
-        });
-      });
-      req.end();
+      verifyResponseStatus(reqOptions, "{}", 404, done);
     });
 
     it('allows domains specified in config file', function(done) {
@@ -191,5 +195,22 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
           };
       verifyResponseBody(reqOptions, null, expected, done);
     });
+
+    it("returns httpStatus of 200 if not set", function(done) {
+      verifyResponseStatus(httpReqOptions("/first"), null, 200, done);
+    });
+
+    it("returns httpStatus specified in config file, when contentType is passed in", function(done) {
+      var reqOptions = httpPostOptions("/protected", '{}');
+      reqOptions.method = "put";
+      verifyResponseStatus(reqOptions, "{}", 403, done);
+    });
+
+    it("returns httpStatus 204 specified in config file", function(done) {
+      var reqOptions = httpReqOptions("/second");
+      reqOptions.method = "delete";
+      verifyResponseStatus(reqOptions, null, 204, done);
+    });
+
   });
 });

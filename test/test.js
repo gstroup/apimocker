@@ -6,6 +6,7 @@ describe('unit tests: ', function() {
       apiMocker = require("../lib/apimocker.js"),
       path = require("path"),
       fs = require("fs"),
+      express,
       assert = chai.assert,
       expect = chai.expect,
       sinon = require("sinon"),
@@ -191,6 +192,21 @@ describe('unit tests: ', function() {
       svcOptions.mockFile = "path/to/base";
       mocker.setMockFile(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("path/to/productId678.base");
+    });
+  });
+
+  describe("setRoute:", function() {
+    var am = apiMocker.createServer();
+
+    it("sets http status code to 200 by default", function() {
+      var options = {
+        verb: "get",
+        latency: 0,
+        serviceUrl: "foo.com",
+        mockFile: "file.json"
+      };
+      am.setRoute(options);
+      expect(options.httpStatus).to.equal(200);
     });
   });
 

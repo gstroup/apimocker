@@ -10,6 +10,15 @@
       "contentType": "foobar",
       "verbs": ["get"]
     },
+    "second": {
+      "verbs": ["delete"],
+      "httpStatus": 204
+    },
+    "protected": {
+      "mockFile": "king.json",
+      "httpStatus": 403,
+      "verbs": ["put"]
+    },
     "nested/ace": {
       "mockFile": "ace.json",
       "verbs": ["post", "get"],

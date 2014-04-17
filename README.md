@@ -136,6 +136,8 @@ If the config.json file is edited, you can send an http request to /admin/reload
 New config file format was introduced, allowing for custom content-types and more fine grained control over services.
 ### 0.1.8
 New "switch" feature added, allowing different responses based on a request parameter.
+### 0.2.3
+Now allows HTTP status code to be set for each response.  Config file format also allows configuration of different responses based on http verb.
 
 ## Contributors
 Run "grunt watch" in the root "apimocker" directory to start the grunt watch task.  This will run JSHint and mocha tests.

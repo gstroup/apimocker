@@ -4,6 +4,7 @@
   "port": "7879",
   "latency": 0,
   "allowedDomains": ["abc"],
+  "allowedHeaders": ["Content-Type", "my-custom-header"],
   "webServices": {
     "first": {
       "mockFile": "king.json",

@@ -6,7 +6,6 @@ describe('unit tests: ', function() {
       apiMocker = require("../lib/apimocker.js"),
       path = require("path"),
       fs = require("fs"),
-      express,
       assert = chai.assert,
       expect = chai.expect,
       sinon = require("sinon"),
@@ -36,6 +35,7 @@ describe('unit tests: ', function() {
           "port": "7879",
           "latency": 50,
           "allowedDomains": ["abc"],
+          "allowedHeaders": ["my-custom1", "my-custom2"],
           "webServices": {
             "first": {
               "mockFile": "king.json",
@@ -64,6 +64,7 @@ describe('unit tests: ', function() {
       expect(mocker.options.mockDirectory).to.equal("./mocks/");
       expect(mocker.options.allowedDomains.length).to.equal(1);
       expect(mocker.options.allowedDomains[0]).to.equal("*");
+      expect(mocker.options.allowedHeaders[0]).to.equal("Content-Type");
       expect(mocker.options.quiet).to.equal(undefined);
     });
 
@@ -122,6 +123,8 @@ describe('unit tests: ', function() {
       expect(mocker.options.port).to.equal(testConfig.port);
       expect(mocker.options.mockDirectory).to.equal(testConfig.mockDirectory);
       expect(mocker.options.allowedDomains[0]).to.equal(testConfig.allowedDomains[0]);
+      expect(mocker.options.allowedHeaders[0]).to.equal("my-custom1");
+      expect(mocker.options.allowedHeaders[1]).to.equal("my-custom2");
       expect(mocker.options.webServices).to.deep.equal(testConfig.webServices);
       expect(mocker.options.quiet).to.equal(true);
       expect(mocker.options.latency).to.equal(testConfig.latency);

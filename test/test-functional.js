@@ -159,6 +159,11 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       verifyResponseHeaders(reqOptions, {'access-control-allow-origin': "abc"}, done);
     });
 
+    it('allows headers as specified in config file', function(done) {
+      var reqOptions = httpReqOptions("/first");
+      verifyResponseHeaders(reqOptions, {'access-control-allow-headers': 'Content-Type,my-custom-header'}, done);
+    });
+
     it('returns correct file for switch param in json request', function(done) {
       var postData = '{"customerId": 1234}',
           postOptions =  httpPostOptions("/nested/ace", postData),

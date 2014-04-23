@@ -51,6 +51,7 @@ See the sample config.json file in this package.
 * Latency (ms) can be set to simulate slow service responses.  Latency can be set for a single service, or globally for all services.
 * mockDirectory value should be an absolute path.
 * Allowed domains can be set to restrict CORS requests to certain domains.
+* Allowed headers can be set.  (Default is to set "access-control-allow-headers: Content-Type" if not specified in config file.)
 * Services can be configured to return different responses, depending on a request parameter.
 
 ```js
@@ -61,6 +62,7 @@ See the sample config.json file in this package.
   "port": "7878",
   "latency": 50,
   "allowedDomains": ["abc.com"],
+  "allowedHeaders": ["Content-Type", "my-custom-header"],
   "webServices": {
     "first": {
       "mockFile": "king.json",
@@ -132,12 +134,14 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
-### 0.1.6
-New config file format was introduced, allowing for custom content-types and more fine grained control over services.
-### 0.1.8
-New "switch" feature added, allowing different responses based on a request parameter.
+### 0.2.4
+Allows configuration of the "access-control-allow-headers" HTTP header.
 ### 0.2.3
 Now allows HTTP status code to be set for each response.  Config file format also allows configuration of different responses based on http verb.
+### 0.1.8
+New "switch" feature added, allowing different responses based on a request parameter.
+### 0.1.6
+New config file format was introduced, allowing for custom content-types and more fine grained control over services.
 
 ## Contributors
 Run "grunt watch" in the root "apimocker" directory to start the grunt watch task.  This will run JSHint and mocha tests.

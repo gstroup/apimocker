@@ -192,7 +192,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       verifyResponseBody(postOptions, postData, expected, done);
     });
 
-    it('returns correct file for swtich param in query string', function(done) {
+    it('returns correct file for switch param in query string', function(done) {
       var reqOptions =  httpReqOptions("/nested/ace?customerId=1234"),
           expected = {
             "ace": "greg",

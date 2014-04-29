@@ -196,6 +196,12 @@ describe('unit tests: ', function() {
       mocker.setMockFile(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("path/to/productId678.base");
     });
+
+    it("sets correct mock file path with switch value containing special character", function() {
+      reqStub.body.productId="abc/123";
+      mocker.setMockFile(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("productIdabc%2F123.base");
+    });
   });
 
   describe("setRoute:", function() {

@@ -45,14 +45,14 @@ On startup, config values are loaded from the config.json file.
 During runtime, mock services can be configured on the fly.
 See the sample config.json file in this package.
 
-* config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
+* Services can be configured to return different responses, depending on a request parameter.
 * Content-type for a service response can be set for each service.  If not set, content-type defaults to application/xml for .xml files, and application/json for .json files.
 * HTTP Status code can be set for each service.
 * Latency (ms) can be set to simulate slow service responses.  Latency can be set for a single service, or globally for all services.
-* mockDirectory value should be an absolute path.
 * Allowed domains can be set to restrict CORS requests to certain domains.
 * Allowed headers can be set.  (Default is to set "access-control-allow-headers: Content-Type" if not specified in config file.)
-* Services can be configured to return different responses, depending on a request parameter.
+* config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
+* mockDirectory value should be an absolute path.
 
 ```js
 {
@@ -97,7 +97,7 @@ This section contains a JSON object describing each service.  The key for each s
 For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay.
 If you'd like to return different responses for a single URL with different HTTP verbs ("get", "post", etc) then you'll need to add the "responses" object.  See above for the "second" service.  The "responses" object should contain keys for the HTTP verbs, and values describing the response for each verb.
 
-### Switches
+### Switch response based on request parameter
 In your configuration, you can set up a "switch" parameter for each service.  If set, apimocker will check the request for this parameter, and return a different file based on the value.  For instance, if you set up a switch as seen above for "nested/ace", then you can will get different responses based on the request sent to apimocker.  A JSON POST request to the URL "http://localhost:7878/nested/ace" with this data:
 ```js
 {

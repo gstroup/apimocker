@@ -38,7 +38,9 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       res.on('data', function (chunk) {
         expect(JSON.parse(chunk)).to.deep.equal(expected);
         // console.log(chunk);
-        done();
+        if (done) {
+          done();
+        }
       });
     });
     if (postData) {
@@ -215,6 +217,33 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       var reqOptions = httpReqOptions("/second");
       reqOptions.method = "delete";
       verifyResponseStatus(reqOptions, null, 204, done);
+    });
+
+    it("returns correct mock file after admin/setMock was called twice", function(done) {
+      var postData = '{"verb":"get", "serviceUrl":"third", "mockFile":"king.json"}',
+          postOptions =  httpPostOptions("/admin/setMock", postData),
+          expected = {
+            "verb":"get",
+            "serviceUrl":"third",
+            "mockFile":"king.json",
+            "httpStatus": 200
+          };
+      verifyResponseBody(postOptions, postData, expected);
+
+      verifyResponseBody(httpReqOptions("/third"), null, {king: "greg"});
+
+      // change route, and verify again
+      postData = '{"verb":"get", "serviceUrl":"third", "mockFile":"ace.json"}';
+      postOptions =  httpPostOptions("/admin/setMock", postData);
+      expected = {
+        "verb":"get",
+        "serviceUrl":"third",
+        "mockFile":"ace.json",
+        "httpStatus": 200
+      };
+      verifyResponseBody(postOptions, postData, expected);
+
+      verifyResponseBody(httpReqOptions("/third"), null, {ace: "greg"}, done);
     });
 
   });

@@ -53,11 +53,14 @@ See the sample config.json file in this package.
 * Allowed headers can be set.  (Default is to set "access-control-allow-headers: Content-Type" if not specified in config file.)
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
 * mockDirectory value should be an absolute path.
+* A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
 
 ```js
 {
   "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
   "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
+  "staticDirectory": "/optional/file/system/path/to/static/directory",
+  "staticPath": "/optional/web/path/to/static/directory",
   "quiet": false,
   "port": "7878",
   "latency": 50,
@@ -134,6 +137,10 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+### 0.3.1
+Added support for a static path.  (see issue #9)
+### 0.3.0
+Refactored and updated to use Express 4.5.  (No functional change.)
 ### 0.2.4
 Allows configuration of the "access-control-allow-headers" HTTP header.
 ### 0.2.3

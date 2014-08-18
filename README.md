@@ -82,10 +82,15 @@ See the sample config.json file in this package.
         }
       }
     },
-    "nested/ace": {
+	"nested/ace": {
       "mockFile": "ace.json",
       "verbs": ["post", "get"],
       "switch": "customerId"
+    },
+	"nested/ace2": {
+      "mockFile": "ace.json",
+      "verbs": ["post", "get"],
+      "switch": ["customerId","multitest"]
     },
     "var/:id": {
       "mockFile": "xml/queen.xml",
@@ -112,6 +117,15 @@ will return data from the mock file called "customerId1234.ace.json".  Switch va
 or as part of the URL, if you have configured your service to handle variables, like the "var/:id" service above:
         http://localhost:7878/var/789
 If the specific file, such as "customerId1234.ace.json" is not found, then apimocker will attempt to return the base file: "ace.json".
+
+You can now also define an array of values to switch on. Given the configuration in "ace2", a request to "nested/ace2" containing: 
+```js
+{
+  "multitest": "abc",
+  "customerId": 1234
+}
+```
+will return data from the mock file called "customerId1234multitestabc.ace.json".
 
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.

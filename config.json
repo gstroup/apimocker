@@ -27,10 +27,15 @@
       "verbs": ["post", "get"],
       "switch": "customerId"
     },
-    "var/:id": {
+	"nested/ace2": {
+      "mockFile": "ace.json",
+      "verbs": ["post", "get"],
+      "switch": ["customerId","multitest"]
+    },
+    "var/:id/:num": {
       "mockFile": "xml/queen.xml",
       "verbs": ["all"],
-      "switch": "id"
+      "switch": ["id","num"]
     }
   }
 }

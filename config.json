@@ -32,10 +32,10 @@
       "verbs": ["post", "get"],
       "switch": ["customerId","multitest"]
     },
-    "var/:id/:num": {
+    "var/:id/:color": {
       "mockFile": "xml/queen.xml",
       "verbs": ["all"],
-      "switch": ["id","num"]
+      "switch": ["id", "color"]
     }
   }
 }

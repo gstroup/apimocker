@@ -202,6 +202,14 @@ describe('unit tests: ', function() {
       mocker.setMockFile(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("productIdabc%2F123.base");
     });
+
+    it("sets correct mock file path with two switch values", function() {
+      svcOptions.switch = ["productId", "color"];
+      reqStub.body.productId = "345";
+      reqStub.body.color = "red";
+      mocker.setMockFile(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("productId345colorred.base");
+    });
   });
 
   describe("setRoute:", function() {

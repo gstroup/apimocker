@@ -118,14 +118,15 @@ or as part of the URL, if you have configured your service to handle variables, 
         http://localhost:7878/var/789
 If the specific file, such as "customerId1234.ace.json" is not found, then apimocker will attempt to return the base file: "ace.json".
 
-You can now also define an array of values to switch on. Given the configuration in "ace2", a request to "nested/ace2" containing: 
+You can now also define an array of values to switch on. Given the configuration in "ace2", a request to "nested/ace2" containing:
 ```js
 {
   "multitest": "abc",
   "customerId": 1234
 }
 ```
-will return data from the mock file called "customerId1234multitestabc.ace.json".
+will return data from the mock file called "customerId1234multitestabc.ace.json".  Note that when using multiple switches, the filename must have parameters in the same order as configured in the "switch" setting in config.json.
+Also, apimocker will look for the filename that matches ALL the request parameters.  If one does not match, then the base file will be returned.
 
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.
@@ -151,6 +152,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+### 0.3.2
+Added support for multiple switch parameters on a single URL.  Thanks @skjegg and @snyoz !
 ### 0.3.1
 Added support for a static path.  (see issue #9)
 ### 0.3.0

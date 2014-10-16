@@ -161,7 +161,7 @@ describe('unit tests: ', function() {
     });
   });
 
-  describe("setMockFile: ", function() {
+  describe("setSwitchOptions: ", function() {
     var mocker, svcOptions, reqStub;
 
     beforeEach(function createMocker() {
@@ -174,32 +174,32 @@ describe('unit tests: ', function() {
     });
 
     it("does not set mock file path if switch is not found in request", function() {
-      mocker.setMockFile(svcOptions, reqStub);
+      mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("base");
     });
 
     it("sets correct mock file path if switch is found in query string", function() {
       reqStub.param = function() {return "123";};
-      mocker.setMockFile(svcOptions, reqStub);
+      mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("productId123.base");
     });
 
     it("sets correct mock file path if switch is found in json body", function() {
       reqStub.body.productId = "678";
-      mocker.setMockFile(svcOptions, reqStub);
+      mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("productId678.base");
     });
 
     it("sets correct mock file path with switch and nested path", function() {
       reqStub.body.productId="678";
       svcOptions.mockFile = "path/to/base";
-      mocker.setMockFile(svcOptions, reqStub);
+      mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("path/to/productId678.base");
     });
 
     it("sets correct mock file path with switch value containing special character", function() {
       reqStub.body.productId="abc/123";
-      mocker.setMockFile(svcOptions, reqStub);
+      mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("productIdabc%2F123.base");
     });
 
@@ -207,8 +207,51 @@ describe('unit tests: ', function() {
       svcOptions.switch = ["productId", "color"];
       reqStub.body.productId = "345";
       reqStub.body.color = "red";
-      mocker.setMockFile(svcOptions, reqStub);
+      mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("productId345colorred.base");
+    });
+
+    it("sets correct http status based on matching switch value", function() {
+      svcOptions.switch = "password";
+      svcOptions.switchResponses = {
+        passwordgood: {httpStatus: 200}
+      };
+      reqStub.body.password = "good";
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.httpStatus).to.equal(200);
+    });
+
+    it("sets correct mock file path when switch matches and switchResponse contains a mockFile", function() {
+      reqStub.body.productId = "678";
+      svcOptions.switchResponses = {
+        "productId678": {mockFile: "specialFileName"}
+      };
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("specialFileName");
+    });
+
+    it("sets correct http status when switch value does not match", function() {
+      svcOptions.switch = "password";
+      svcOptions.httpStatus = 401;
+
+      svcOptions.switchResponses = {
+        passwordgood: {httpStatus: 200}
+      };
+      reqStub.body.password = "bad";
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.httpStatus).to.equal(401);
+    });
+
+    it("sets correct http status when two switches match", function() {
+      svcOptions.switch = ["userId", "password"];
+      svcOptions.httpStatus = 401;
+      svcOptions.switchResponses = {
+        userId1234passwordgood: {httpStatus: 200}
+      };
+      reqStub.body.password = "good";
+      reqStub.body.userId = "1234";
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.httpStatus).to.equal(200);
     });
   });
 

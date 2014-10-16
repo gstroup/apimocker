@@ -36,6 +36,17 @@
       "mockFile": "xml/queen.xml",
       "verbs": ["all"],
       "switch": ["id", "color"]
+    },
+    "login": {
+      "verbs": ["post"],
+      "switch": ["userId", "password"],
+      "responses": {
+        "post": {"httpStatus": 401, "mockFile": "sorry.json"}
+      },
+      "switchResponses": {
+        "userIduser1passwordgood": {"httpStatus": 200, "mockFile": "king.json"},
+        "userIdadminpasswordgood": {"httpStatus": 200}
+      }
     }
   }
 }

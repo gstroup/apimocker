@@ -203,6 +203,17 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       verifyResponseBody(reqOptions, null, expected, done);
     });
 
+    it('returns correct httpStatus when switches match', function(done) {
+      var postData = '{"userId": "user1", "password": "good"}',
+          postOptions =  httpPostOptions("/login", postData);
+      verifyResponseStatus(postOptions, postData, 200, done);
+    });
+
+    it('returns correct httpStatus when switch does not match', function(done) {
+      var postOptions =  httpPostOptions("/login", "{}");
+      verifyResponseStatus(postOptions, "{}", 401, done);
+    });
+
     it("returns httpStatus of 200 if not set", function(done) {
       verifyResponseStatus(httpReqOptions("/first"), null, 200, done);
     });

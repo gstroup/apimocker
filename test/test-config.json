@@ -28,6 +28,17 @@
     "var/:id": {
       "mockFile": "xml/queen.xml",
       "verbs": ["all"]
+    },
+    "login": {
+      "mockFile": "king.json",
+      "verbs": ["post"],
+      "switch": ["userId", "password"],
+      "responses": {
+        "post": {"httpStatus": 401}
+      },
+      "switchResponses": {
+        "userIduser1passwordgood": {"httpStatus": 200}
+      }
     }
   }
 }

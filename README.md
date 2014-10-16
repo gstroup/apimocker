@@ -82,12 +82,12 @@ See the sample config.json file in this package.
         }
       }
     },
-	"nested/ace": {
+    "nested/ace": {
       "mockFile": "ace.json",
       "verbs": ["post", "get"],
       "switch": "customerId"
     },
-	"nested/ace2": {
+    "nested/ace2": {
       "mockFile": "ace.json",
       "verbs": ["post", "get"],
       "switch": ["customerId","multitest"]
@@ -96,6 +96,17 @@ See the sample config.json file in this package.
       "mockFile": "xml/queen.xml",
       "verbs": ["all"],
       "switch": "id"
+    },
+    "login": {
+      "verbs": ["post"],
+      "switch": ["userId", "password"],
+      "responses": {
+        "post": {"httpStatus": 401, "mockFile": "sorry.json"}
+      },
+      "switchResponses": {
+        "userIduser1passwordgood": {"httpStatus": 200, "mockFile": "king.json"},
+        "userIdadminpasswordgood": {"httpStatus": 200}
+      }
     }
   }
 }
@@ -118,6 +129,7 @@ or as part of the URL, if you have configured your service to handle variables, 
         http://localhost:7878/var/789
 If the specific file, such as "customerId1234.ace.json" is not found, then apimocker will attempt to return the base file: "ace.json".
 
+#### Multiple switches
 You can now also define an array of values to switch on. Given the configuration in "ace2", a request to "nested/ace2" containing:
 ```js
 {
@@ -127,6 +139,17 @@ You can now also define an array of values to switch on. Given the configuration
 ```
 will return data from the mock file called "customerId1234multitestabc.ace.json".  Note that when using multiple switches, the filename must have parameters in the same order as configured in the "switch" setting in config.json.
 Also, apimocker will look for the filename that matches ALL the request parameters.  If one does not match, then the base file will be returned.
+
+#### Switch HTTP Status
+To specify a different HTTP status, depending on a request parameter, you'll need to set up the "switchResponses" as shown above for the "login" service.  You can also set a specific mock file using the "switchRespones" configuration.  The switchReponses config section is an object, where the key is a composite of the switch keys specified in the "switch" setting for the service, and the values for each key, passed in as request parameters.  For instance, a post request to "/login" containing:
+```js
+{
+  "userId": "user1",
+  "password": "good"
+}
+```
+will return data from the mock file called "king.json", with HTTP status 200.
+Any other password will return "sorry.json" with HTTP status 401.
 
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.
@@ -152,6 +175,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+### 0.3.3
+Added support for switching response HTTP status based on a request parameter.  (see issue #12)
 ### 0.3.2
 Added support for multiple switch parameters on a single URL.  Thanks @skjegg and @snyoz !
 ### 0.3.1

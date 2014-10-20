@@ -10,7 +10,8 @@
     "body-parser": "~1.4.3",
     "commander": ">=1",
     "express": "~4.5",
-    "underscore": ">=1"
+    "underscore": ">=1",
+	"jsonpath": ">=1.4.28"
   },
   "devDependencies": {
     "mocha": ">=1.8.2",

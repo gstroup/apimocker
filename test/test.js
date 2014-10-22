@@ -253,6 +253,36 @@ describe('unit tests: ', function() {
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.httpStatus).to.equal(200);
     });
+
+    it("sets correct mock file path when switch uses JsonPath and switch matches", function() {
+        svcOptions.switch = "$.car.engine.part"; 
+        svcOptions.switchResponses = {
+          "$.car.engine.partTiming%20Belt": {mockFile: "product456"}
+        };
+        reqStub.body = {
+          car: {
+            engine: {
+              part: "Timing Belt"
+            }
+          }
+        };
+        mocker.setSwitchOptions(svcOptions, reqStub);
+        expect(svcOptions.mockFile).to.equal("product456");
+    });
+
+    it("sets correct mock file path when switch uses JsonPath and switch value does not match", function() {
+        svcOptions.switch = "$.car.engine.part"; 
+        svcOptions.switchResponses = {
+          "$.car.engine.partTiming%20Belt": {mockFile: "product456"}
+        };
+        reqStub.body = {
+          car: {
+            wheel: {}
+          }
+        };
+        mocker.setSwitchOptions(svcOptions, reqStub);
+        expect(svcOptions.mockFile).to.equal("base");
+    });
   });
 
   describe("setRoute:", function() {

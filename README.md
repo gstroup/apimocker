@@ -3,6 +3,7 @@ This is a node.js module to run a simple http server, which can serve up mock se
 Responses can be JSON or XML to simulate REST or SOAP services.
 Access-Control HTTP Headers are set by default to allow CORS requests.
 Mock services are configured in the config.json file, or on the fly, to allow for easy functional testing.
+Apimocker can return different responses or HTTP status codes, based on request parameters - even complex JSON requests.
 Using apimocker, you can develop your web or mobile app with no dependency on back end services.
 (There are lots of these projects out there, but I wrote this one to support all kinds of responses,
 to allow on-the-fly configuration, and to run in node.)
@@ -108,23 +109,23 @@ See the sample config.json file in this package.
         "userIdadminpasswordgood": {"httpStatus": 200}
       }
     },
-   "nested/aceinsleeve": {
+    "nested/aceinsleeve": {
       "verbs": [
         "post"
       ],
       "switch": "$..ItemId[(@.length-1)]",
       "responses": {
         "post": {"httpStatus": 200, "mockFile": "aceinsleeve.json"}
-      },	
+      },
       "switchResponses": {
         "$..ItemId[(@.length-1)]4": {"httpStatus": 500, "mockFile": "ItemId4.aceinsleeve.json"}
       }
-   }
+    }
   }
 }
 ```
 The most interesting part of the configuration file is the webServices section.
-This section contains a JSON object describing each service.  The key for each service object is the service URL (endpoint.)  Inside each service object, the "mockFile" and "verbs" are required.  "latency" and "contentType" are optional.
+This section contains a JSON object describing each service.  The key for each service object is the service URL (endpoint.)  Inside each service object, the "mockFile" and "verbs" are required.  All other attributes of the service objects are optional.
 For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay.
 If you'd like to return different responses for a single URL with different HTTP verbs ("get", "post", etc) then you'll need to add the "responses" object.  See above for the "second" service.  The "responses" object should contain keys for the HTTP verbs, and values describing the response for each verb.
 
@@ -163,9 +164,9 @@ To specify a different HTTP status, depending on a request parameter, you'll nee
 will return data from the mock file called "king.json", with HTTP status 200.
 Any other password will return "sorry.json" with HTTP status 401.
 
-### JsonPath Support
-For complex json requests, JsonPath expressions are supported in the switch parameter. For example to switch the response based on the value of the last occurance
-of ItemId in a json request, use  configuration as shows for "aceinsleeve":
+#### JsonPath Support
+For complex JSON requests, JsonPath expressions are supported in the switch parameter. If your switch parameter begins with "$." then it will be evaluated as a JsonPath expression.  
+For example to switch the response based on the value of the last occurence of ItemId in a JSON request, use configuration as shown for "aceinsleeve":
 ```js
 "switch": "$..ItemId[(@.length-1)]",
   "responses": {
@@ -175,7 +176,7 @@ of ItemId in a json request, use  configuration as shows for "aceinsleeve":
     "$..ItemId[(@.length-1)]4": {"httpStatus": 500, "mockFile": "ItemId4.aceinsleeve.json"}
   }
 ```
-According to this configuration, if the value of the last occurance of ItemId is 4, the mockFile "ItemId4.aceinsleeve.json" will be retured with a HTTP status code of 500. Otherwise, mockFile "aceinsleeve.json"
+According to this configuration, if the value of the last occurence of ItemId is 4, the mockFile "ItemId4.aceinsleeve.json" will be retured with a HTTP status code of 500. Otherwise, mockFile "aceinsleeve.json"
 will be returned with HTTP status 200. Note: If the JsonPath expression evaluates to more then 1 element (for example, all books cheaper than 10 as in $.store.book[?(@.price < 10)] ) then the first element is considered for testing the value.
 
 ## Runtime configuration
@@ -202,6 +203,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+### 0.3.4
+Added support for switching response based on complex JSON request, using JSONPath.  (see issue #14)  Thanks to @priyagampa !
 ### 0.3.3
 Added support for switching response HTTP status based on a request parameter.  (see issue #12)
 ### 0.3.2

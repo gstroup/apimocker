@@ -95,7 +95,7 @@ describe('unit tests: ', function() {
     });
 
     it('should set an absolute path correctly', function() {
-      var absolutePath = "/foo/bar/config.json";
+      var absolutePath = path.normalize('/foo/bar/config.json');
       expect(apiMocker.setConfigFile(absolutePath).configFilePath).to.equal(absolutePath);
     });
 

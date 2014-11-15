@@ -55,7 +55,7 @@ See the sample config.json file in this package.
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
 * mockDirectory value should be an absolute path.
 * A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
-* Additional headers can be defined for responses
+* Additional headers can be defined for responses.
 
 ```js
 {
@@ -190,8 +190,7 @@ According to this configuration, if the value of the last occurence of ItemId is
 will be returned with HTTP status 200. Note: If the JsonPath expression evaluates to more then 1 element (for example, all books cheaper than 10 as in $.store.book[?(@.price < 10)] ) then the first element is considered for testing the value.
 
 #### Returning additional headers with the response
-To return additional in the response these can be defined by setting the headers to a map with headers
-Example:
+To return additional custom headers in the response, set the headers map in the configuration file, like this example:
 ```js
     "firstheaders": {
       "mockFile": "king.json",
@@ -203,7 +202,7 @@ Example:
       "verbs": ["get"]
     }
 ```
-In this example a header x-requested-by and dummy will be returned on response
+In this example the headers x-requested-by and dummy will be returned on the response.  contentType can be specified separately, as it is above, or specified as "content-type" in the "headers" map.
 
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.
@@ -229,6 +228,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+### 0.3.5
+Added support for additional custom HTTP headers.  Thanks to @jcstover !
 ### 0.3.4
 Added support for switching response based on complex JSON request, using JSONPath.  (see issue #14)  Thanks to @priyagampa !
 ### 0.3.3

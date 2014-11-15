@@ -55,7 +55,7 @@ describe('unit tests: ', function() {
             }
           }
       };
-      chai.Assertion.includeStack = true;
+      chai.config.includeStack = true;
 
   describe('createServer: ', function() {
     it('sets defaults when no options are passed in', function() {

@@ -257,5 +257,10 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       verifyResponseBody(httpReqOptions("/third"), null, {ace: "greg"}, done);
     });
 
+    it("returns the headers as specified in the config file", function(done) {
+      var reqOptions = httpReqOptions("/firstheaders");
+      verifyResponseHeaders(reqOptions, {"x-requested-by": "4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c", "dummyheader": "dummyvalue"}, done);
+    });
+    
   });
 });

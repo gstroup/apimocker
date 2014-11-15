@@ -55,6 +55,7 @@ See the sample config.json file in this package.
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
 * mockDirectory value should be an absolute path.
 * A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
+* Additional headers can be defined for responses
 
 ```js
 {
@@ -120,6 +121,15 @@ See the sample config.json file in this package.
       "switchResponses": {
         "$..ItemId[(@.length-1)]4": {"httpStatus": 500, "mockFile": "ItemId4.aceinsleeve.json"}
       }
+    },
+    "firstheaders": {
+      "mockFile": "king.json",
+      "contentType": "foobar",
+      "headers": {
+        "x-requested-by": "4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c", 
+        "dummyheader": "dummyvalue"
+      },
+      "verbs": ["get"]
     }
   }
 }
@@ -178,6 +188,22 @@ For example to switch the response based on the value of the last occurence of I
 ```
 According to this configuration, if the value of the last occurence of ItemId is 4, the mockFile "ItemId4.aceinsleeve.json" will be retured with a HTTP status code of 500. Otherwise, mockFile "aceinsleeve.json"
 will be returned with HTTP status 200. Note: If the JsonPath expression evaluates to more then 1 element (for example, all books cheaper than 10 as in $.store.book[?(@.price < 10)] ) then the first element is considered for testing the value.
+
+#### Returning additional headers with the response
+To return additional in the response these can be defined by setting the headers to a map with headers
+Example:
+```js
+    "firstheaders": {
+      "mockFile": "king.json",
+      "contentType": "foobar",
+      "headers": {
+        "x-requested-by": "4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c", 
+        "dummyheader": "dummyvalue"
+      },
+      "verbs": ["get"]
+    }
+```
+In this example a header x-requested-by and dummy will be returned on response
 
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.

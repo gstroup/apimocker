@@ -255,3 +255,6 @@ Run "grunt watch" in the root "apimocker" directory to start the grunt watch tas
 ## Acknowledgements
 Big thanks to magalhas for his httpd-mock project.  This gave me a great starting point.
 Also thanks to clafonta and the Mockey project for inspiration.
+
+## License
+This projected is licensed under the terms of the MIT license.

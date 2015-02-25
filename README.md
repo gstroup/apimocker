@@ -7,7 +7,7 @@ Apimocker can return different responses or HTTP status codes, based on request 
 Using apimocker, you can develop your web or mobile app with no dependency on back end services.
 (There are lots of these projects out there, but I wrote this one to support all kinds of responses,
 to allow on-the-fly configuration, and to run in node.)
-
+ 
 ## Installation
 		sudo npm install -g apimocker
 That will install globally, and allow for easier usage.

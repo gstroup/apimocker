@@ -1,4 +1,5 @@
 [![Build Status](https://api.travis-ci.org/gstroup/apimocker.svg?branch=master)](https://api.travis-ci.org/gstroup/apimocker.svg)
+[![NPM](https://nodei.co/npm/apimocker.svg?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apimocker/)
 
 # apimocker
 This is a node.js module to run a simple http server, which can serve up mock service responses.
@@ -230,27 +231,27 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
-### 0.4.0
+#### 0.4.0
 Removed support for old deprecated config file format.  Fixed issue #19.
-### 0.3.5
+#### 0.3.5
 Added support for additional custom HTTP headers.  Thanks to @jcstover !
-### 0.3.4
+#### 0.3.4
 Added support for switching response based on complex JSON request, using JSONPath.  (see issue #14)  Thanks to @priyagampa !
-### 0.3.3
+#### 0.3.3
 Added support for switching response HTTP status based on a request parameter.  (see issue #12)
-### 0.3.2
+#### 0.3.2
 Added support for multiple switch parameters on a single URL.  Thanks @skjegg and @snyoz !
-### 0.3.1
+#### 0.3.1
 Added support for a static path.  (see issue #9)
-### 0.3.0
+#### 0.3.0
 Refactored and updated to use Express 4.5.  (No functional change.)
-### 0.2.4
+#### 0.2.4
 Allows configuration of the "access-control-allow-headers" HTTP header.
-### 0.2.3
+#### 0.2.3
 Now allows HTTP status code to be set for each response.  Config file format also allows configuration of different responses based on http verb.
-### 0.1.8
+#### 0.1.8
 New "switch" feature added, allowing different responses based on a request parameter.
-### 0.1.6
+#### 0.1.6
 New config file format was introduced, allowing for custom content-types and more fine grained control over services.
 
 ## Contributors

@@ -230,6 +230,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+### 0.4.0
+Removed support for old deprecated config file format.  Fixed issue #19.
 ### 0.3.5
 Added support for additional custom HTTP headers.  Thanks to @jcstover !
 ### 0.3.4

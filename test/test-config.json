@@ -15,6 +15,17 @@
       "verbs": ["delete"],
       "httpStatus": 204
     },
+    "royals": {
+      "verbs": ["get", "post"],
+      "responses": {
+        "get": {
+          "mockFile": "ace.json"
+        },
+        "post": {
+          "mockFile": "king.json"
+        }
+      }
+    },
     "protected": {
       "mockFile": "king.json",
       "httpStatus": 403,

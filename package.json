@@ -1,7 +1,7 @@
 {
   "name": "apimocker",
   "description": "Simple HTTP server that returns mock service API responses to your front end.",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "engines": {
     "node": ">=0.10.0"
   },

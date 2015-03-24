@@ -8,9 +8,17 @@
   "latency": 50,
   "webServices": {
     "first": {
-      "mockFile": "king.json",
+      "mockFile": "foo.json",
       "latency": 20,
-      "verbs": ["get"]
+      "verbs": ["get", "post"],
+      "responses": {
+        "get": {
+          "mockFile": "king.json"
+        },
+        "post": {
+          "mockFile": "ace.json"
+        }
+      }
     },
     "second": {
       "verbs": ["delete", "post"],

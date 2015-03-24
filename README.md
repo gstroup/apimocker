@@ -1,7 +1,6 @@
-[![Build Status](https://api.travis-ci.org/gstroup/apimocker.svg?branch=master)](https://api.travis-ci.org/gstroup/apimocker.svg)
+# apimocker [![Build Status](https://api.travis-ci.org/gstroup/apimocker.svg?branch=master)](https://api.travis-ci.org/gstroup/apimocker.svg)
 [![NPM](https://nodei.co/npm/apimocker.svg?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apimocker/)
 
-# apimocker
 This is a node.js module to run a simple http server, which can serve up mock service responses.
 Responses can be JSON or XML to simulate REST or SOAP services.
 Access-Control HTTP Headers are set by default to allow CORS requests.

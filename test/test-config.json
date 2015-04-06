@@ -59,6 +59,9 @@
         "dummyheader": "dummyvalue"
       },
       "verbs": ["get"]
+    },
+    "noMockFile": {
+      "verbs": ["get"]
     }
   }
 }

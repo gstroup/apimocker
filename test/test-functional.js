@@ -111,6 +111,11 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
         var reqOptions = httpReqOptions("/royals");
         verifyResponseBody(reqOptions, null, {"ace": "greg"}, done);
       });
+
+      it("returns a useful error when no mockFile is set for a web service", function(done) {
+        var reqOptions = httpReqOptions("/noMockFile");
+        verifyResponseBody(reqOptions, null, {"apimockerError": "No mockFile was configured for route.  Check apimocker config.json file.", "route": "noMockFile"}, done);
+      });
     });
 
     describe('content type: ', function() {
@@ -202,6 +207,11 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
         var reqOptions = httpReqOptions("/second");
         reqOptions.method = "delete";
         verifyResponseStatus(reqOptions, null, 204, done);
+      });
+
+      it("returns httpStatus 500 if no mockFile is set for a web service", function(done) {
+        var reqOptions = httpReqOptions("/noMockFile");
+        verifyResponseStatus(reqOptions, null, 500, done);
       });
     });
 

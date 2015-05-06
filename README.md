@@ -55,7 +55,7 @@ See the sample config.json file in this package.
 * Allowed domains can be set to restrict CORS requests to certain domains.
 * Allowed headers can be set.  (Default is to set "access-control-allow-headers: Content-Type" if not specified in config file.)
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
-* mockDirectory value should be an absolute path.
+* mockDirectory value can include tilde (~) for user's home directory.
 * A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
 * Additional headers can be defined for responses.
 

@@ -9,8 +9,9 @@ describe('unit tests: ', function() {
       assert = chai.assert,
       expect = chai.expect,
       sinon = require("sinon"),
+      untildify = require("untildify"),
       testConfig = {
-          "mockDirectory": "foo/bar/samplemocks/",
+          "mockDirectory": "~/foo/bar/samplemocks/",
           "quiet": true,
           "port": "7879",
           "latency": 50,
@@ -108,7 +109,6 @@ describe('unit tests: ', function() {
       mocker.setConfigFile("any value");
       mocker.loadConfigFile();
       expect(mocker.options.port).to.equal(testConfig.port);
-      expect(mocker.options.mockDirectory).to.equal(testConfig.mockDirectory);
       expect(mocker.options.allowedDomains[0]).to.equal(testConfig.allowedDomains[0]);
       expect(mocker.options.allowedHeaders[0]).to.equal("my-custom1");
       expect(mocker.options.allowedHeaders[1]).to.equal("my-custom2");
@@ -131,6 +131,13 @@ describe('unit tests: ', function() {
       expect(mocker.options.webServices).to.deep.equal(mocker.defaults.webServices);
       // value from options passed in to createServer:
       expect(mocker.options.test).to.equal("fun");
+    });
+
+    it("expands ~ in mockDirectory setting", function() {
+      var mocker = apiMocker.createServer({quiet: true});
+      fsStub.returns(JSON.stringify(testConfig));
+      mocker.loadConfigFile();
+      expect(mocker.options.mockDirectory).to.equal(untildify(testConfig.mockDirectory));
     });
   });
 

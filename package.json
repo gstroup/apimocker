@@ -7,11 +7,12 @@
   },
   "author": "Greg Stroup <gstroup@gmail.com>",
   "dependencies": {
+    "JSONPath": ">=0.10.0",
     "body-parser": "~1.4.3",
     "commander": ">=1",
     "express": "~4.5",
     "underscore": ">=1",
-    "JSONPath": ">=0.10.0"
+    "untildify": "^2.0.0"
   },
   "devDependencies": {
     "mocha": ">=1.8.2",

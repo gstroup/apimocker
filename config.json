@@ -6,6 +6,7 @@
   "quiet": false,
   "port": "7878",
   "latency": 50,
+  "logRequestHeaders": false,
   "webServices": {
     "first": {
       "mockFile": "foo.json",

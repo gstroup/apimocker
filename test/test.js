@@ -15,6 +15,7 @@ describe('unit tests: ', function() {
           "quiet": true,
           "port": "7879",
           "latency": 50,
+          "logRequestHeaders": true,
           "allowedDomains": ["abc"],
           "allowedHeaders": ["my-custom1", "my-custom2"],
           "webServices": {
@@ -54,6 +55,7 @@ describe('unit tests: ', function() {
       expect(mocker.options.allowedDomains[0]).to.equal("*");
       expect(mocker.options.allowedHeaders[0]).to.equal("Content-Type");
       expect(mocker.options.quiet).to.equal(undefined);
+      expect(mocker.options.logRequestHeaders).to.equal(false);
     });
 
     it('overrides defaults with command line args', function() {
@@ -115,17 +117,19 @@ describe('unit tests: ', function() {
       expect(mocker.options.webServices).to.deep.equal(testConfig.webServices);
       expect(mocker.options.quiet).to.equal(true);
       expect(mocker.options.latency).to.equal(testConfig.latency);
+      expect(mocker.options.logRequestHeaders).to.equal(testConfig.logRequestHeaders);
     });
 
     it("combines values from defaults, options, and config file", function() {
       var mocker = apiMocker.createServer({quiet: true, test: "fun", port: 2323});
-      fsStub.returns(JSON.stringify({port: 8765, latency: 99}));
+      fsStub.returns(JSON.stringify({port: 8765, latency: 99, logRequestHeaders: false}));
       mocker = mocker.setConfigFile("another abitrary value");
 
       mocker.loadConfigFile();
       // value from config file
       expect(mocker.options.port).to.equal(8765);
       expect(mocker.options.latency).to.equal(99);
+      expect(mocker.options.logRequestHeaders).to.equal(false);
       // value from defaults
       expect(mocker.options.allowedDomains[0]).to.equal("*");
       expect(mocker.options.webServices).to.deep.equal(mocker.defaults.webServices);

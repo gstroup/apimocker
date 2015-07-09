@@ -61,6 +61,7 @@ See the sample config.json file in this package.
 * mockDirectory value can include tilde (~) for user's home directory.
 * A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
 * Additional headers can be defined for responses.
+* Request headers can be logged, with the `logRequestHeaders` setting.
 
 ```js
 {
@@ -71,6 +72,7 @@ See the sample config.json file in this package.
   "quiet": false,
   "port": "7878",
   "latency": 50,
+  "logRequestHeaders": false,
   "allowedDomains": ["abc.com"],
   "allowedHeaders": ["Content-Type", "my-custom-header"],
   "webServices": {
@@ -233,6 +235,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.4
+Added option to log request headers.  Thanks @dmeenhuis !
 #### 0.4.3
 Added support to run apimocker in Cloud Foundry.
 #### 0.4.2

@@ -1,7 +1,7 @@
 {
   "name": "apimocker",
   "description": "Simple HTTP server that returns mock service API responses to your front end.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "engines": {
     "node": ">=0.10.0"
   },
@@ -52,7 +52,8 @@
     "samplemocks": "./samplemocks"
   },
   "scripts": {
-    "test": "mocha test/*.js"
+    "test": "mocha test/*.js",
+    "start": "node bin/apimocker.js -c config.json"
   },
   "license": "MIT"
 }

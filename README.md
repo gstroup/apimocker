@@ -40,6 +40,9 @@ Change the "mockDirectory" to point to this location.
 (Or another location where you put the mock responses.)
         mockDirectory: /Users/xxxxx/AppData/Roaming/npm/node_modules/apimocker/samplemocks
 
+### Running in Cloud Foundry
+You can deploy apimocker into a cloud foundry instance by running `cf push`.  The port you specify will be ignored, and you'll use the standard port 80 to access apimocker.  When specifying your mockDirectory, you will need to use a relative path, like "samplemocks/".  At this time, you'll need to do another build and push whenever you change a mock file.
+
 ### Help
         apimocker -h
 
@@ -230,6 +233,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.3
+Added support to run apimocker in Cloud Foundry.
 #### 0.4.2
 Added support for tilde (~) in mockDirectory config setting.
 #### 0.4.0

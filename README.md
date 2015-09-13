@@ -62,6 +62,7 @@ See the sample config.json file in this package.
 * A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
 * Additional headers can be defined for responses.
 * Request headers can be logged, with the `logRequestHeaders` setting.
+* Alternate URL paths can be specified with the `alternatePaths` setting.
 
 ```js
 {
@@ -79,7 +80,8 @@ See the sample config.json file in this package.
     "first": {
       "mockFile": "king.json",
       "latency": 20,
-      "verbs": ["get"]
+      "verbs": ["get"],
+      "alternatePaths": ["1st"]
     },
     "second": {
       "verbs": ["delete", "post"],
@@ -133,7 +135,7 @@ See the sample config.json file in this package.
       "mockFile": "king.json",
       "contentType": "foobar",
       "headers": {
-        "x-requested-by": "4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c", 
+        "x-requested-by": "4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c",
         "dummyheader": "dummyvalue"
       },
       "verbs": ["get"]
@@ -188,7 +190,7 @@ For example to switch the response based on the value of the last occurence of I
 "switch": "$..ItemId[(@.length-1)]",
   "responses": {
     "post": {"httpStatus": 200, "mockFile": "aceinsleeve.json"}
-  },	
+  },
   "switchResponses": {
     "$..ItemId[(@.length-1)]4": {"httpStatus": 500, "mockFile": "ItemId4.aceinsleeve.json"}
   }
@@ -203,7 +205,7 @@ To return additional custom headers in the response, set the headers map in the 
       "mockFile": "king.json",
       "contentType": "foobar",
       "headers": {
-        "x-requested-by": "4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c", 
+        "x-requested-by": "4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c",
         "dummyheader": "dummyvalue"
       },
       "verbs": ["get"]

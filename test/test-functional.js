@@ -116,6 +116,11 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
         var reqOptions = httpReqOptions("/noMockFile");
         verifyResponseBody(reqOptions, null, {"apimockerError": "No mockFile was configured for route.  Check apimocker config.json file.", "route": "noMockFile"}, done);
       });
+
+      it('returns correct data for an alternate path', function (done) {
+        var reqOptions = httpReqOptions("/1st");
+        verifyResponseBody(reqOptions, null, {"king": "greg"}, done);
+      });
     });
 
     describe('content type: ', function() {

@@ -28,7 +28,8 @@ describe('unit tests: ', function() {
                 "post": {
                   "mockFile": "ace.json"
                 }
-              }
+              },
+              "alternatePaths": ["1st"]
             },
             "nested/ace": {
               "mockFile": "ace.json",
@@ -114,7 +115,12 @@ describe('unit tests: ', function() {
       expect(mocker.options.allowedDomains[0]).to.equal(testConfig.allowedDomains[0]);
       expect(mocker.options.allowedHeaders[0]).to.equal("my-custom1");
       expect(mocker.options.allowedHeaders[1]).to.equal("my-custom2");
+
+      expect(mocker.options.webServices.first)
+        .to.eql(mocker.options.webServices["1st"]);
+      delete mocker.options.webServices["1st"];
       expect(mocker.options.webServices).to.deep.equal(testConfig.webServices);
+
       expect(mocker.options.quiet).to.equal(true);
       expect(mocker.options.latency).to.equal(testConfig.latency);
       expect(mocker.options.logRequestHeaders).to.equal(testConfig.logRequestHeaders);

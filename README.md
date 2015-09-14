@@ -237,6 +237,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.5
+Added support for alternate paths in a web service config. Added support for a callback function when starting the server.  Thanks @ztsmith !
 #### 0.4.4
 Added option to log request headers.  Thanks @dmeenhuis !
 #### 0.4.3

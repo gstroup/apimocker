@@ -84,9 +84,9 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
   }
 
   describe('apimocker server:', function() {
-    before(function startMockerForFuncTests() {
+    before(function startMockerForFuncTests(done) {
       mocker = apiMocker.createServer({quiet: true}).setConfigFile("test/test-config.json");
-      mocker.start();
+      mocker.start(null, done);
     });
 
     describe("basic requests: ", function() {

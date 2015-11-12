@@ -359,7 +359,7 @@ describe('unit tests: ', function() {
       expect(svcOptions.mockFile).to.equal("product456");
     });
 
-    it("sets the correct mock file path when switch uses RegExp in a switch object and switch matches", function() {
+    it("sets the correct mock file path when switch uses RegExp in a switch object and switch does not match", function() {
       svcOptions.switch = {
         type: "regexp",
         switch: "/\"carEnginePart([^\"]*)\"/",

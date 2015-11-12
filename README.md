@@ -54,7 +54,7 @@ On startup, config values are loaded from the config.json file.
 During runtime, mock services can be configured on the fly.
 See the sample config.json file in this package.
 
-* Services can be configured to return different responses, depending on a request parameter.
+* Services can be configured to return different responses, depending on a request parameter or request header.
 * Content-type for a service response can be set for each service.  If not set, content-type defaults to application/xml for .xml files, and application/json for .json files.
 * HTTP Status code can be set for each service.
 * Latency (ms) can be set to simulate slow service responses.  Latency can be set for a single service, or globally for all services.
@@ -164,6 +164,15 @@ or as part of the URL, if you have configured your service to handle variables, 
         http://localhost:7878/var/789
 If the specific file, such as "customerId1234.ace.json" is not found, then apimocker will attempt to return the base file: "ace.json".
 
+For simple switching, you can use strings as shown in the configuration above.  For more complex switching, using RegExp or JsonPath, you can use switch objects, to describe each switch.
+```js
+{
+	"type": "one of these strings: default|regexp|jsonpath",
+	"key": "identifier used in mock file name",
+	"switch": "string | regular expression | json path expression"
+}
+```
+
 #### Multiple switches
 You can now also define an array of values to switch on. Given the configuration in "ace2", a request to "nested/ace2" containing:
 ```js
@@ -200,6 +209,9 @@ For example to switch the response based on the value of the last occurence of I
 ```
 According to this configuration, if the value of the last occurence of ItemId is 4, the mockFile "ItemId4.aceinsleeve.json" will be retured with a HTTP status code of 500. Otherwise, mockFile "aceinsleeve.json"
 will be returned with HTTP status 200. Note: If the JsonPath expression evaluates to more then 1 element (for example, all books cheaper than 10 as in $.store.book[?(@.price < 10)] ) then the first element is considered for testing the value.
+
+#### RegExp Support
+As an alternative to JsonPath, Javascript Regular Expressions are supported in the switch parameter.  See unit tests in the test.js file for examples of using Regular Expressions.
 
 #### Returning additional headers with the response
 To return additional custom headers in the response, set the headers map in the configuration file, like this example:
@@ -240,6 +252,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.7
+Added ability to switch using Regular Expression.  (See issue #2, #33, #34)  Thanks @dploeger !
 #### 0.4.6
 Added ability to switch on header param.  Thanks @stelio !
 #### 0.4.5

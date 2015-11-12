@@ -29,9 +29,6 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       },
       mocker;
 
-  // This doesn't seem to help...
-  chai.Assertion.includeStack = true;
-
   function verifyResponseBody(httpReqOptions, postData, expected, done) {
     var req = http.request(httpReqOptions, function(res) {
       res.setEncoding('utf8');

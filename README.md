@@ -31,9 +31,10 @@ If you want port 80, you may need to use "sudo" on Mac OSX.
 
 ### With Grunt or Gulp
 If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:
-https://github.com/gstroup/grunt-apimocker
+[https://github.com/gstroup/grunt-apimocker]()
+
 For Gulp, there's also a plugin contributed by kent-wu:
-https://github.com/kent-wu/gulp-apimocker
+[https://github.com/kent-wu/gulp-apimocker]()
 
 ### Windows note
 After installing from npm, you'll need to edit this file:

@@ -29,9 +29,11 @@ It's not a good idea to keep them under the "node_modules" directory.
 Make sure another process is not already using the port you want.
 If you want port 80, you may need to use "sudo" on Mac OSX.
 
-### With Grunt
+### With Grunt or Gulp
 If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:
 https://github.com/gstroup/grunt-apimocker
+For Gulp, there's also a plugin contributed by kent-wu:
+https://github.com/kent-wu/gulp-apimocker
 
 ### Windows note
 After installing from npm, you'll need to edit this file:
@@ -149,7 +151,7 @@ For instance, a GET request sent to "http://server:port/first" will return the k
 If you'd like to return different responses for a single URL with different HTTP verbs ("get", "post", etc) then you'll need to add the "responses" object.  See above for the "second" service.  The "responses" object should contain keys for the HTTP verbs, and values describing the response for each verb.
 
 ### Switch response based on request parameter
-In your configuration, you can set up a "switch" parameter for each service.  If set, apimocker will check the request for this parameter, and return a different file based on the value.  For instance, if you set up a switch as seen above for "nested/ace", then you can will get different responses based on the request sent to apimocker.  A JSON POST request to the URL "http://localhost:7878/nested/ace" with this data:
+In your configuration, you can set up a "switch" parameter for each service.  If set, apimocker will check the request for this parameter, and return a different file based on the value.  (Apimocker will check the request for the parmater in this order: first request body, second query string, third request headers.)  For instance, if you set up a switch as seen above for "nested/ace", then you can will get different responses based on the request sent to apimocker.  A JSON POST request to the URL "http://localhost:7878/nested/ace" with this data:
 ```js
 {
   "customerId": 1234
@@ -237,6 +239,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.6
+Added ability to switch on header param.  Thanks @stelio !
 #### 0.4.5
 Added support for alternate paths in a web service config. Added support for a callback function when starting the server.  Thanks @ztsmith !
 #### 0.4.4

@@ -1,7 +1,7 @@
 {
   "name": "apimocker",
   "description": "Simple HTTP server that returns mock service API responses to your front end.",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "engines": {
     "node": ">=0.10.0"
   },
@@ -35,7 +35,9 @@
     "SOAP",
     "testing",
     "functional",
-    "api"
+    "api",
+    "grunt",
+    "gulp"
   ],
   "repository": {
     "type": "git",

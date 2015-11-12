@@ -286,6 +286,93 @@ describe('unit tests: ', function() {
         mocker.setSwitchOptions(svcOptions, reqStub);
         expect(svcOptions.mockFile).to.equal("base");
     });
+
+    it("sets correct mock file path when switch uses JsonPath as a switch object and switch matches", function() {
+      svcOptions.switch = {
+        type: "jsonpath",
+        switch: "$.car.engine.part"
+      };
+      svcOptions.switchResponses = {
+        "$.car.engine.partTiming%20Belt": {mockFile: "product456"}
+      };
+      reqStub.body = {
+        car: {
+          engine: {
+            part: "Timing Belt"
+          }
+        }
+      };
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("product456");
+    });
+
+    it("sets correct mock file path when switch uses JsonPath and switch value does not match", function() {
+      svcOptions.switch = {
+        type: "jsonpath",
+        switch: "$.car.engine.part"
+      };
+      svcOptions.switchResponses = {
+        "$.car.engine.partTiming%20Belt": {mockFile: "product456"}
+      };
+      reqStub.body = {
+        car: {
+          wheel: {}
+        }
+      };
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("base");
+    });
+
+    it("sets the correct mock file path when switch uses RegExp and switch matches", function() {
+        svcOptions.switch = "/\"carEnginePart([^\"]*)\"/";
+        svcOptions.switchResponses = {
+          "/\"carEnginePart([^\"]*)\"/Belt": {mockFile: "product456"}
+        };
+        reqStub.body = "\"carPartWheel\":" +
+            " wheel,\n\"carEnginePartBelt\": belt";
+        mocker.setSwitchOptions(svcOptions, reqStub);
+        expect(svcOptions.mockFile).to.equal("product456");
+    });
+
+    it("sets the correct mock file path when switch uses RegExp and switch value does not match", function() {
+      svcOptions.switch = "/\"carEnginePart([^\"]*)\"/";
+      svcOptions.switchResponses = {
+        "Belt": {mockFile: "product456"}
+      };
+      reqStub.body = "\"carPartWheel\": wheel";
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("base");
+    });
+
+    it("sets the correct mock file path when switch uses RegExp in a switch object and switch matches", function() {
+      svcOptions.switch = {
+        type: "regexp",
+        switch: "/\"carEnginePart([^\"]*)\"/",
+        key: "carenginepart"
+      };
+      svcOptions.switchResponses = {
+        "carenginepartBelt": {mockFile: "product456"}
+      };
+      reqStub.body = "\"carPartWheel\":" +
+          " wheel,\n\"carEnginePartBelt\": belt";
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("product456");
+    });
+
+    it("sets the correct mock file path when switch uses RegExp in a switch object and switch matches", function() {
+      svcOptions.switch = {
+        type: "regexp",
+        switch: "/\"carEnginePart([^\"]*)\"/",
+        key: "carenginepart"
+      };
+      svcOptions.switchResponses = {
+        "carenginepartBelt": {mockFile: "product456"}
+      };
+      reqStub.body = "\"carPartWheel\": wheel";
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("base");
+    });
+
   });
 
   describe("setRoute:", function() {

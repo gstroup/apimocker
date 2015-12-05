@@ -16,7 +16,7 @@ That will install globally, and allow for easier usage.
 (On Windows, you don't need "sudo".)
 
 ## Usage
-        apimocker [-c, --config \<path\>] [-q, --quiet] [-p \<port\>]
+        apimocker [-c, --config \<path\>] [-q, --quiet] [-p \<port\>] [-f, --proxy \<proxyURL\>]
 
 Out of the box, you can just run "apimocker" with no arguments.
 (Except on windows, you'll need to edit config.json first.  See below.)
@@ -28,6 +28,11 @@ After you get up and running, you should put your config.json and mock responses
 It's not a good idea to keep them under the "node_modules" directory.
 Make sure another process is not already using the port you want.
 If you want port 80, you may need to use "sudo" on Mac OSX.
+
+### proxy
+For when you only want some service endpoints to be mocked, but have other endpoints forwarded to a real service.
+Provide the proxy option on startup e.g.
+`apimocker --proxy http://myrealservice.io`
 
 ### With Grunt or Gulp
 If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:

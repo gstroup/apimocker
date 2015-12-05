@@ -27,7 +27,9 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
           }
         };
       },
-      mocker;
+      mocker,
+      proxyServer,
+      MOCK_PORT = 7881;
 
   function verifyResponseBody(httpReqOptions, postData, expected, done) {
     var req = http.request(httpReqOptions, function(res) {
@@ -82,8 +84,24 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 
   describe('apimocker server:', function() {
     before(function startMockerForFuncTests(done) {
-      mocker = apiMocker.createServer({quiet: true}).setConfigFile("test/test-config.json");
+      var options = {
+        quiet: true,
+        proxyURL: "http://localhost:" + MOCK_PORT
+      }
+      mocker = apiMocker.createServer(options).setConfigFile("test/test-config.json");
       mocker.start(null, done);
+    });
+
+    before(function (done) {
+      proxyServer = http.createServer(function (req, res) {
+        if (req.url === "/non-mocked") {
+          res.writeHead(200, {"Content-Type": "application/json"});
+          res.end(JSON.stringify({data: "real"}));
+        } else {
+          res.writeHead(404);
+          res.end();
+        }
+      }).listen(MOCK_PORT, done);
     });
 
     describe("basic requests: ", function() {
@@ -231,6 +249,14 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       it('allows headers as specified in config file', function(done) {
         var reqOptions = httpReqOptions("/first");
         verifyResponseHeaders(reqOptions, {'access-control-allow-headers': 'Content-Type,my-custom-header'}, done);
+      });
+    });
+
+    describe("proxy: ", function () {
+      it("forwards request to non-mocked endpoint", function (done) {
+        var reqOptions = httpReqOptions("/non-mocked");
+        reqOptions.port = MOCK_PORT;
+        verifyResponseBody(reqOptions, null, {data: "real"}, done);
       });
     });
 

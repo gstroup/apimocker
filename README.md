@@ -33,7 +33,7 @@ If you want port 80, you may need to use "sudo" on Mac OSX.
 Sometimes you only want some service endpoints to be mocked, but have other requests forwarded to real service endpoints.
 In this case, provide the proxy URL option on startup e.g.
 `apimocker --proxy http://myrealservice.io`
-When the proxy option is set, any requests to apimocker with URLs that are not configured with mock files, will be forwarded to the specified URL. 
+When the proxy option is set, any requests to apimocker with URLs that are not configured with mock files, will be forwarded to the specified URL.
 
 ### With Grunt or Gulp
 If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:
@@ -258,6 +258,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.8
+Added proxy option. Thanks @ztsmith !
 #### 0.4.7
 Added ability to switch using Regular Expression.  (See issue #2, #33, #34)  Thanks @dploeger !
 #### 0.4.6

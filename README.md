@@ -271,6 +271,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.10
+Added express-xml-bodyparser, so that XML post requests can be use for RegExp switches.  Thanks @asnov !
 #### 0.4.9
 Added support for custom middleware functions.
 #### 0.4.8

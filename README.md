@@ -234,6 +234,19 @@ To return additional custom headers in the response, set the headers map in the 
 ```
 In this example the headers x-requested-by and dummy will be returned on the response.  contentType can be specified separately, as it is above, or specified as "content-type" in the "headers" map.
 
+#### Adding custom middleware
+For advanced users, apimocker accepts any custom middleware functions you'd like to add.  The `middlewares` property is an array of middleware functions you can modify.  Here's a basic example:
+```
+var apiMocker = require("../lib/apimocker.js");
+var customMiddleware = function(req, res, next) {
+		res.header('foo', 'bar');
+		next();
+	};
+var mocker = apiMocker.createServer({quiet: true}).setConfigFile("test/test-config.json");
+mocker.middlewares.unshift(customMiddleware);
+mocker.start(null, done);
+```
+
 ## Runtime configuration
 After starting apimocker, mocks can be configured using a simple http api.
 This http api can be called easily from your functional tests, to test your code's handling of different responses.
@@ -258,6 +271,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.9
+Added support for custom middleware functions.
 #### 0.4.8
 Added proxy option. Thanks @ztsmith !
 #### 0.4.7

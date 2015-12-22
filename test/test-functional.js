@@ -1,58 +1,38 @@
-/* global describe, it, xit, xdescribe, before */
-
-describe('Functional tests using an http client to test "end-to-end": ', function() {
-
-  var chai = require("chai"),
-      apiMocker = require("../lib/apimocker.js"),
-      expect = chai.expect,
-      http = require("http"),
-      _ = require("underscore"),
-      httpReqOptions = function(path) {
-        return {
-          hostname: 'localhost',
-          port: 7879,
-          method: 'GET',
-          path: path
-        };
-      },
-      httpPostOptions = function(path, data) {
-        return {
-          hostname: 'localhost',
-          port: 7879,
-          method: 'POST',
-          path: path,
-          headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-          }
-        };
-      },
-      mocker,
-      proxyServer,
-      MOCK_PORT = 7881;
-
-  function verifyResponseBody(httpReqOptions, postData, expected, done) {
-    var req = http.request(httpReqOptions, function(res) {
-      res.setEncoding('utf8');
-      res.on('data', function (chunk) {
-        expect(JSON.parse(chunk)).to.deep.equal(expected);
-        // console.log(chunk);
-        if (done) {
-          done();
-        }
-      });
-    });
-    if (postData) {
-      req.write(postData);
-    }
-    req.end();
-  }
+/* global describe, it, xdescribe, before */
+var chai = require("chai"),
+  apiMocker = require("../lib/apimocker.js"),
+  expect = chai.expect,
+  http = require("http"),
+  _ = require("underscore"),
+  httpReqOptions = function(path) {
+    return {
+      hostname: 'localhost',
+      port: 7879,
+      method: 'GET',
+      path: path
+    };
+  },
+  httpPostOptions = function(path, data) {
+    return {
+      hostname: 'localhost',
+      port: 7879,
+      method: 'POST',
+      path: path,
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': data.length
+      }
+    };
+  },
+  mocker,
+  proxyServer,
+  MOCK_PORT = 7881;
 
   function verifyResponseHeaders(httpReqOptions, expected, done) {
     var req = http.request(httpReqOptions, function(res) {
       res.setEncoding('utf8');
-      res.on('data', function () { //chunk) {
-        // console.log(res.headers);
+      res.on('data', function () {
+        // console.log('Response headers: ' + JSON.stringify(res.headers));
         var expectedKeys = _.keys(expected);
         _.each(expectedKeys, function(key) {
           expect(res.headers[key]).to.equal(expected[key]);
@@ -82,12 +62,32 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     req.end();
   }
 
+describe('Functional tests using an http client to test "end-to-end": ', function() {
+  function verifyResponseBody(httpReqOptions, postData, expected, done) {
+    var req = http.request(httpReqOptions, function(res) {
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+        expect(JSON.parse(chunk)).to.deep.equal(expected);
+        // console.log(chunk);
+        if (done) {
+          done();
+        }
+      });
+    });
+    if (postData) {
+      req.write(postData);
+    }
+    req.end();
+  }
+
+
+
   describe('apimocker server:', function() {
     before(function startMockerForFuncTests(done) {
       var options = {
         quiet: true,
         proxyURL: "http://localhost:" + MOCK_PORT
-      }
+    };
       mocker = apiMocker.createServer(options).setConfigFile("test/test-config.json");
       mocker.start(null, done);
     });
@@ -102,6 +102,10 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
           res.end();
         }
       }).listen(MOCK_PORT, done);
+    });
+
+    after(function (done) {
+        mocker.stop(done);
     });
 
     describe("basic requests: ", function() {
@@ -312,5 +316,25 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       });
     });
 
+  });
+
+});
+
+describe("apimocker with custom middleware: ", function () {
+  var apiMocker = require("../lib/apimocker.js"),
+        customMiddleware;
+  before(function(done) {
+      customMiddleware = function(req, res, next) {
+          res.header('foo', 'bar');
+          next();
+      };
+      var mocker = apiMocker.createServer({quiet: true}).setConfigFile("test/test-config.json");
+      mocker.middlewares.unshift(customMiddleware);
+      mocker.start(null, done);
+  });
+
+  it("uses custom middleware if added by user", function(done) {
+      var reqOptions = httpReqOptions("/first");
+      verifyResponseHeaders(reqOptions, {'foo': 'bar'}, done);
   });
 });

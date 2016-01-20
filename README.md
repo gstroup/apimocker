@@ -148,6 +148,11 @@ See the sample config.json file in this package.
         "dummyheader": "dummyvalue"
       },
       "verbs": ["get"]
+    },
+    "template/:Name/:Number" :{
+      "mockFile": "templateSample.json", 
+      "verbs":["get"], 
+      "contentType":"application/json"
     }
   }
 }
@@ -233,6 +238,33 @@ To return additional custom headers in the response, set the headers map in the 
     }
 ```
 In this example the headers x-requested-by and dummy will be returned on the response.  contentType can be specified separately, as it is above, or specified as "content-type" in the "headers" map.
+
+####Templating your JSON. 
+You can take values in the route and insert them into your json. All you need to do is specify content type and have a matching @ in the mock json file. Here's an example: 
+
+config.json
+```js 
+ "template/:Name/:Number" :{
+   "mockFile": "templateSample.json", 
+   "verbs":["get"], 
+    "contentType":"application/json"
+ }
+```
+templateSample.json
+```js 
+   {
+      "Name": "@Name"
+      "Number": @Number
+   }   
+```
+
+When you call /John/12345 you will be returned: 
+```js
+   {
+	"Name": "John"
+	"Number": 12345
+   }
+```
 
 #### Adding custom middleware
 For advanced users, apimocker accepts any custom middleware functions you'd like to add.  The `middlewares` property is an array of middleware functions you can modify.  Here's a basic example:

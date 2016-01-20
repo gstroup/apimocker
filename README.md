@@ -149,11 +149,11 @@ See the sample config.json file in this package.
       },
       "verbs": ["get"]
     },
-    "testUdsDoc/:width/:height":{
-	"mockFile":"documents/variableCircleDoc.json", 
-	"verbs":["get"],
-	"contentType": "application/json", 
-   }
+    "template/:Name/:Number" :{
+      "mockFile": "templateSample.json", 
+      "verbs":["get"], 
+      "contentType":"application/json"
+    }
   }
 }
 ```
@@ -245,10 +245,10 @@ You can take values in the route and insert them into your json. All you need to
 config.json
 ```js 
  "template/:Name/:Number" :{
-        "mockFile": "templateSample.json", 
-	"verbs":["get"], 
-	"contentType":"application/json"
-    }
+   "mockFile": "templateSample.json", 
+   "verbs":["get"], 
+    "contentType":"application/json"
+ }
 ```
 templateSample.json
 ```js 

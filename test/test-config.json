@@ -63,6 +63,11 @@
     },
     "noMockFile": {
       "verbs": ["get"]
+    }, 
+    "template/:Name/:Number":{
+	"mockFile":"templateSample.json", 
+        "contentType": "application/json", 
+	"verbs": ["get"]
     }
   }
 }

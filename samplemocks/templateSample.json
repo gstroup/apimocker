@@ -1,4 +1,4 @@
 {
-	"Name": "@Name",
-	"Number": @Number
+	"name": "@name",
+	"number": @number
 }

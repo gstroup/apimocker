@@ -57,7 +57,7 @@
         "userIdadminpasswordgood": {"httpStatus": 200}
       }
     }, 
-      "template/:Name/:Number" :{
+      "template/:name/:number" :{
         "mockFile": "templateSample.json", 
 	"verbs":["get"], 
 	"contentType":"application/json"

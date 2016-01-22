@@ -64,7 +64,7 @@
     "noMockFile": {
       "verbs": ["get"]
     }, 
-    "template/:Name/:Number":{
+    "template/:name/:number":{
 	"mockFile":"templateSample.json", 
         "contentType": "application/json", 
 	"verbs": ["get"]

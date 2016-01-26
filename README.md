@@ -152,6 +152,7 @@ See the sample config.json file in this package.
     "template/:Name/:Number" :{
       "mockFile": "templateSample.json", 
       "verbs":["get"], 
+      "enableTemplate": true
       "contentType":"application/json"
     }
   }
@@ -247,7 +248,8 @@ config.json
  "template/:Name/:Number" :{
    "mockFile": "templateSample.json", 
    "verbs":["get"], 
-    "contentType":"application/json"
+   "enableTemplate": true 
+   "contentType":"application/json"
  }
 ```
 templateSample.json

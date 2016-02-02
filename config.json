@@ -56,6 +56,12 @@
         "userIduser1passwordgood": {"httpStatus": 200, "mockFile": "king.json"},
         "userIdadminpasswordgood": {"httpStatus": 200}
       }
+    }, 
+      "template/:name/:number" :{
+        "mockFile": "templateSample.json",
+        "enableTemplate": true,  
+	"verbs":["get"], 
+	"contentType":"application/json"
     }
   }
 }

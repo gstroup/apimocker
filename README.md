@@ -72,6 +72,7 @@ See the sample config.json file in this package.
 * Additional headers can be defined for responses.
 * Request headers can be logged, with the `logRequestHeaders` setting.
 * Alternate URL paths can be specified with the `alternatePaths` setting.
+* With the `enableTemplate` setting, values from the request can be inserted into the mock response.
 
 ```js
 {
@@ -148,6 +149,12 @@ See the sample config.json file in this package.
         "dummyheader": "dummyvalue"
       },
       "verbs": ["get"]
+    },
+    "template/:Name/:Number" :{
+      "mockFile": "templateSample.json",
+      "verbs":["get"],
+      "enableTemplate": true
+      "contentType":"application/json"
     }
   }
 }
@@ -219,7 +226,7 @@ will be returned with HTTP status 200. Note: If the JsonPath expression evaluate
 #### RegExp Support
 As an alternative to JsonPath, Javascript Regular Expressions are supported in the switch parameter.  See unit tests in the test.js file for examples of using Regular Expressions.
 
-#### Returning additional headers with the response
+### Returning additional headers with the response
 To return additional custom headers in the response, set the headers map in the configuration file, like this example:
 ```js
     "firstheaders": {
@@ -234,7 +241,35 @@ To return additional custom headers in the response, set the headers map in the 
 ```
 In this example the headers x-requested-by and dummy will be returned on the response.  contentType can be specified separately, as it is above, or specified as "content-type" in the "headers" map.
 
-#### Adding custom middleware
+### Templating your JSON
+You can take values in the route and insert them into your json. All you need to do is set "enableTemplate" to true, specify a content type and have a matching @ in the mock json file. Here's an example:
+
+config.json
+```js
+ "template/:Name/:Number" :{
+   "mockFile": "templateSample.json",
+   "verbs":["get"],
+   "enableTemplate": true
+   "contentType":"application/json"
+ }
+```
+templateSample.json
+```js
+{
+  "Name": "@Name"
+  "Number": @Number
+}   
+```
+
+When you call /John/12345 you will be returned:
+```js
+{
+	"Name": "John"
+	"Number": 12345
+}
+```
+
+### Adding custom middleware
 For advanced users, apimocker accepts any custom middleware functions you'd like to add.  The `middlewares` property is an array of middleware functions you can modify.  Here's a basic example:
 ```
 var apiMocker = require("../lib/apimocker.js");

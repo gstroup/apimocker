@@ -137,8 +137,8 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       });
 
       it('Returns data in template from the route', function(done){
-	var reqOptions = httpReqOptions("/template/john/4"); 
-	verifyResponseBody(reqOptions, null, {"name":"john", "number":4}, done); 
+	      var reqOptions = httpReqOptions("/template/john/4");
+        verifyResponseBody(reqOptions, null, {"name":"john", "number":4}, done);
       });
 
       it('returns correct data for an alternate path', function (done) {

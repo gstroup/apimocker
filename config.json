@@ -1,6 +1,6 @@
 {
   "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
-  "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
+  "mockDirectory": "samplemocks",
   "staticDirectory": "/file/system/path/to/static/directory",
   "staticPath": "/web/path/to/static/directory",
   "quiet": false,
@@ -56,11 +56,11 @@
         "userIduser1passwordgood": {"httpStatus": 200, "mockFile": "king.json"},
         "userIdadminpasswordgood": {"httpStatus": 200}
       }
-    }, 
+    },
       "template/:name/:number" :{
         "mockFile": "templateSample.json",
-        "enableTemplate": true,  
-	"verbs":["get"], 
+        "enableTemplate": true,
+	"verbs":["get"],
 	"contentType":"application/json"
     }
   }

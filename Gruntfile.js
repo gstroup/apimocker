@@ -37,12 +37,19 @@ module.exports = function (grunt) {
                 'lib/apimocker.js',
                 'test/{,*/}*.js'
             ]
+        },
+
+        execute: {
+            target: {
+                src: ['bin/apimocker.js']
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-mocha-cli');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-execute');
 
     grunt.registerTask('test', [
         'mochacli'

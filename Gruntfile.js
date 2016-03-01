@@ -37,12 +37,6 @@ module.exports = function (grunt) {
                 'lib/apimocker.js',
                 'test/{,*/}*.js'
             ]
-        },
-
-        execute: {
-            target: {
-                src: ['bin/apimocker.js']
-            }
         }
     });
 

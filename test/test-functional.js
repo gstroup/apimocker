@@ -137,7 +137,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       });
 
       it('Returns data in template from the route', function(done){
-	      var reqOptions = httpReqOptions("/template/john/4");
+        var reqOptions = httpReqOptions("/template/john/4");
         verifyResponseBody(reqOptions, null, {"name":"john", "number":4}, done);
       });
 
@@ -269,54 +269,60 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       });
     });
 
-    xdescribe("admin functions for on-the-fly configuration", function() {
+    describe("admin functions for on-the-fly configuration", function() {
 
-    // function reloadConfigFile(mocker, done) {
-    //   mocker.setConfigFile("test/test-config.json");
-    //   var req, reqOptions = httpReqOptions();
-    //   reqOptions.path = "/admin/reload";
-    //   req = http.request(reqOptions, function(res) {
-    //     res.setEncoding('utf8');
-    //     res.on('data', function () {
-    //       expect(res.statusCode).to.equal(200);
-    //       if (done) {
-    //         done();
-    //       }
-    //     });
-    //   });
-    //   req.end();
-    // }
+      function reloadConfigFile(mocker, done) {
+        mocker.setConfigFile("test/test-config.json");
+        var req, reqOptions = httpReqOptions();
+        reqOptions.path = "/admin/reload";
+        req = http.request(reqOptions, function(res) {
+          res.setEncoding('utf8');
+          res.on('data', function () {
+            expect(res.statusCode).to.equal(200);
+            if (done) {
+              done();
+            }
+          });
+        });
+        req.end();
+      }
 
-      var postData = '{"verb":"get", "serviceUrl":"third", "mockFile":"king.json"}',
-          postOptions =  httpPostOptions("/admin/setMock", postData),
-          expected = {
-              "verb":"get",
-              "serviceUrl":"third",
-              "mockFile":"king.json",
-              "httpStatus": 200
-            };
+      it("correctly sets up new mock web service after admin/setMock was called", function(done) {
+        var postData = '{"verb":"get", "serviceUrl":"third", "mockFile":"king.json"}',
+            postOptions =  httpPostOptions("/admin/setMock", postData),
+            expected = {
+                "verb":"get",
+                "serviceUrl":"third",
+                "mockFile":"king.json",
+                "httpStatus": 200
+              };
+
+        verifyResponseBody(postOptions, postData, expected, done);
+      });
+
       it("returns correct mock file after admin/setMock was called", function(done) {
-        verifyResponseBody(postOptions, postData, expected);
-
         verifyResponseBody(httpReqOptions("/third"), null, {king: "greg"}, done);
       });
 
-      // it("returns 404 for incorrect path after reload was called", function(done) {
-      //   verifyResponseBody(postOptions, postData, expected);
-      //   verifyResponseBody(httpReqOptions("/third"), null, {king: "greg"});
-      //   reloadConfigFile(mocker);
-      //   verifyResponseStatus(httpReqOptions("/third"), null, 404, done);
-      // });
+      it("returns 404 for incorrect path after reload was called", function(done) {
+        reloadConfigFile(mocker);
+        verifyResponseStatus(httpReqOptions("/third"), null, 404, done);
+      });
 
-      // TODO: Fix this test... it fails intermittently, due to timing problems.
+      it("correctly overwrites mock web service after admin/setMock was called twice", function(done) {
+        var postData = '{"verb":"get", "serviceUrl":"third", "mockFile":"ace.json"}',
+            postOptions =  httpPostOptions("/admin/setMock", postData),
+            expected = {
+              "verb":"get",
+              "serviceUrl":"third",
+              "mockFile":"ace.json",
+              "httpStatus": 200
+            };
+
+        verifyResponseBody(postOptions, postData, expected, done);
+      });
+
       it("returns correct mock file after admin/setMock was called twice", function(done) {
-        verifyResponseBody(postOptions, postData, expected);
-
-        verifyResponseBody(httpReqOptions("/third"), null, {king: "greg"});
-
-        // change route, and verify again
-        verifyResponseBody(postOptions, postData, expected);
-
         verifyResponseBody(httpReqOptions("/third"), null, {ace: "greg"}, done);
       });
     });

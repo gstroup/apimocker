@@ -73,6 +73,7 @@ See the sample config.json file in this package.
 * Request headers can be logged, with the `logRequestHeaders` setting.
 * Alternate URL paths can be specified with the `alternatePaths` setting.
 * With the `enableTemplate` setting, values from the request can be inserted into the mock response.
+* With the `templateSwitch` setting, parameter names and values from the request can be mapped and inserted into the mock response, including POST requests and powerful JSONPath parameter substitution  into a JSON POST BODY.
 
 ```js
 {
@@ -266,6 +267,83 @@ When you call /John/12345 you will be returned:
 {
 	"Name": "John"
 	"Number": 12345
+}
+```
+
+### TemplateSwitch your JSON
+The `templateSwitch` setting uses the same structure as the `switch` setting and similar but more flexible than the `enableTemplate` feature in order to map parameter names and values from the request  into the mock response. GET and POST requests are supported including  powerful JSONPath parameter substitution even substitution into a JSON POST BODY. All you need to do is add the templateSwitch section, specify a content type for the template file, and have a matching @ in the template file.
+
+Here are two templateSwitch examples showing the flexibility of the templateSwitch syntax. The example JSON mock template is the same format as the enableTemplate using @ variable name substitution.
+
+config.json with full switch attributes:
+```js
+    "referral" : {
+      "mockFile": "referral_error.json",
+      "verbs": ["post"],
+      "templateSwitch": [{"key": "partnerUserId",
+                         "switch": "$.data.partner_user_id",
+                         "type": "default"},
+                         {"key": "affiliateKey",
+                          "switch": "$.data.affiliate_key",
+                          "type": "default"},
+                         {"key": "email",
+                          "switch": "$.data.contact_details.email",
+                          "type": "default"},
+                         {"key": "phone",
+                          "switch": "$.data.contact_details.phone_number",
+                          "type": "default"}],
+      "contentType": "application/json",
+      "responses": {
+        "post": {"httpStatus": 200, "mockFile": "referral_success.json"}
+      }
+    },
+```
+
+config.json using key == switch, and type as default:
+```js
+    "partner-join" : {
+        "mockFile": "ijd_partner_smartbanner.html",
+        "verbs":["get"],
+        "templateSwitch": ["partner_user_id",
+                           "affiliate_key",
+                           "referral_id",
+                           "email",
+                           "phone"],
+        "contentType":"text/html"
+    },
+```
+
+with referral_success.json:
+```js
+{
+    "data" : {
+      "referral_id": "21EC2020-3AEA-4069-A2DD-08002B30309D",
+      "download_url" : "http://localhost:7878/app-download?affiliate_key=@affiliateKey&partner_user_id=@partnerUserId&referral_id=21EC2020-3AEA-4069-A2DD-08002B30309D&email=@email&phone=@phone"
+    }
+}
+```
+
+When you POST to /referral with a JSON POST body of:
+```js
+   {
+       "data": {
+           { "partner_user_id": "123456789",
+             "affiliate_key": "ABCDEFG12345",
+             "contact_details": {
+                 "email": "test@apimocker.com",
+                 "phone": "800-555-1212"
+             }
+       }
+   }
+```
+
+You will be returned the referral_success.json with the post body parameters inserted as follows:
+```js
+{
+    "data" : {
+      "referral_id": "21EC2020-3AEA-4069-A2DD-08002B30309D",
+      "download_url" : "http://localhost:7878/app-download?affiliate_key=ABCDEFG12345&partner_user_id=123456789&referral_id=21EC2020-3AEA-4069-A2DD-08002B30309D&email=test%40apimocker.com&phone=800-555-1212"
+    }
 }
 ```
 

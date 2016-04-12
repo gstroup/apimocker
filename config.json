@@ -57,16 +57,11 @@
         "userIdadminpasswordgood": {"httpStatus": 200}
       }
     }, 
-    "template/:name/:number": {
-      "mockFile": "templateSample.json",
-      "enableTemplate": true,  
-      "verbs":["get"], 
-      "contentType":"application/json"
-    },
-    "api/*": {
-      "genericParams": true,
-      "latency": 20, 
-      "verbs": ["get"]
+      "template/:name/:number" :{
+        "mockFile": "templateSample.json",
+        "enableTemplate": true,  
+	"verbs":["get"], 
+	"contentType":"application/json"
     }
   }
 }

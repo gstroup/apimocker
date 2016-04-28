@@ -17,13 +17,14 @@
     "untildify": "^2.0.0"
   },
   "devDependencies": {
-    "mocha": ">=1.8.2",
-    "grunt": "~0.4.0",
-    "grunt-mocha-cli": "1.3.0",
-    "grunt-contrib-watch": ">=0.3.1",
-    "grunt-contrib-jshint": "~0.7.1",
     "chai": ">=1.5.0",
-    "sinon": ">=1.6.0"
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-contrib-watch": ">=0.3.1",
+    "grunt-mocha-cli": "1.3.0",
+    "mocha": ">=1.8.2",
+    "sinon": ">=1.6.0",
+    "supertest": "^1.2.0"
   },
   "main": "./lib/apimocker.js",
   "bin": {

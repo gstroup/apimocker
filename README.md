@@ -153,7 +153,7 @@ See the sample config.json file in this package.
     "template/:Name/:Number" :{
       "mockFile": "templateSample.json",
       "verbs":["get"],
-      "enableTemplate": true
+      "enableTemplate": true,
       "contentType":"application/json"
     }
   }

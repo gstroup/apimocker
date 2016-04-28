@@ -119,7 +119,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       });
 
       it('Returns data in template from the route', function(done){
-	      var reqOptions = httpReqOptions("/template/john/4");
+        var reqOptions = httpReqOptions("/template/john/4");
         verifyResponseBody(reqOptions, null, {"name":"john", "number":4}, done);
       });
 
@@ -207,7 +207,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
             // console.log('got a 404 as expected');
             done();
           });
-      }),
+      });
       
       it("returns httpStatus of 200 if not set", function(done) {
         stRequest.get('/first').expect(200, done);
@@ -306,7 +306,6 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 
         // // change route, and verify again
         // verifyResponseBody(postOptions, postData, expected);
-
         // verifyResponseBody(httpReqOptions("/third"), null, {ace: "greg"}, done);
         
         stRequest.post('/admin/setMock')
@@ -321,7 +320,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
                   .expect(200, function() {
                     stRequest.get('/third')
                       .expect(200, {ace: 'greg'}, done);
-                  })
+                  });
               });            
           });    
 

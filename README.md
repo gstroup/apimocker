@@ -256,8 +256,8 @@ config.json
 templateSample.json
 ```js
 {
-  "Name": "@Name"
-  "Number": @Number
+  "Name": "@Name",
+  "Number": "@Number"
 }   
 ```
 

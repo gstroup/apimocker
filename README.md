@@ -37,10 +37,10 @@ When the proxy option is set, any requests to apimocker with URLs that are not c
 
 ### With Grunt or Gulp
 If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:
-[https://github.com/gstroup/grunt-apimocker]()
+https://github.com/gstroup/grunt-apimocker
 
 For Gulp, there's also a plugin contributed by kent-wu:
-[https://github.com/kent-wu/gulp-apimocker]()
+https://github.com/kent-wu/gulp-apimocker
 
 ### Windows note
 After installing from npm, you'll need to edit this file:
@@ -154,7 +154,7 @@ See the sample config.json file in this package.
     "template/:Name/:Number" :{
       "mockFile": "templateSample.json",
       "verbs":["get"],
-      "enableTemplate": true
+      "enableTemplate": true,
       "contentType":"application/json"
     }
   }
@@ -257,8 +257,8 @@ config.json
 templateSample.json
 ```js
 {
-  "Name": "@Name"
-  "Number": @Number
+  "Name": "@Name",
+  "Number": "@Number"
 }   
 ```
 
@@ -384,6 +384,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.12
+Allow PATCH method in CORS middleware.  (Fix for issue #54.)  Also fixed some flaky tests.
 #### 0.4.11
 Added template feature, to insert values from request into the mock response.  Thanks @Samurai336 !
 #### 0.4.10

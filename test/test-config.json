@@ -65,10 +65,10 @@
       "verbs": ["get"]
     }, 
     "template/:name/:number":{
-	"mockFile":"templateSample.json",
-	"enableTemplate" : true, 
-        "contentType": "application/json", 
-	"verbs": ["get"]
+      "mockFile":"templateSample.json",
+      "enableTemplate" : true, 
+      "contentType": "application/json", 
+      "verbs": ["get"]
     }
   }
 }

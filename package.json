@@ -11,7 +11,7 @@
     "body-parser": "~1.4.3",
     "commander": ">=1",
     "express": "~4.5",
-    "express-http-proxy": "0.6.0",
+    "express-http-proxy": "0.7.1",
     "express-xml-bodyparser": "^0.2.2",
     "underscore": ">=1",
     "untildify": "^2.0.0"

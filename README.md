@@ -306,6 +306,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.14
+Upgrade version of express-http-proxy.  (Fix for issue #48.) Thanks @pgraham !
 #### 0.4.12
 Allow PATCH method in CORS middleware.  (Fix for issue #54.)  Also fixed some flaky tests.
 #### 0.4.11

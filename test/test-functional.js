@@ -27,7 +27,7 @@ var chai = require("chai"),
     };
   },
   mocker,
-  proxyServer,
+  testEndpoint,
   MOCK_PORT = 7881;
 
 function verifyResponseHeaders(httpReqOptions, expected, done) {
@@ -75,7 +75,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     });
 
     before(function (done) {
-      proxyServer = http.createServer(function (req, res) {
+      testEndpoint = http.createServer(function (req, res) {
         if (req.url === "/non-mocked") {
           res.writeHead(200, {"Content-Type": "application/json"});
           res.end(JSON.stringify({data: "real"}));
@@ -267,10 +267,16 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
     });
 
     describe("proxy: ", function () {
-      it("forwards request to non-mocked endpoint", function (done) {
-        var reqOptions = httpReqOptions("/non-mocked");
-        reqOptions.port = MOCK_PORT;
-        verifyResponseBody(reqOptions, null, {data: "real"}, done);
+      it("forwards get request to non-mocked endpoint", function (done) {
+        stRequest.get('/non-mocked')
+          .expect(200, {data: 'real'}, done);
+      });
+
+      it('forwards post request to non-mocked endpoint', function (done) {
+        stRequest.post('/non-mocked')
+          .set('Content-Type', 'application/json')
+          .send({foo: "bar"})
+          .expect(200, {data: 'real'}, done);
       });
     });
 
@@ -303,14 +309,14 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
       it("returns correct mock file after admin/setMock was called", function(done) {
         // verifyResponseBody(postOptions, postData, expected);
         // verifyResponseBody(httpReqOptions("/third"), null, {king: "greg"}, done);
-        
+
         stRequest.post('/admin/setMock')
           .set('Content-Type', 'application/json')
           .send(postData)
           .expect(200, function() {
             stRequest.get('/third')
               .expect(200, {king: 'greg'}, done);
-          }); 
+          });
       });
 
       // it("returns 404 for incorrect path after reload was called", function(done) {
@@ -329,7 +335,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
         // // change route, and verify again
         // verifyResponseBody(postOptions, postData, expected);
         // verifyResponseBody(httpReqOptions("/third"), null, {ace: "greg"}, done);
-        
+
         stRequest.post('/admin/setMock')
           .set('Content-Type', 'application/json')
           .send(postData)
@@ -343,8 +349,8 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
                     stRequest.get('/third')
                       .expect(200, {ace: 'greg'}, done);
                   });
-              });            
-          });    
+              });
+          });
 
       });
     });

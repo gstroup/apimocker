@@ -166,7 +166,7 @@ For instance, a GET request sent to "http://server:port/first" will return the k
 If you'd like to return different responses for a single URL with different HTTP verbs ("get", "post", etc) then you'll need to add the "responses" object.  See above for the "second" service.  The "responses" object should contain keys for the HTTP verbs, and values describing the response for each verb.
 
 ### Switch response based on request parameter
-In your configuration, you can set up a "switch" parameter for each service.  If set, apimocker will check the request for this parameter, and return a different file based on the value.  (Apimocker will check the request for the parmater in this order: first request body, second query string, third request headers.)  For instance, if you set up a switch as seen above for "nested/ace", then you can will get different responses based on the request sent to apimocker.  A JSON POST request to the URL "http://localhost:7878/nested/ace" with this data:
+In your configuration, you can set up a "switch" parameter for each service.  If set, apimocker will check the request for this parameter, and return a different file based on the value.  (Apimocker will check the request for the parameter in this order: first request body, second query string, third request headers.)  For instance, if you set up a switch as seen above for "nested/ace", then you will get different responses based on the request sent to apimocker.  A JSON POST request to the URL "http://localhost:7878/nested/ace" with this data:
 ```js
 {
   "customerId": 1234
@@ -384,6 +384,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.14
+Upgrade version of express-http-proxy.  (Fix for issue #48.) Thanks @pgraham !
 #### 0.4.12
 Allow PATCH method in CORS middleware.  (Fix for issue #54.)  Also fixed some flaky tests.
 #### 0.4.11
@@ -431,6 +433,7 @@ New config file format was introduced, allowing for custom content-types and mor
 
 ## Contributors
 Run "grunt watch" in the root "apimocker" directory to start the grunt watch task.  This will run JSHint and mocha tests.
+All Pull Requests must include at least one test.
 
 ## Acknowledgements
 Big thanks to magalhas for his httpd-mock project.  This gave me a great starting point.

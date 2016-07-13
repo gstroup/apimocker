@@ -123,6 +123,28 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
         verifyResponseBody(reqOptions, null, {"name":"john", "number":4}, done);
       });
 
+      it('returns correct data for get to templateSwitch substituting GET params into mockFile ', function(done) {
+        var reqOptions = httpReqOptions("/templateSwitchGetParams?appID=123456789&appName=myAppName&userName=MyName&userAge=21");
+        var expected = {"appID": 123456789,
+                        "appName": "myAppName",
+                        "userName": "MyName",
+                        "userAge": 21
+                       };
+        verifyResponseBody(reqOptions, null, expected, done);
+      });
+
+
+      it('returns correct data for post to templateSwitch substituting POST data parsed using jsonPath into mockFile', function(done) {
+        var postData = '{ "data": { "appID": 123456789, "appName": "myAppName", "user": { "userName": "MyName", "userAge": 21 } } }',
+            postOptions =  httpPostOptions("/templateSwitchPostJsonPath", postData),
+            expected = {"appID": 123456789,
+                        "appName": "myAppName",
+                        "userName": "MyName",
+                        "userAge": 21
+                       };
+        verifyResponseBody(postOptions, postData, expected, done);
+      });
+
       it('returns correct data for an alternate path', function (done) {
         var reqOptions = httpReqOptions("/1st");
         verifyResponseBody(reqOptions, null, {"king": "greg"}, done);

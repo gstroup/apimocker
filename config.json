@@ -62,6 +62,32 @@
         "enableTemplate": true,  
 	"verbs":["get"], 
 	"contentType":"application/json"
+    },
+    "templateSwitchGetParams" : {
+      "mockFile": "templateSwitchSample.json",
+      "verbs":["get"],
+      "templateSwitch": ["appID",
+                         "appName",
+                         "userName",
+                         "userAge"],
+      "contentType": "application/json"
+    },
+    "templateSwitchPostJsonPath" : {
+      "mockFile": "templateSwitchSample.json",
+      "verbs": ["post"],
+      "templateSwitch": [{"key": "appID",
+                         "switch": "$.data.appID",
+                         "type": "jsonpath"},
+                         {"key": "appName",
+                          "switch": "$.data.appName",
+                          "type": "jsonpath"},
+                         {"key": "userName",
+                          "switch": "$.data.user.userName",
+                          "type": "jsonpath"},
+                         {"key": "userAge",
+                          "switch": "$.data.user.userAge",
+                          "type": "jsonpath"}],
+      "contentType": "application/json"
     }
   }
 }

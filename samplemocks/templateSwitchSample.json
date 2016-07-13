@@ -1,0 +1,6 @@
+{
+    "appID": @appID,
+    "appName": "@appName",
+    "userName": "@userName",
+    "userAge": @userAge
+}

@@ -384,6 +384,8 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.15
+Improved templating, with the templateSwitch option.  Thanks @ferrerod !
 #### 0.4.14
 Upgrade version of express-http-proxy.  (Fix for issue #48.) Thanks @pgraham !
 #### 0.4.12

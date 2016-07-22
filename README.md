@@ -69,11 +69,11 @@ See the sample config.json file in this package.
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
 * mockDirectory value can include tilde (~) for user's home directory.
 * A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
-* Additional headers can be defined for responses.
+* Additional headers can be defined for responses, in the `headers` object.  Different headers could be returned for different requests, by enabling a switch.
 * Request headers can be logged, with the `logRequestHeaders` setting.
 * Alternate URL paths can be specified with the `alternatePaths` setting.
 * With the `enableTemplate` setting, values from the request can be inserted into the mock response.
-* With the `templateSwitch` setting, parameter names and values from the request can be mapped and inserted into the mock response, including POST requests and powerful JSONPath parameter substitution  into a JSON POST BODY.
+* With the `templateSwitch` setting, parameter names and values from the request can be mapped and inserted into the mock response, including POST requests and powerful JSONPath parameter substitution into a JSON POST BODY.
 
 ```js
 {

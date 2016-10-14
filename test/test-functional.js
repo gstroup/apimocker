@@ -364,6 +364,27 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 
 	});
 
+	describe('with custom basepath: ', function() {
+		before(function (done) {
+			var options = {
+				quiet: true,
+				proxyURL: 'http://localhost:' + MOCK_PORT,
+				basepath: '/apimocker'
+			};
+			mocker = apiMocker.createServer(options).setConfigFile('test/test-config.json');
+			mocker.start(null, done);
+		});
+
+		it('uses custom basepath if specified', function(done) {
+			stRequest.get('/apimocker/nested/ace')
+				.expect(200, {'ace': 'greg'}, done);
+		});
+
+		after(function(done) {
+			mocker.stop(done);
+		});
+	});
+
 });
 
 describe('apimocker with custom middleware: ', function () {
@@ -382,19 +403,5 @@ describe('apimocker with custom middleware: ', function () {
 	it('uses custom middleware if added by user', function(done) {
 		var reqOptions = httpReqOptions('/first');
 		verifyResponseHeaders(reqOptions, {'foo': 'bar'}, done);
-	});
-});
-
-describe('Functional tests using an http client to test "end-to-end": ', function() {
-
-	describe('apimocker server:', function() {
-		before(function startMockerForFuncTests(done) {
-			var options = {
-				quiet: true,
-				proxyURL: 'http://localhost:' + MOCK_PORT
-			};
-			mocker = apiMocker.createServer(options).setConfigFile('test/test-config.json');
-			mocker.start(null, done);
-		});
 	});
 });

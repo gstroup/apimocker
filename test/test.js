@@ -378,7 +378,7 @@ describe('unit tests: ', function() {
   describe("setRoute:", function() {
     var am = apiMocker.createServer();
 
-    it("sets http status code to 200 by default", function() {
+    it("sets no default http status code", function() {
       var options = {
         verb: "get",
         latency: 0,
@@ -386,7 +386,7 @@ describe('unit tests: ', function() {
         mockFile: "file.json"
       };
       am.setRoute(options);
-      expect(options.httpStatus).to.equal(200);
+      expect(options.httpStatus).to.equal(undefined);
     });
   });
 
@@ -411,8 +411,8 @@ describe('unit tests: ', function() {
         }
       };
       am.options.webServices = webServices;
-      setRouteMock.expects("setRoute").withExactArgs({ httpStatus: 200, latency: 20, mockFile: "king.json", serviceUrl: "first", verb: "get" });
-      setRouteMock.expects("setRoute").withExactArgs({ httpStatus: 200, latency: 20, mockFile: "king.json", serviceUrl: "first", verb: "post" });
+      setRouteMock.expects("setRoute").withExactArgs({ latency: 20, mockFile: "king.json", serviceUrl: "first", verb: "get" });
+      setRouteMock.expects("setRoute").withExactArgs({ latency: 20, mockFile: "king.json", serviceUrl: "first", verb: "post" });
       am.setRoutes(webServices);
       setRouteMock.verify();
     });
@@ -432,7 +432,7 @@ describe('unit tests: ', function() {
       };
       am.options.webServices = webServices;
       setRouteMock.expects("setRoute").withExactArgs({ httpStatus: 204, latency: 0, serviceUrl: "second", verb: "delete" });
-      setRouteMock.expects("setRoute").withExactArgs({ httpStatus: 200, latency: 0, serviceUrl: "second", verb: "post", contentType: "foobar", mockFile: "king.json" });
+      setRouteMock.expects("setRoute").withExactArgs({ latency: 0, serviceUrl: "second", verb: "post", contentType: "foobar", mockFile: "king.json" });
       am.setRoutes(webServices);
       setRouteMock.verify();
     });

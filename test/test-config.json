@@ -53,6 +53,13 @@
         "userIduser1passwordgood": {"httpStatus": 200}
       }
     },
+    "verify": {
+      "verbs": ["post"],
+      "switch": ["customerId"],
+      "switchResponses": {
+        "customerId1234": {"mockFile": "ace.json"}
+      }
+    },
     "firstheaders": {
       "mockFile": "king.json",
       "contentType": "foobar",

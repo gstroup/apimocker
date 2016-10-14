@@ -113,11 +113,6 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
         verifyResponseBody(reqOptions, null, {"ace": "greg"}, done);
       });
 
-      it("returns a useful error when no mockFile is set for a web service", function(done) {
-        var reqOptions = httpReqOptions("/noMockFile");
-        verifyResponseBody(reqOptions, null, {"apimockerError": "No mockFile was configured for route.  Check apimocker config.json file.", "route": "noMockFile"}, done);
-      });
-
       it('Returns data in template from the route', function(done){
         var reqOptions = httpReqOptions("/template/john/4");
         verifyResponseBody(reqOptions, null, {"name":"john", "number":4}, done);
@@ -213,11 +208,23 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
           .expect(200, done);
       });
 
-      it('returns correct httpStatus when switch does not match', function(done) {
+      it('returns correct httpStatus when switch does not match, with contentType set', function(done) {
         stRequest.post('/login')
           .set('Content-Type', 'application/json')
           .send('{"userId": "user1", "password": "bad"}')
           .expect(401, done);
+      });
+
+      it('returns correct httpStatus when switch does not match', function(done) {
+        stRequest.post('/login')
+          .send('{"userId": "user1", "password": "bad"}')
+          .expect(401, done);
+      });
+
+      it('returns 404 when switch does not match and no httpStatus was set', function(done) {
+        stRequest.post('/verify')
+          .send('{"foo": "bar"}')
+          .expect(404, done);
       });
     });
 
@@ -230,7 +237,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
             done();
           });
       });
-      
+
       it("returns httpStatus of 200 if not set", function(done) {
         stRequest.get('/first').expect(200, done);
       });
@@ -244,8 +251,8 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
           .expect(204, done);
       });
 
-      it("returns httpStatus 500 if no mockFile is set for a web service", function(done) {
-        stRequest.get('/noMockFile').expect(500, done);
+      it("returns httpStatus 404 if no mockFile is set for a web service", function(done) {
+        stRequest.get('/noMockFile').expect(404, done);
       });
     });
 

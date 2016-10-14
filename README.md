@@ -68,6 +68,7 @@ See the sample config.json file in this package.
 * Allowed headers can be set.  (Default is to set "access-control-allow-headers: Content-Type" if not specified in config file.)
 * config.json file format has changed with the 0.1.6 release.  See below for the new format.  (Old config.json file format is deprecated and doesn't support new features, but still functioning.)
 * mockDirectory value can include tilde (~) for user's home directory.
+* A basepath can be specified to set a prefix on all web services.  Preceding slash is required.  For instance if basepath is set to "/apimocker", then all requests must go to "http://localhost:7878/apimocker/..."
 * A static route can be opened up to serve up static assets like images.  Both staticDirectory and staticPath must be set.  If either is not set, then nothing happens.
 * Additional headers can be defined for responses, in the `headers` object.  Different headers could be returned for different requests, by enabling a switch.
 * Request headers can be logged, with the `logRequestHeaders` setting.
@@ -384,6 +385,10 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.4.16
+Fix to return 404 instead of 500, when no mockFile is found. Thanks @aburmeis !
+When switch is used, a standard http status can be returned when there's no match, even without a base mockFile.
+Add support for basepath.
 #### 0.4.15
 Improved templating, with the templateSwitch option.  Thanks @ferrerod !
 #### 0.4.14

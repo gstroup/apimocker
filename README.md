@@ -35,7 +35,7 @@ In this case, provide the proxy URL option on startup e.g.
 `apimocker --proxy http://myrealservice.io`
 When the proxy option is set, any requests to apimocker with URLs that are not configured with mock files, will be forwarded to the specified URL.
 
-A proxy intercept function can be specified using the proxy intercept option (`apimocker --proxy http://myrealservice.io` --intercept config/proxyResponseCustomizer`). The value of the option should be the path, relative to the current working directory, to a module that exports an intercept function as documented in the [express-http-proxy docs](https://github.com/villadora/express-http-proxy#intercept).
+A proxy intercept function can be specified to modify responses, using the proxy intercept option (`apimocker --proxy http://myrealservice.io` --intercept config/proxyResponseCustomizer`). The value of the option should be the path, relative to the current working directory, to a module that exports an intercept function as documented in the [express-http-proxy docs](https://github.com/villadora/express-http-proxy#intercept).
 
 ### With Grunt or Gulp
 If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:
@@ -387,6 +387,10 @@ localhost:7878/admin/setMock?verb=get&serviceUrl=second&mockFile=ace.json
 If the config.json file is edited, you can send an http request to /admin/reload to pick up the changes.
 
 ## Versions
+#### 0.5.0
+Fixed an issue causing httpStatus to be ignored.  Thanks @aleofreddi !
+Add support for proxy intercept functin.  Thanks @pgraham !
+Switch to work on Node > 4.0.0.
 #### 0.4.16
 Fix to return 404 instead of 500, when no mockFile is found. Thanks @aburmeis !
 When switch is used, a standard http status can be returned when there's no match, even without a base mockFile.

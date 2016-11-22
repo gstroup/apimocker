@@ -254,6 +254,10 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 			it('returns httpStatus 404 if no mockFile is set for a web service', function(done) {
 				stRequest.get('/noMockFile').expect(404, done);
 			});
+
+			it('returns specified httpStatus even if mockFile is set incorrectly and no contentType is configured', function(done) {
+				stRequest.get('/missingMockFile').expect(203, done);
+			});
 		});
 
 		describe('http headers: ', function() {

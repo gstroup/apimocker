@@ -16,7 +16,7 @@ That will install globally, and allow for easier usage.
 (On Windows, you don't need "sudo".)
 
 ## Usage
-        apimocker [-c, --config <path>] [-q, --quiet] [-p <port>] [-f, --proxy <proxyURL>]
+        apimocker \[-c, --config <path>\] \[-q, --quiet\] \[-p <port>\] \[-f, --proxy <proxyURL>\] \[-i, --intercept <proxyIntercept>\]
 
 Out of the box, you can just run "apimocker" with no arguments.
 (Except on windows, you'll need to edit config.json first.  See below.)
@@ -34,6 +34,8 @@ Sometimes you only want some service endpoints to be mocked, but have other requ
 In this case, provide the proxy URL option on startup e.g.
 `apimocker --proxy http://myrealservice.io`
 When the proxy option is set, any requests to apimocker with URLs that are not configured with mock files, will be forwarded to the specified URL.
+
+A proxy intercept function can be specified using the proxy intercept option (`apimocker --proxy http://myrealservice.io` --intercept config/proxyResponseCustomizer`). The value of the option should be the path, relative to the current working directory, to a module that exports an intercept function as documented in the [express-http-proxy docs](https://github.com/villadora/express-http-proxy#intercept).
 
 ### With Grunt or Gulp
 If you're using Grunt for your project, there's a grunt plugin you can use to start up apimocker:

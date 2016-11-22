@@ -389,7 +389,7 @@ If the config.json file is edited, you can send an http request to /admin/reload
 ## Versions
 #### 0.5.0
 Fixed an issue causing httpStatus to be ignored.  Thanks @aleofreddi !
-Add support for proxy intercept functin.  Thanks @pgraham !
+Add support for proxy intercept function.  Thanks @pgraham !
 Switch to work on Node > 4.0.0.
 #### 0.4.16
 Fix to return 404 instead of 500, when no mockFile is found. Thanks @aburmeis !

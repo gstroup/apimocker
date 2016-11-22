@@ -1,4 +1,4 @@
-# apimocker [![Build Status](https://api.travis-ci.org/gstroup/apimocker.svg?branch=master)](https://api.travis-ci.org/gstroup/apimocker.svg)
+# apimocker [![Build Status](https://api.travis-ci.org/gstroup/apimocker.svg?branch=master)](https://travis-ci.org/gstroup/apimocker)
 [![NPM](https://nodei.co/npm/apimocker.svg?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apimocker/)
 
 This is a node.js module to run a simple http server, which can serve up mock service responses.

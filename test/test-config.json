@@ -72,6 +72,11 @@
     "noMockFile": {
       "verbs": ["get"]
     },
+    "missingMockFile": {
+      "verbs": ["get"],
+      "mockFile": "missing",
+      "httpStatus": 203
+    },
     "template/:name/:number":{
       "mockFile":"templateSample.json",
       "enableTemplate" : true,

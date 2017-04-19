@@ -11,7 +11,7 @@ Using apimocker, you can develop your web or mobile app with no dependency on ba
 to allow on-the-fly configuration, and to run in node.)
 
 ## Installation
-		sudo npm install -g apimocker
+		sudo npm install -g kingsoft-apimocker
 That will install globally, and allow for easier usage.
 (On Windows, you don't need "sudo".)
 

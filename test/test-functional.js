@@ -309,15 +309,16 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 		//	 req.end();
 		// }
 
-			var postData = {'verb':'get', 'serviceUrl':'third', 'mockFile':'king.json'},
-				postOptions =	httpPostOptions('/admin/setMock', postData),
-				expected = {
-					'verb':'get',
-					'serviceUrl':'third',
-					'mockFile':'king.json',
-					'httpStatus': 200
-				};
 			it('returns correct mock file after admin/setMock was called', function(done) {
+				var postData = {'verb':'get', 'serviceUrl':'third', 'mockFile':'king.json'},
+					postOptions =	httpPostOptions('/admin/setMock', postData),
+					expected = {
+						'verb':'get',
+						'serviceUrl':'third',
+						'mockFile':'king.json',
+						'httpStatus': 200
+					};
+
 				// verifyResponseBody(postOptions, postData, expected);
 				// verifyResponseBody(httpReqOptions('/third'), null, {king: 'greg'}, done);
 
@@ -327,6 +328,25 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 					.expect(200, function() {
 						stRequest.get('/third')
 							.expect(200, {king: 'greg'}, done);
+					});
+			});
+
+			it('returns correct mock file with http status code after admin/setMock was called', function(done) {
+				var postData = {'verb':'post', 'serviceUrl':'third', 'mockFile':'king.json', 'httpStatus': 201},
+					postOptions =	httpPostOptions('/admin/setMock', postData),
+					expected = {
+						'verb':'post',
+						'serviceUrl':'third',
+						'mockFile':'king.json',
+						'httpStatus': 201
+					};
+
+				stRequest.post('/admin/setMock')
+					.set('Content-Type', 'application/json')
+					.send(postData)
+					.expect(200, function() {
+						stRequest.post('/third')
+							.expect(201, {king: 'greg'}, done);
 					});
 			});
 

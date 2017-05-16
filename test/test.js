@@ -149,6 +149,21 @@ describe('unit tests: ', function() {
       mocker.loadConfigFile();
       expect(mocker.options.mockDirectory).to.equal(untildify(testConfig.mockDirectory));
     });
+
+    it("should not allow requests that avoid pre flight by default", function () {
+      var mocker = apiMocker.createServer({quiet: true});
+      expect(mocker.options.allowAvoidPreFlight).to.equal(false);
+    });
+
+    it("should allow requests that avoid pre flight if specified in config", function () {
+      var mocker = apiMocker.createServer({quiet: true});
+      fsStub.returns(JSON.stringify({
+        "allowAvoidPreFlight": true
+      }));
+      mocker.loadConfigFile();
+      expect(mocker.options.allowAvoidPreFlight).to.equal(true);
+    });
+
   });
 
   describe("setSwitchOptions: ", function() {

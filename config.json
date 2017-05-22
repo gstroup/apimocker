@@ -56,11 +56,11 @@
         "userIduser1passwordgood": {"httpStatus": 200, "mockFile": "king.json"},
         "userIdadminpasswordgood": {"httpStatus": 200}
       }
-    }, 
+    },
       "template/:name/:number" :{
         "mockFile": "templateSample.json",
-        "enableTemplate": true,  
-	"verbs":["get"], 
+        "enableTemplate": true,
+	"verbs":["get"],
 	"contentType":"application/json"
     },
     "templateSwitchGetParams" : {
@@ -88,6 +88,36 @@
                           "switch": "$.data.user.userAge",
                           "type": "jsonpath"}],
       "contentType": "application/json"
+    },
+    "users": {
+      "mockFile": "users.json",
+      "verbs": [
+        "get"
+      ]
+    },
+    "users/:id": {
+      "mockFile": "users.json",
+      "verbs": [
+        "get"
+      ],
+      "switch": "id",
+      "jsonPathSwitchResponse": {
+        "jsonpath": "$[?(@.id==#id#)]",
+        "mockFile": "users.json",
+        "forceFirstObject": true
+      }
+    },
+    "users/role/:role": {
+      "mockFile": "users.json",
+      "verbs": [
+        "get"
+      ],
+      "switch": "role",
+      "jsonPathSwitchResponse": {
+        "jsonpath": "$[?(@.role==\"#role#\")]",
+        "mockFile": "users.json",
+        "forceFirstObject": false
+      }
     }
   }
 }

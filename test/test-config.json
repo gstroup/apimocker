@@ -108,6 +108,36 @@
                           "switch": "$.data.user.userAge",
                           "type": "jsonpath"}],
       "contentType": "application/json"
+    },
+    "users": {
+      "mockFile": "users.json",
+      "verbs": [
+        "get"
+      ]
+    },
+    "users/:id": {
+      "mockFile": "users.json",
+      "verbs": [
+        "get"
+      ],
+      "switch": "id",
+      "jsonPathSwitchResponse": {
+        "jsonpath": "$[?(@.id==#id#)]",
+        "mockFile": "users.json",
+        "forceFirstObject": true
+      }
+    },
+    "users/role/:role": {
+      "mockFile": "users.json",
+      "verbs": [
+        "get"
+      ],
+      "switch": "role",
+      "jsonPathSwitchResponse": {
+        "jsonpath": "$[?(@.role==\"#role#\")]",
+        "mockFile": "users.json",
+        "forceFirstObject": false
+      }
     }
   }
 }

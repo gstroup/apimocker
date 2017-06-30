@@ -275,6 +275,11 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 				var reqOptions = httpReqOptions('/first');
 				verifyResponseHeaders(reqOptions, {'access-control-allow-headers': 'Content-Type,my-custom-header'}, done);
 			});
+
+			it('sets Access-Control-Allow-Credentials header if corsCredentials option is set', function(done) {
+				var reqOptions = httpReqOptions('/first');
+				verifyResponseHeaders(reqOptions, {'access-control-allow-credentials': 'true'}, done);
+			});
 		});
 
 		describe('proxy: ', function () {
@@ -408,4 +413,8 @@ describe('apimocker with custom middleware: ', function () {
 		var reqOptions = httpReqOptions('/first');
 		verifyResponseHeaders(reqOptions, {'foo': 'bar'}, done);
 	});
+
+	after(function(done) {
+		mocker.stop(done);
+	});	
 });

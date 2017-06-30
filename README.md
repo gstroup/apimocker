@@ -90,6 +90,7 @@ See the sample config.json file in this package.
   "logRequestHeaders": false,
   "allowedDomains": ["abc.com"],
   "allowedHeaders": ["Content-Type", "my-custom-header"],
+  "corsCredentials": "true",
   "webServices": {
     "first": {
       "mockFile": "king.json",

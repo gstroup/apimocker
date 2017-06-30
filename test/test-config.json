@@ -5,6 +5,7 @@
   "latency": 0,
   "allowedDomains": ["abc"],
   "allowedHeaders": ["Content-Type", "my-custom-header"],
+  "corsCredentials": "true",
   "proxyURL": "http://localhost:7881",
   "webServices": {
     "first": {

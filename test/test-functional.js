@@ -154,7 +154,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 
 			it('returns correct content-type for json response, with nested path', function(done) {
 				var reqOptions = httpReqOptions('/nested/ace');
-				verifyResponseHeaders(reqOptions, {'content-type': 'application/json'}, done);
+				verifyResponseHeaders(reqOptions, {'content-type': 'application/json; charset=UTF-8'}, done);
 			});
 
 			it('returns correct content-type for xml response', function(done) {

@@ -88,6 +88,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 
 		after(function (done) {
 			mocker.stop(done);
+			testEndpoint.close();
 		});
 
 		describe('basic requests: ', function() {

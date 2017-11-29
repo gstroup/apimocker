@@ -71,10 +71,8 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 				proxyURL: 'http://localhost:' + MOCK_PORT
 			};
 			mocker = apiMocker.createServer(options).setConfigFile('test/test-config.json');
-			mocker.start(null, done);
-		});
+			mocker.start(null);
 
-		before(function (done) {
 			testEndpoint = http.createServer(function (req, res) {
 				if (req.url === '/non-mocked') {
 					res.writeHead(200, {'Content-Type': 'application/json'});
@@ -88,6 +86,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 
 		after(function (done) {
 			mocker.stop(done);
+			testEndpoint.close();
 		});
 
 		describe('basic requests: ', function() {

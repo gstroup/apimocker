@@ -3,28 +3,28 @@
   "description": "Simple HTTP server that returns mock service API responses to your front end.",
   "version": "0.5.1",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=9.0.0"
   },
   "author": "Greg Stroup <gstroup@gmail.com>",
   "dependencies": {
-    "JSONPath": ">=0.10.0",
-    "body-parser": "~1.4.3",
-    "commander": ">=1",
-    "express": "~4.5",
-    "express-http-proxy": ">=0.7.0",
-    "express-xml-bodyparser": "^0.2.2",
-    "underscore": ">=1",
-    "untildify": "^2.0.0"
+    "JSONPath": "0.11.2",
+    "body-parser": "1.18.2",
+    "commander": "2.11.0",
+    "express": "4.16.2",
+    "express-http-proxy": "1.1.0",
+    "express-xml-bodyparser": "0.3.0",
+    "underscore": "1",
+    "untildify": "3.0.2"
   },
   "devDependencies": {
-    "chai": ">=1.5.0",
-    "grunt": "^1.0.0",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-contrib-watch": ">=0.3.1",
-    "grunt-mocha-cli": "^2.1.0",
-    "mocha": ">=1.8.2",
-    "sinon": ">=1.6.0",
-    "supertest": "^1.2.0"
+    "chai": "4.1.2",
+    "grunt": "1.0.1",
+    "grunt-contrib-jshint": "1.1.0",
+    "grunt-contrib-watch": "1.0.0",
+    "grunt-mocha-cli": "3.0.0",
+    "mocha": "4.0.1",
+    "sinon": "4.1.2",
+    "supertest": "3.0.0"
   },
   "main": "./lib/apimocker.js",
   "bin": {

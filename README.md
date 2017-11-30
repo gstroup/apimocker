@@ -214,7 +214,7 @@ will return data from the mock file called "king.json", with HTTP status 200.
 Any other password will return "sorry.json" with HTTP status 401.
 
 #### JsonPath Support
-For complex JSON requests, JsonPath expressions are supported in the switch parameter. If your switch parameter begins with "$." then it will be evaluated as a JsonPath expression.  
+For complex JSON requests, JsonPath expressions are supported in the switch parameter. If your switch parameter begins with "$." then it will be evaluated as a JsonPath expression.
 For example to switch the response based on the value of the last occurence of ItemId in a JSON request, use configuration as shown for "aceinsleeve":
 ```js
 "switch": "$..ItemId[(@.length-1)]",
@@ -227,6 +227,76 @@ For example to switch the response based on the value of the last occurence of I
 ```
 According to this configuration, if the value of the last occurence of ItemId is 4, the mockFile "ItemId4.aceinsleeve.json" will be retured with a HTTP status code of 500. Otherwise, mockFile "aceinsleeve.json"
 will be returned with HTTP status 200. Note: If the JsonPath expression evaluates to more then 1 element (for example, all books cheaper than 10 as in $.store.book[?(@.price < 10)] ) then the first element is considered for testing the value.
+
+#### JsonPath with Switch Response support
+For requests that without any params should be returning a list of items (e.g. `/users`), and with some param just single item (e.g. `/users/:id`) there are special configuration options provided to select those single items from prepared mock json file containing list of items. No need to create separate files per each parameter.
+Example mock file could look like this:
+```js
+[
+    {
+        "name": "Han Solo",
+        "role": "pilot",
+        "id": 1
+    },
+    {
+        "name": "Chewbacca",
+        "role": "first officer",
+        "id": 2
+    },
+    {
+        "name": "C3P0",
+        "role": "droid",
+        "id": 3
+    },
+    {
+        "name": "R2D2",
+        "role": "droid",
+        "id": 4
+    }
+]
+```
+
+and example configurataion like this:
+
+```js
+"users": {
+  "mockFile": "users.json",
+  "verbs": [
+    "get"
+  ]
+},
+"users/:id": {
+  "mockFile": "users.json",
+  "verbs": [
+    "get"
+  ],
+  "switch": "id",
+  "jsonPathSwitchResponse": {
+      "jsonpath": "$[?(@.id==#id#)]",
+      "mockFile": "users.json",
+      "forceFirstObject": true
+  }
+},
+"users/role/:role": {
+  "mockFile": "users.json",
+  "verbs": [
+    "get"
+  ],
+  "switch": "role",
+  "jsonPathSwitchResponse": {
+    "jsonpath": "$[?(@.role==\"#role#\")]",
+    "mockFile": "users.json",
+    "forceFirstObject": false
+  }
+}
+```
+
+The first config property (`users`) contains just a standard `get` for all users. The second (`users/:id`) and third though (`users/role/:role`), contains a proper switch configuration and `jsonPathSwitchResponse` config that contains following parameters:
+* jsonpath - this is a JsonPath selector for objects to match inside `mockFile`; parameters values from switch are transferred to it's corresponding names wrapped in `#` characters,
+* mockFile - a file name with mocked response to search through,
+* forceFirstOject - (default: false) this is a switch telling if we should return all found items as an array, or select first one and return it as an object.
+
+So it is possible to select just a single user by id as an object (`/users/1`), but it is also possible to return multiple users as an array (`users/role/droid`).
 
 #### RegExp Support
 As an alternative to JsonPath, Javascript Regular Expressions are supported in the switch parameter.  See unit tests in the test.js file for examples of using Regular Expressions.
@@ -263,7 +333,7 @@ templateSample.json
 {
   "Name": "@Name",
   "Number": "@Number"
-}   
+}
 ```
 
 When you call /John/12345 you will be returned:

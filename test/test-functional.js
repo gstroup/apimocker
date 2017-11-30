@@ -227,6 +227,26 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 			});
 		});
 
+		describe('jsonPatch switch response', function () {
+			it('returns proper single object from mockFile', function (done) {
+				var reqOptions = httpReqOptions('/users/1');
+				verifyResponseBody(reqOptions, null, { name: 'Han Solo', role: 'pilot', id: 1 }, done);
+			});
+			it('returns proper array of results', function (done) {
+				var reqOptions = httpReqOptions('/users/role/droid');
+				var expected = [{
+					name: 'C3P0',
+					role: 'droid',
+					id: 3
+				}, {
+					name: 'R2D2',
+					role: 'droid',
+					id: 4
+				}];
+				verifyResponseBody(reqOptions, null, expected, done);
+			});
+		});
+
 		describe('http status: ', function() {
 			it('returns 404 for incorrect path', function(done) {
 				stRequest.get('/badurl')

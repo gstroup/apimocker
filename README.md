@@ -76,7 +76,8 @@ See the sample config.json file in this package.
 * Request headers can be logged, with the `logRequestHeaders` setting.
 * Alternate URL paths can be specified with the `alternatePaths` setting.
 * With the `enableTemplate` setting, values from the request can be inserted into the mock response.
-* With the `templateSwitch` setting, parameter names and values from the request can be mapped and inserted into the mock response, including POST requests and powerful JSONPath parameter substitution into a JSON POST BODY.
+* With the `templateSwitch` setting, parameter names and values from the request can be mapped and inserted into the mock response, including POST requests and powerful JSONPath parameter substitution into a JSON POST body.
+* Set the `allowAvoidPreFlight` config option to true to allow requests sent with `Content-Type: text/plain` to be processed as json if possible. (default is false).  This allows apimocker to work with servers such as Parse Server.
 
 ```js
 {

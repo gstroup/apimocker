@@ -1,4 +1,8 @@
 ## Versions
+#### 1.0.0
+Stop support for old node versions < 4.  Update dependency versions.  Thanks @kopach ! 
+Add Parse server support.  Thanks @ipuiu !
+Add jsonPathSwitchResponse to support return lists of objects from a single mock file.  Thanks @ketonal !
 #### 0.5.1
 Add option for CORS credentials.  Thanks @zeflq !
 Allow HTTP status to be updated from /admin/setMock.  Thanks @jordanhamill !

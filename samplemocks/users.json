@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Han Solo",
+        "role": "pilot",
+        "id": 1
+    },
+    {
+        "name": "Chewbacca",
+        "role": "first officer",
+        "id": 2
+    },
+    {
+        "name": "C3P0",
+        "role": "droid",
+        "id": 3
+    },
+    {
+        "name": "R2D2",
+        "role": "droid",
+        "id": 4
+    }
+]

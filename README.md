@@ -318,7 +318,7 @@ To return additional custom headers in the response, set the headers map in the 
 In this example the headers x-requested-by and dummy will be returned on the response.  contentType can be specified separately, as it is above, or specified as "content-type" in the "headers" map.
 
 ### Templating your JSON
-You can take values in the route and insert them into your json. All you need to do is set "enableTemplate" to true, specify a content type and have a matching @ in the mock json file. Here's an example:
+You can take values in the route and insert them into your json. All you need to do is set "enableTemplate" to true, specify a content type and have a matching @ (or in the case of unquoted numbers, use @@) in the mock json file. Here's an example:
 
 config.json
 ```js
@@ -333,7 +333,7 @@ templateSample.json
 ```js
 {
   "Name": "@Name",
-  "Number": "@Number"
+  "Number": "@@Number"
 }
 ```
 
@@ -346,9 +346,9 @@ When you call /John/12345 you will be returned:
 ```
 
 ### TemplateSwitch your JSON
-The `templateSwitch` setting uses the same structure as the `switch` setting and similar but more flexible than the `enableTemplate` feature in order to map parameter names and values from the request  into the mock response. GET and POST requests are supported including  powerful JSONPath parameter substitution even substitution into a JSON POST BODY. All you need to do is add the templateSwitch section, specify a content type for the template file, and have a matching @ in the template file.
+The `templateSwitch` setting uses the same structure as the `switch` setting and similar but more flexible than the `enableTemplate` feature in order to map parameter names and values from the request  into the mock response. GET and POST requests are supported including  powerful JSONPath parameter substitution even substitution into a JSON POST BODY. All you need to do is add the templateSwitch section, specify a content type for the template file, and have a matching @ (or in the case of unquoted numbers, use @@) in the template file.
 
-Here are two templateSwitch examples showing the flexibility of the templateSwitch syntax. The example JSON mock template is the same format as the enableTemplate using @ variable name substitution.
+Here are two templateSwitch examples showing the flexibility of the templateSwitch syntax. The example JSON mock template is the same format as the enableTemplate using @ and @@ variable name substitution.
 
 config.json with full switch attributes:
 ```js
@@ -392,6 +392,7 @@ with referral_success.json:
 ```js
 {
     "data" : {
+      "partner_user_id": "@@partnerUserId",
       "referral_id": "21EC2020-3AEA-4069-A2DD-08002B30309D",
       "download_url" : "http://localhost:7878/app-download?affiliate_key=@affiliateKey&partner_user_id=@partnerUserId&referral_id=21EC2020-3AEA-4069-A2DD-08002B30309D&email=@email&phone=@phone"
     }
@@ -402,7 +403,7 @@ When you POST to /referral with a JSON POST body of:
 ```js
    {
        "data": {
-           { "partner_user_id": "123456789",
+             "partner_user_id": 123456789,
              "affiliate_key": "ABCDEFG12345",
              "contact_details": {
                  "email": "test@apimocker.com",
@@ -416,6 +417,7 @@ You will be returned the referral_success.json with the post body parameters ins
 ```js
 {
     "data" : {
+      "partner_user_id": 123456789,
       "referral_id": "21EC2020-3AEA-4069-A2DD-08002B30309D",
       "download_url" : "http://localhost:7878/app-download?affiliate_key=ABCDEFG12345&partner_user_id=123456789&referral_id=21EC2020-3AEA-4069-A2DD-08002B30309D&email=test%40apimocker.com&phone=800-555-1212"
     }

@@ -317,8 +317,12 @@ To return additional custom headers in the response, set the headers map in the 
 ```
 In this example the headers x-requested-by and dummy will be returned on the response.  contentType can be specified separately, as it is above, or specified as "content-type" in the "headers" map.
 
-### Templating your JSON
-You can take values in the route and insert them into your json. All you need to do is set "enableTemplate" to true, specify a content type and have a matching @ (or in the case of unquoted numbers, use @@) in the mock json file. Here's an example:
+### Templating your response
+Templating is a powerful feature which allows values in the route,  request parameters, or POST data to be inserted into the response, be it JSON, HTML, etc.
+
+To utilize this capability, in the request string, insert a colon followed by a variable identifier at the location where the value should be substituted. Then set "enableTemplate" to true, specify a content type, and in the response file, wherever the substitution should appear, insert the '@' symbol followed by the chosen variable identifier. This placeholder can appear anywhere in the mock template file, including in multiple places.
+
+ In this first example, the values represented by Name and Number will be taken from the request and substituted into the response:
 
 config.json
 ```js
@@ -345,10 +349,12 @@ When you call /John/12345 you will be returned:
 }
 ```
 
-### TemplateSwitch your JSON
-The `templateSwitch` setting uses the same structure as the `switch` setting and similar but more flexible than the `enableTemplate` feature in order to map parameter names and values from the request  into the mock response. GET and POST requests are supported including  powerful JSONPath parameter substitution even substitution into a JSON POST BODY. All you need to do is add the templateSwitch section, specify a content type for the template file, and have a matching @ (or in the case of unquoted numbers, use @@) in the template file.
+### TemplateSwitch your response
+Another form of templating uses the `templateSwitch` setting. This feature uses the same structure as the `switch` setting and is similar but more flexible than the `enableTemplate` feature in order to map parameter names and values from the request into the mock  template response. GET and POST requests are supported including powerful JSONPath parameter substitution, even substitution into a JSON POST BODY.
 
-Here are two templateSwitch examples showing the flexibility of the templateSwitch syntax. The example JSON mock template is the same format as the enableTemplate using @ and @@ variable name substitution.
+To utilize this capability, add the templateSwitch section, specify a content type for the template file, and in the response file, wherever the substitution should appear, insert the '@' symbol followed by the chosen variable identifier. This placeholder can appear anywhere in the mock template file, including in multiple places.
+
+The two templateSwitch examples show the flexibility of the templateSwitch syntax.
 
 config.json with full switch attributes:
 ```js
@@ -374,7 +380,7 @@ config.json with full switch attributes:
     },
 ```
 
-config.json using key == switch, and type as default:
+config.json using key == switch, and type as default. This route returns an HTML mock template.
 ```js
     "partner-join" : {
         "mockFile": "ijd_partner_smartbanner.html",
@@ -399,7 +405,7 @@ with referral_success.json:
 }
 ```
 
-When you POST to /referral with a JSON POST body of:
+A POST request to /referral with a JSON POST body of:
 ```js
    {
        "data": {
@@ -413,7 +419,7 @@ When you POST to /referral with a JSON POST body of:
    }
 ```
 
-You will be returned the referral_success.json with the post body parameters inserted as follows:
+Will  result in the referral_success.json with the POST body parameters inserted as follows:
 ```js
 {
     "data" : {
@@ -423,6 +429,9 @@ You will be returned the referral_success.json with the post body parameters ins
     }
 }
 ```
+NOTE: In the template and templateSwitch examples above, special cases are included which will now be described below:
+
+For a JSON template, if the value for the JSON key to be returned should be a numeric value, not a value wrapped in quotes, it is recommended to use the following convention: prefix the variable identifier with two '@' instead of one and within quotes: (e.g: "@@Number"). This tells the template parser to replace the quotes immediately before and after the placeholder as part of the templating process. This allows the mock JSON templates to remain valid JSON while still providing the ability to return numeric-only values.
 
 ### Adding custom middleware
 For advanced users, apimocker accepts any custom middleware functions you'd like to add.  The `middlewares` property is an array of middleware functions you can modify.  Here's a basic example:

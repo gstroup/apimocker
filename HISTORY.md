@@ -1,4 +1,6 @@
 ## Versions
+#### 1.0.1
+Support non-string values in templates.  Thanks again @ferrerod !
 #### 1.0.0
 Stop support for old node versions < 4.  Update dependency versions.  Thanks @kopach ! 
 Add Parse server support.  Thanks @ipuiu !

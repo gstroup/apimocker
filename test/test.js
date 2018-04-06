@@ -173,7 +173,6 @@ describe('unit tests: ', function() {
       mocker = apiMocker.createServer({quiet: true});
       svcOptions = {switch: "productId", mockFile: "base"};
       reqStub = {
-        param: function() {return null;},
         body: {}
       };
     });
@@ -184,7 +183,7 @@ describe('unit tests: ', function() {
     });
 
     it("sets correct mock file path if switch is found in query string", function() {
-      reqStub.param = function() {return "123";};
+      reqStub.query = {productId: "123"};
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("productId123.base");
     });

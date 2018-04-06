@@ -1,4 +1,7 @@
 ## Versions
+#### 1.0.2
+Updates to remove deprecated express functions. (Fix for issue #88.)  Thanks @ivank !
+Fix URL decoding for mock file path.  Thanks @twalker !
 #### 1.0.1
 Support non-string values in templates.  Thanks again @ferrerod !
 #### 1.0.0

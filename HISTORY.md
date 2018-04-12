@@ -1,4 +1,7 @@
 ## Versions
+#### 1.0.3
+Correctly read params from request path.  (Fix for issue #91.)
+Thanks again @twalker !
 #### 1.0.2
 Updates to remove deprecated express functions. (Fix for issue #88.)  Thanks @ivank !
 Fix URL decoding for mock file path.  Thanks @twalker !

@@ -173,7 +173,10 @@ describe('unit tests: ', function() {
       mocker = apiMocker.createServer({quiet: true});
       svcOptions = {switch: "productId", mockFile: "base"};
       reqStub = {
-        body: {}
+        body: {},
+        params: {},
+        query: {},
+        header: () => {}
       };
     });
 
@@ -194,14 +197,20 @@ describe('unit tests: ', function() {
       expect(svcOptions.mockFile).to.equal("productId678.base");
     });
 
+    it("sets correct mock file path if switch is found in route parameter", function() {
+      reqStub.params = { productId: "123" };
+      mocker.setSwitchOptions(svcOptions, reqStub);
+      expect(svcOptions.mockFile).to.equal("productId123.base");
+    });
+
     it("sets correct mock file path if switch is found in request header with matching case", function() {
-      reqStub.headers = {productId: "765"};
+      reqStub.header = () => "765";
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("productId765.base");
     });
 
     it("sets correct mock file path if switch is found in request header with different case", function() {
-      reqStub.headers = {PRODUCTid: "765"};
+      reqStub.header = () => "765";
       svcOptions = {switch: "PRodUCTID", mockFile: "base"};
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal("PRodUCTID765.base");

@@ -1,6 +1,5 @@
 {
   "note": "used for functional tests.",
-  "mockDirectory": "./samplemocks/",
   "port": "7879",
   "latency": 0,
   "allowedDomains": ["abc"],
@@ -140,6 +139,25 @@
         "mockFile": "users.json",
         "forceFirstObject": false
       }
+    },
+    "upload": {
+      "verbs": ["post"],
+      "switch": "name",
+      "switchResponses": {
+        "nameking": {"mockFile": "king.json"}
+      },
+      "mockFile": "json",
+      "uploadDirectory": "uploads"
+    },
+    "upload/many": {
+      "verbs": ["post"],
+      "mockFile": "sorry.json",
+      "uploadDirectory": "uploads"
+    },
+    "upload-form": {
+      "verbs": ["get"],
+      "mockFile": "upload-form.html",
+      "contentType": "text/html"
     }
   }
 }

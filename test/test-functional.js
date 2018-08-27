@@ -4,27 +4,25 @@ var chai = require('chai'),
 	expect = chai.expect,
 	http = require('http'),
 	_ = require('underscore'),
+	fs = require('fs'),
+	path = require('path'),
 	supertest = require('supertest'),
 	stRequest = supertest('http://localhost:7879'),
-	httpReqOptions = function(path) {
+	httpReqOptions = function(path, method) {
 		return {
 			hostname: 'localhost',
 			port: 7879,
-			method: 'GET',
+			method: method || 'GET',
 			path: path
 		};
 	},
 	httpPostOptions = function(path, data) {
-		return {
-			hostname: 'localhost',
-			port: 7879,
-			method: 'POST',
-			path: path,
+		return _.extend(httpReqOptions(path, 'POST'), {
 			headers: {
 				'Content-Type': 'application/json',
 				'Content-Length': data.length
 			}
-		};
+		});
 	},
 	mocker,
 	testEndpoint,
@@ -56,10 +54,17 @@ function verifyResponseBody(httpReqOptions, postData, expected, done) {
 			}
 		});
 	});
-	if (postData) {
+
+	if (!!postData) {
 		req.write(postData);
 	}
 	req.end();
+}
+
+function clearDirSync(dirname) {
+	_.each(fs.readdirSync(dirname), function (fname) {
+		fs.unlinkSync(path.join(dirname, fname));
+	});
 }
 
 describe('Functional tests using an http client to test "end-to-end": ', function() {
@@ -68,6 +73,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 		before(function startMockerForFuncTests(done) {
 			var options = {
 				quiet: true,
+				mockDirectory: "./samplemocks/",
 				proxyURL: 'http://localhost:' + MOCK_PORT
 			};
 			mocker = apiMocker.createServer(options).setConfigFile('test/test-config.json');
@@ -416,6 +422,7 @@ describe('Functional tests using an http client to test "end-to-end": ', functio
 		before(function (done) {
 			var options = {
 				quiet: true,
+				mockDirectory: "./samplemocks/",
 				proxyURL: 'http://localhost:' + MOCK_PORT,
 				basepath: '/apimocker'
 			};
@@ -443,7 +450,8 @@ describe('apimocker with custom middleware: ', function () {
 			res.header('foo', 'bar');
 			next();
 		};
-		var mocker = apiMocker.createServer({quiet: true}).setConfigFile('test/test-config.json');
+		var mocker = apiMocker.createServer({quiet: true, mockDirectory: "./samplemocks/" })
+			.setConfigFile('test/test-config.json');
 		mocker.middlewares.unshift(customMiddleware);
 		mocker.start(null, done);
 	});
@@ -455,5 +463,56 @@ describe('apimocker with custom middleware: ', function () {
 
 	after(function(done) {
 		mocker.stop(done);
+	});	
+});
+
+describe('apimocker with file upload: ', function () {
+	var apiMocker = require('../lib/apimocker.js');
+	
+	before(function(done) {
+		var config = {
+					quiet: true,
+					mockDirectory: "./uploads/",
+					uploadRoot: "./uploads/"
+				},
+				mocker = apiMocker.createServer(config).setConfigFile('test/test-config.json');
+		mocker.start(null, done);
+	});
+
+	it('single file upload', function(done) {
+		var expected = { "king": "greg" };
+
+		stRequest.post('/upload?name=king')
+			.attach('sampleFile', 'samplemocks/king.json')
+			.expect(200)
+			.end(function (err, res){
+				expect(err).to.be.null;
+				expect(res.body).to.deep.equal(expected);
+				if (done) {
+					done();
+				}
+			});
+	});
+
+	it('multi file upload', function(done) {
+		stRequest.post('/upload/many')
+			.attach('sampleFile', 'samplemocks/sorry.json')
+			.attach('sampleFile', 'samplemocks/users.json')
+			.attach('sampleFile', 'samplemocks/ace.json')
+			.expect(200)
+			.end(function (err){
+				expect(err).to.be.null;
+				expect(fs.existsSync('uploads/sorry.json')).to.be.true;
+				expect(fs.existsSync('uploads/users.json')).to.be.true;
+				expect(fs.existsSync('uploads/ace.json')).to.be.true;
+				if (done) {
+					done();
+				}
+			});
+	});
+
+	after(function(done) {
+		mocker.stop(done);
+		clearDirSync('./uploads/')
 	});	
 });

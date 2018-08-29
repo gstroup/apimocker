@@ -83,7 +83,7 @@ See the sample config.json file in this package.
 * With the `templateSwitch` setting, parameter names and values from the request can be mapped and inserted into the mock response, including POST requests and powerful JSONPath parameter substitution into a JSON POST body.
 * Set the `allowAvoidPreFlight` config option to true to allow requests sent with `Content-Type: text/plain` to be processed as json if possible. (default is false).  This allows apimocker to work with servers such as Parse Server.
 
-```js
+```json
 {
   "note": "This is a sample config file. You should change the mockDirectory to a more reasonable path.",
   "mockDirectory": "/usr/local/lib/node_modules/apimocker/samplemocks/",
@@ -165,13 +165,17 @@ See the sample config.json file in this package.
       "verbs":["get"],
       "enableTemplate": true,
       "contentType":"application/json"
+    },
+    "raw": {
+      "mockBody": "{ \"text\" : \"Good Job!\" }",
+      "verbs": ["all"]
     }
   }
 }
 ```
 The most interesting part of the configuration file is the webServices section.
-This section contains a JSON object describing each service.  The key for each service object is the service URL (endpoint.)  Inside each service object, the "mockFile" and "verbs" are required.  All other attributes of the service objects are optional.
-For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay.
+This section contains a JSON object describing each service.  The key for each service object is the service URL (endpoint.)  Inside each service object, the `mockFile` (or `mockBody`) and `verbs` are required.  All other attributes of the service objects are optional.
+For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay. Alternatively one can specify the `mockBody` firectly, bypassing the need for a specific mock file.
 If you'd like to return different responses for a single URL with different HTTP verbs ("get", "post", etc) then you'll need to add the "responses" object.  See above for the "second" service.  The "responses" object should contain keys for the HTTP verbs, and values describing the response for each verb.
 
 ### Switch response based on request parameter

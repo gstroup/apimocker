@@ -118,6 +118,16 @@
         "mockFile": "users.json",
         "forceFirstObject": false
       }
+    },
+    "upload": {
+      "verbs": ["post"],
+      "mockFile": "uploads/sampleFile",
+      "uploadDirectory": "uploads"
+    },
+    "upload-form": {
+      "verbs": ["get"],
+      "mockFile": "upload-form.html",
+      "contentType": "text/html"
     }
   }
 }

@@ -1,4 +1,5 @@
 node_modules/*
 mocks/*
+uploads/*
 .DS_Store
 .vscode/*

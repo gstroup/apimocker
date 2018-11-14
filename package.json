@@ -7,12 +7,12 @@
   },
   "author": "Greg Stroup <gstroup@gmail.com>",
   "dependencies": {
-    "JSONPath": "0.11.2",
     "body-parser": "1.18.2",
     "commander": "2.11.0",
     "express": "4.16.2",
     "express-http-proxy": "1.1.0",
     "express-xml-bodyparser": "0.3.0",
+    "jsonpath": "1.0.0",
     "multer": ">=1.3.1",
     "underscore": "^1.9.1",
     "untildify": "3.0.2"

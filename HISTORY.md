@@ -1,4 +1,7 @@
 ## Versions
+#### 1.0.4
+Switch to jsonpath from JSONPath.  (Fix for issue #97.)  Thanks @twalker !
+Support file upload via multer.  Thanks @thejonan !
 #### 1.0.3
 Correctly read params from request path.  (Fix for issue #91.)
 Thanks again @twalker !

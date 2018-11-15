@@ -3,7 +3,7 @@
   "description": "Simple HTTP server that returns mock service API responses to your front end.",
   "version": "1.0.5",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.14.4"
   },
   "author": "Greg Stroup <gstroup@gmail.com>",
   "dependencies": {
@@ -19,10 +19,13 @@
   },
   "devDependencies": {
     "chai": "4.1.2",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "grunt": "^1.0.3",
-    "grunt-contrib-jshint": "1.1.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-mocha-cli": "^4.0.0",
+    "gruntify-eslint": "^5.0.0",
     "mocha": "4.0.1",
     "sinon": "4.1.2",
     "supertest": "3.0.0"
@@ -59,7 +62,8 @@
   },
   "scripts": {
     "test": "mocha test/*.js",
-    "start": "node bin/apimocker.js -c config.json"
+    "start": "node bin/apimocker.js -c config.json",
+    "lint": "eslint ."
   },
   "license": "MIT"
 }

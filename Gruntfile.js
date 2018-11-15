@@ -4,52 +4,49 @@
 // use this if you want to match all subfolders:
 // 'test/spec/**/*.js'
 
-/*global module:false*/
-module.exports = function (grunt) {
-    'use strict';
+/* global module:false */
+module.exports = (grunt) => {
+  grunt.initConfig({
+    mochacli: {
+      options: {
+        globals: ['should'],
+        timeout: 3000,
+        ignoreLeaks: false,
+        ui: 'bdd',
+        reporter: 'spec',
+      },
 
-    grunt.initConfig({
+      all: { src: 'test/{,*/}*.js' },
+    },
 
-        mochacli: {
-            options: {
-              globals: ['should'],
-              timeout: 3000,
-              ignoreLeaks: false,
-              ui: 'bdd',
-              reporter: 'spec'
-            },
+    watch: {
+      files: [
+        'Gruntfile.js',
+        'lib/apimocker.js',
+        'test/{,*/}*.js',
+      ],
+      tasks: ['eslint', 'test'],
+    },
 
-            all: { src: 'test/{,*/}*.js' }
-        },
+    eslint: {
+      all: [
+        'Gruntfile.js',
+        'lib/apimocker.js',
+        'test/{,*/}*.js',
+      ],
+    },
+  });
 
-        watch: {
-            files: [
-                'Gruntfile.js',
-                'lib/apimocker.js',
-                'test/{,*/}*.js'
-            ],
-            tasks: ['jshint', 'test']
-        },
+  grunt.loadNpmTasks('grunt-mocha-cli');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('gruntify-eslint');
 
-        jshint: {
-            all: [
-                'Gruntfile.js',
-                'lib/apimocker.js',
-                'test/{,*/}*.js'
-            ]
-        }
-    });
+  grunt.registerTask('test', [
+    'mochacli',
+  ]);
 
-    grunt.loadNpmTasks('grunt-mocha-cli');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-
-    grunt.registerTask('test', [
-        'mochacli'
-    ]);
-
-    grunt.registerTask('default', [
-        'jshint',
-        'test'
-    ]);
+  grunt.registerTask('default', [
+    'eslint',
+    'test',
+  ]);
 };

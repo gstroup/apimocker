@@ -236,7 +236,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
       });
     });
 
-    describe('jsonPatch switch response', () => {
+    describe('jsonPath switch response', () => {
       it('returns proper single object from mockFile', (done) => {
         const reqOptions = createHttpReqOptions('/users/1');
         verifyResponseBody(reqOptions, null, { name: 'Han Solo', role: 'pilot', id: 1 }, done);

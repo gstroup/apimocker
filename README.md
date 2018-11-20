@@ -65,6 +65,7 @@ On startup, config values are loaded from the config.json file.
 During runtime, mock services can be configured on the fly.
 See the sample config.json file in this package.
 
+* Config files can be either `.json` format, or in `.js`. When using `.js`, the module should export a config object, or a function that returns a config object.
 * Services can be configured to return different responses, depending on a request parameter or request header.
 * Content-type for a service response can be set for each service.  If not set, content-type defaults to application/xml for .xml files, and application/json for .json files.
 * HTTP Status code can be set for each service.

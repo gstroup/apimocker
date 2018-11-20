@@ -18,7 +18,7 @@
     "untildify": "3.0.2"
   },
   "devDependencies": {
-    "chai": "4.1.2",
+    "chai": "^4.2.0",
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -26,9 +26,10 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-mocha-cli": "^4.0.0",
     "gruntify-eslint": "^5.0.0",
-    "mocha": "4.0.1",
-    "sinon": "4.1.2",
-    "supertest": "3.0.0"
+    "mocha": "^5.2.0",
+    "mock-require": "^3.0.2",
+    "sinon": "^7.1.1",
+    "supertest": "^3.3.0"
   },
   "main": "./lib/apimocker.js",
   "bin": {

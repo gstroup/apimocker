@@ -2,51 +2,16 @@
 // run "grunt test", or run "mocha" in this test directory to execute.
 
 const path = require('path');
-const fs = require('fs');
 // better assertions than node offers.
 const chai = require('chai');
 const sinon = require('sinon');
+const mockRequire = require('mock-require');
 const untildify = require('untildify');
 const apiMocker = require('../lib/apimocker.js');
 
 const { assert, expect } = chai;
 
 describe('unit tests: ', () => {
-  const testConfig = {
-    mockDirectory: '~/foo/bar/samplemocks/',
-    quiet: true,
-    port: '7879',
-    latency: 50,
-    logRequestHeaders: true,
-    allowedDomains: ['abc'],
-    allowedHeaders: ['my-custom1', 'my-custom2'],
-    webServices: {
-      first: {
-        verbs: ['get', 'post'],
-        responses: {
-          get: {
-            mockFile: 'king.json',
-          },
-          post: {
-            mockFile: 'ace.json',
-          },
-        },
-        alternatePaths: ['1st'],
-      },
-      'nested/ace': {
-        mockFile: 'ace.json',
-        verbs: ['get'],
-      },
-      'var/:id': {
-        mockFile: 'xml/queen.xml',
-        verbs: ['get'],
-      },
-      queen: {
-        mockFile: 'xml/queen.xml',
-        verbs: ['all'],
-      },
-    },
-  };
   chai.config.includeStack = true;
 
   describe('createServer: ', () => {
@@ -83,57 +48,91 @@ describe('unit tests: ', () => {
     });
 
     it('should set a relative path correctly using node path resolver', () => {
-      // var mocker = apiMocker.createServer();
-      assert.equal(path.resolve('../config.json'), apiMocker.setConfigFile('../config.json').configFilePath);
+      assert.equal(path.resolve('../config.json'), mocker.setConfigFile('../config.json').configFilePath);
     });
 
     it('should set an absolute path correctly', () => {
       const absolutePath = path.normalize('/foo/bar/config.json');
-      expect(apiMocker.setConfigFile(absolutePath).configFilePath).to.equal(absolutePath);
+      expect(mocker.setConfigFile(absolutePath).configFilePath).to.equal(absolutePath);
     });
 
     it('sets no path, if none is passed in', () => {
-      expect(apiMocker.setConfigFile().configFilePath).to.equal(undefined);
+      expect(mocker.setConfigFile().configFilePath).to.equal(undefined);
     });
   });
 
   describe('loadConfigFile: ', () => {
-    let fsStub;
-
-    beforeEach(() => {
-      fsStub = sinon.stub(fs, 'readFileSync'); // fsStub is a function
-    });
+    // Note:
+    // Starting mock config paths with a / or ~ to avoid
+    // the absoulute path resolution within setConfig which will not match
+    // the path mocked by mock-require.
+    const mockConfig = {
+      mockDirectory: '~/foo/bar/samplemocks/',
+      quiet: true,
+      port: '7879',
+      latency: 50,
+      logRequestHeaders: true,
+      allowedDomains: ['abc'],
+      allowedHeaders: ['my-custom1', 'my-custom2'],
+      webServices: {
+        first: {
+          verbs: ['get', 'post'],
+          responses: {
+            get: {
+              mockFile: 'king.json',
+            },
+            post: {
+              mockFile: 'ace.json',
+            },
+          },
+          alternatePaths: ['1st'],
+        },
+        'nested/ace': {
+          mockFile: 'ace.json',
+          verbs: ['get'],
+        },
+        'var/:id': {
+          mockFile: 'xml/queen.xml',
+          verbs: ['get'],
+        },
+        queen: {
+          mockFile: 'xml/queen.xml',
+          verbs: ['all'],
+        },
+      },
+    };
 
     afterEach(() => {
-      fsStub.restore();
+      mockRequire.stopAll();
     });
 
     it('sets options from new format mock config file', () => {
       const mocker = apiMocker.createServer({ quiet: true });
-      fsStub.returns(JSON.stringify(testConfig));
-      mocker.setConfigFile('any value');
+      mockRequire('/mock-config.json', mockConfig);
+      mocker.setConfigFile('/mock-config.json');
       mocker.loadConfigFile();
-      expect(mocker.options.port).to.equal(testConfig.port);
-      expect(mocker.options.allowedDomains[0]).to.equal(testConfig.allowedDomains[0]);
+
+      expect(mocker.options.port).to.equal(mockConfig.port);
+      expect(mocker.options.allowedDomains[0]).to.equal(mockConfig.allowedDomains[0]);
       expect(mocker.options.allowedHeaders[0]).to.equal('my-custom1');
       expect(mocker.options.allowedHeaders[1]).to.equal('my-custom2');
 
       expect(mocker.options.webServices.first)
         .to.eql(mocker.options.webServices['1st']);
       delete mocker.options.webServices['1st'];
-      expect(mocker.options.webServices).to.deep.equal(testConfig.webServices);
+      expect(mocker.options.webServices).to.deep.equal(mockConfig.webServices);
 
       expect(mocker.options.quiet).to.equal(true);
-      expect(mocker.options.latency).to.equal(testConfig.latency);
-      expect(mocker.options.logRequestHeaders).to.equal(testConfig.logRequestHeaders);
+      expect(mocker.options.latency).to.equal(mockConfig.latency);
+      expect(mocker.options.logRequestHeaders).to.equal(mockConfig.logRequestHeaders);
     });
 
     it('combines values from defaults, options, and config file', () => {
       let mocker = apiMocker.createServer({ quiet: true, test: 'fun', port: 2323 });
-      fsStub.returns(JSON.stringify({ port: 8765, latency: 99, logRequestHeaders: false }));
-      mocker = mocker.setConfigFile('another abitrary value');
-
+      mockRequire('/partial-config', { port: 8765, latency: 99, logRequestHeaders: false });
+      mocker = mocker.setConfigFile('/partial-config');
       mocker.loadConfigFile();
+
       // value from config file
       expect(mocker.options.port).to.equal(8765);
       expect(mocker.options.latency).to.equal(99);
@@ -147,9 +146,31 @@ describe('unit tests: ', () => {
 
     it('expands ~ in mockDirectory setting', () => {
       const mocker = apiMocker.createServer({ quiet: true });
-      fsStub.returns(JSON.stringify(testConfig));
+      mockRequire('/mock-config.json', mockConfig);
+      mocker.setConfigFile('/mock-config.json');
       mocker.loadConfigFile();
-      expect(mocker.options.mockDirectory).to.equal(untildify(testConfig.mockDirectory));
+
+      expect(mocker.options.mockDirectory).to.equal(untildify(mockConfig.mockDirectory));
+    });
+
+    it('supports js config files that export a function', () => {
+      const mocker = apiMocker.createServer({ quiet: true });
+      const port = '1111';
+      mockRequire('/partial-config', () => ({ port }));
+      mocker.setConfigFile('/partial-config');
+      mocker.loadConfigFile();
+
+      expect(mocker.options.port).to.equal(port);
+    });
+
+    it('supports js config files that export an object', () => {
+      const mocker = apiMocker.createServer({ quiet: true });
+      const port = '2222';
+      mockRequire('/partial-config', { port });
+      mocker.setConfigFile('/partial-config');
+      mocker.loadConfigFile();
+
+      expect(mocker.options.port).to.equal(port);
     });
 
     it('should not allow requests that avoid pre flight by default', () => {
@@ -159,10 +180,12 @@ describe('unit tests: ', () => {
 
     it('should allow requests that avoid pre flight if specified in config', () => {
       const mocker = apiMocker.createServer({ quiet: true });
-      fsStub.returns(JSON.stringify({
+      mockRequire('/partial-config', {
         allowAvoidPreFlight: true,
-      }));
+      });
+      mocker.setConfigFile('/partial-config');
       mocker.loadConfigFile();
+
       expect(mocker.options.allowAvoidPreFlight).to.equal(true);
     });
   });
@@ -417,8 +440,6 @@ describe('unit tests: ', () => {
 
   describe('setRoutes:', () => {
     const am = apiMocker.createServer();
-
-
     let setRouteMock;
 
     beforeEach(() => {

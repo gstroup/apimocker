@@ -476,7 +476,7 @@ If the config.json file is edited, you can send an http request to /admin/reload
 See version history here: [HISTORY.md](HISTORY.md)
 
 ## Contributors
-Run "grunt watch" in the root "apimocker" directory to start the grunt watch task.  This will run JSHint and mocha tests.
+Run "grunt watch" in the root "apimocker" directory to start the grunt watch task.  This will run eslint and mocha tests.
 All Pull Requests must include at least one test.
 
 ## Acknowledgements

@@ -1,4 +1,6 @@
 ## Versions
+#### 1.1.1
+Pretty colored logging.  Thanks @twalker !
 #### 1.1.0
 Support javascript config files.  Thanks @twalker !
 Drop support for Node 5.  Add support for Node 9, 10.  Update to use more ES6 constructs.  Thanks @twalker !

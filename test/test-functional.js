@@ -47,8 +47,9 @@ const verifyResponseBody = (httpReqOptions, postData, expected, done) => {
   const req = http.request(httpReqOptions, (res) => {
     res.setEncoding('utf8');
     res.on('data', (chunk) => {
-      expect(JSON.parse(chunk)).to.deep.equal(expected);
       // console.log(chunk);
+      expect(res.statusCode).to.be.lessThan(400);
+      expect(JSON.parse(chunk)).to.deep.equal(expected);
       if (done) {
         done();
       }
@@ -517,5 +518,49 @@ describe('apimocker with file upload: ', () => {
           done();
         }
       });
+  });
+});
+
+describe('apimocker body filtering: ', () => {
+  let mocker;
+  before((done) => {
+    const config = {
+      quiet: true,
+      allowAvoidPreFlight: true,
+      mockDirectory: './samplemocks/'
+    };
+
+    mocker = apiMocker.createServer(config).setConfigFile('test/test-config.json');
+    mocker.start(null, done);
+  });
+
+  after((done) => {
+    mocker.stop(done);
+  });
+
+  it('matches a raw body', (done) => {
+    const postData = '{ "text": "Raw body filter test" }';
+    const expected = { king: 'greg' };
+    verifyResponseBody(
+      createHttpPostOptions('/body/filter', postData), 
+      postData, 
+      expected, 
+      done);
+  });
+
+  it('matches a hashed body', (done) => {
+    const postData = '{ "text": "Hashed body filtering test" }';
+    const expected = { king: 'greg' };
+    verifyResponseBody(
+      createHttpPostOptions('/body/filter', postData), 
+      postData, 
+      expected, 
+      done);
+  });
+
+  it('fails to match unspecified body', (done) => {
+    stRequest.post('/body/filter')
+      .send('{ "text": "Missing body filtering test" }')
+      .expect(404, done);
   });
 });

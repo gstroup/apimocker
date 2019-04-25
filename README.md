@@ -175,7 +175,7 @@ See the sample config.json file in this package.
 ```
 The most interesting part of the configuration file is the webServices section.
 This section contains a JSON object describing each service.  The key for each service object is the service URL (endpoint.)  Inside each service object, the `mockFile` (or `mockBody`) and `verbs` are required.  All other attributes of the service objects are optional.
-For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay. Alternatively one can specify the `mockBody` firectly, bypassing the need for a specific mock file.
+For instance, a GET request sent to "http://server:port/first" will return the king.json file from the samplemocks directory, with a 20 ms delay. Alternatively one can specify the `mockBody` directly, bypassing the need for a specific mock file.
 If you'd like to return different responses for a single URL with different HTTP verbs ("get", "post", etc) then you'll need to add the "responses" object.  See above for the "second" service.  The "responses" object should contain keys for the HTTP verbs, and values describing the response for each verb.
 
 ### Switch response based on request parameter

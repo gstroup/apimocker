@@ -64,7 +64,7 @@
     "samplemocks": "./samplemocks"
   },
   "scripts": {
-    "test": "mocha test/*.js",
+    "test": "eslint . && mocha test/*.js",
     "start": "node bin/apimocker.js -c config.json",
     "lint": "eslint ."
   },

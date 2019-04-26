@@ -25,7 +25,6 @@ const createHttpPostOptions = (path, data) => _.extend(createHttpReqOptions(path
   },
 });
 
-
 const MOCK_PORT = 7881;
 
 const verifyResponseHeaders = (httpReqOptions, expected, done) => {
@@ -82,15 +81,17 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
       mocker = apiMocker.createServer(options).setConfigFile('test/test-config.json');
       mocker.start(null);
 
-      testEndpoint = http.createServer((req, res) => {
-        if (req.url === '/non-mocked') {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ data: 'real' }));
-        } else {
-          res.writeHead(404);
-          res.end();
-        }
-      }).listen(MOCK_PORT, done);
+      testEndpoint = http
+        .createServer((req, res) => {
+          if (req.url === '/non-mocked') {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ data: 'real' }));
+          } else {
+            res.writeHead(404);
+            res.end();
+          }
+        })
+        .listen(MOCK_PORT, done);
     });
 
     after((done) => {
@@ -104,15 +105,15 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         verifyResponseBody(reqOptions, null, { king: 'greg' }, done);
       });
 
-		  it('Returns correct body data', function(done){
-  			var reqOptions = createHttpReqOptions('/raw');
-			  verifyResponseBody(reqOptions, null, { "text" : "Good Job!" }, done);
+      it('Returns correct body data', (done) => {
+        const reqOptions = createHttpReqOptions('/raw');
+        verifyResponseBody(reqOptions, null, { text: 'Good Job!' }, done);
       });
-      
-		  it('Returns correct body data from message', function(done){
-  			var reqOptions = createHttpReqOptions('/raw/template/ATestHashToReturn');
-			  verifyResponseBody(reqOptions, null, { "text" : "ATestHashToReturn" }, done);
-		  });
+
+      it('Returns correct body data from message', (done) => {
+        const reqOptions = createHttpReqOptions('/raw/template/ATestHashToReturn');
+        verifyResponseBody(reqOptions, null, { text: 'ATestHashToReturn' }, done);
+      });
 
       it('returns correct data for basic post request', (done) => {
         const reqOptions = createHttpReqOptions('/nested/ace');
@@ -137,7 +138,9 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
       });
 
       it('returns correct data for get to templateSwitch substituting GET params into mockFile ', (done) => {
-        const reqOptions = createHttpReqOptions('/templateSwitchGetParams?appID=123456789&appName=myAppName&userName=MyName&userAge=21');
+        const reqOptions = createHttpReqOptions(
+          '/templateSwitchGetParams?appID=123456789&appName=myAppName&userName=MyName&userAge=21',
+        );
         const expected = {
           appID: 123456789,
           appName: 'myAppName',
@@ -173,7 +176,11 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
 
       it('returns correct content-type for json response, with nested path', (done) => {
         const reqOptions = createHttpReqOptions('/nested/ace');
-        verifyResponseHeaders(reqOptions, { 'content-type': 'application/json; charset=UTF-8' }, done);
+        verifyResponseHeaders(
+          reqOptions,
+          { 'content-type': 'application/json; charset=UTF-8' },
+          done,
+        );
       });
 
       it('returns correct content-type for xml response', (done) => {
@@ -221,27 +228,31 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
       });
 
       it('returns correct httpStatus when switches match', (done) => {
-        stRequest.post('/login')
+        stRequest
+          .post('/login')
           .set('Content-Type', 'application/json')
           .send('{"userId": "user1", "password": "good"}')
           .expect(200, done);
       });
 
       it('returns correct httpStatus when switch does not match, with contentType set', (done) => {
-        stRequest.post('/login')
+        stRequest
+          .post('/login')
           .set('Content-Type', 'application/json')
           .send('{"userId": "user1", "password": "bad"}')
           .expect(401, done);
       });
 
       it('returns correct httpStatus when switch does not match', (done) => {
-        stRequest.post('/login')
+        stRequest
+          .post('/login')
           .send('{"userId": "user1", "password": "bad"}')
           .expect(401, done);
       });
 
       it('returns 404 when switch does not match and no httpStatus was set', (done) => {
-        stRequest.post('/verify')
+        stRequest
+          .post('/verify')
           .send('{"foo": "bar"}')
           .expect(404, done);
       });
@@ -254,22 +265,26 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
       });
       it('returns proper array of results', (done) => {
         const reqOptions = createHttpReqOptions('/users/role/droid');
-        const expected = [{
-          name: 'C3P0',
-          role: 'droid',
-          id: 3,
-        }, {
-          name: 'R2D2',
-          role: 'droid',
-          id: 4,
-        }];
+        const expected = [
+          {
+            name: 'C3P0',
+            role: 'droid',
+            id: 3,
+          },
+          {
+            name: 'R2D2',
+            role: 'droid',
+            id: 4,
+          },
+        ];
         verifyResponseBody(reqOptions, null, expected, done);
       });
     });
 
     describe('http status: ', () => {
       it('returns 404 for incorrect path', (done) => {
-        stRequest.get('/badurl')
+        stRequest
+          .get('/badurl')
           .expect(404)
           .end(() => {
             // console.log('got a 404 as expected');
@@ -286,8 +301,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
       });
 
       it('returns httpStatus 204 specified in config file', (done) => {
-        stRequest.delete('/second')
-          .expect(204, done);
+        stRequest.delete('/second').expect(204, done);
       });
 
       it('returns httpStatus 404 if no mockFile is set for a web service', (done) => {
@@ -302,7 +316,16 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
     describe('http headers: ', () => {
       it('returns the headers as specified in the config file', (done) => {
         const reqOptions = createHttpReqOptions('/firstheaders');
-        verifyResponseHeaders(reqOptions, { 'x-requested-by': '4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c', dummyheader: 'dummyvalue', 'content-type': 'foobar' }, done);
+        verifyResponseHeaders(
+          reqOptions,
+          {
+            'x-requested-by':
+              '4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c',
+            dummyheader: 'dummyvalue',
+            'content-type': 'foobar',
+          },
+          done,
+        );
       });
 
       it('allows domains specified in config file', (done) => {
@@ -312,7 +335,11 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
 
       it('allows headers as specified in config file', (done) => {
         const reqOptions = createHttpReqOptions('/first');
-        verifyResponseHeaders(reqOptions, { 'access-control-allow-headers': 'Content-Type,my-custom-header' }, done);
+        verifyResponseHeaders(
+          reqOptions,
+          { 'access-control-allow-headers': 'Content-Type,my-custom-header' },
+          done,
+        );
       });
 
       it('sets Access-Control-Allow-Credentials header if corsCredentials option is set', (done) => {
@@ -323,12 +350,12 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
 
     describe('proxy: ', () => {
       it('forwards get request to non-mocked endpoint', (done) => {
-        stRequest.get('/non-mocked')
-          .expect(200, { data: 'real' }, done);
+        stRequest.get('/non-mocked').expect(200, { data: 'real' }, done);
       });
 
       it('forwards post request to non-mocked endpoint', (done) => {
-        stRequest.post('/non-mocked')
+        stRequest
+          .post('/non-mocked')
           .set('Content-Type', 'application/json')
           .send({ foo: 'bar' })
           .expect(200, { data: 'real' }, done);
@@ -365,18 +392,21 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         // verifyResponseBody(postOptions, postData, expected);
         // verifyResponseBody(createHttpReqOptions('/third'), null, {king: 'greg'}, done);
 
-        stRequest.post('/admin/setMock')
+        stRequest
+          .post('/admin/setMock')
           .set('Content-Type', 'application/json')
           .send(postData)
           .expect(200, () => {
-            stRequest.get('/third')
-              .expect(200, { king: 'greg' }, done);
+            stRequest.get('/third').expect(200, { king: 'greg' }, done);
           });
       });
 
       it('returns correct mock file with http status code after admin/setMock was called', (done) => {
         const postData = {
-          verb: 'post', serviceUrl: 'third', mockFile: 'king.json', httpStatus: 201,
+          verb: 'post',
+          serviceUrl: 'third',
+          mockFile: 'king.json',
+          httpStatus: 201,
         };
         // const postOptions = createHttpPostOptions('/admin/setMock', postData);
         // const expected = {
@@ -386,12 +416,12 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         //   httpStatus: 201,
         // };
 
-        stRequest.post('/admin/setMock')
+        stRequest
+          .post('/admin/setMock')
           .set('Content-Type', 'application/json')
           .send(postData)
           .expect(200, () => {
-            stRequest.post('/third')
-              .expect(201, { king: 'greg' }, done);
+            stRequest.post('/third').expect(201, { king: 'greg' }, done);
           });
       });
 
@@ -412,20 +442,20 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         // verifyResponseBody(postOptions, postData, expected);
         // verifyResponseBody(createHttpReqOptions('/third'), null, {ace: 'greg'}, done);
 
-        stRequest.post('/admin/setMock')
+        stRequest
+          .post('/admin/setMock')
           .set('Content-Type', 'application/json')
           // .send(postData)
           .expect(200, () => {
-            stRequest.get('/third')
-              .expect(200, { kingyy: 'greg' }, () => {
-                stRequest.post('/admin/setMock')
-                  .set('Content-Type', 'application/json')
-                  .send({ verb: 'get', serviceUrl: 'third', mockFile: 'king.json' })
-                  .expect(200, () => {
-                    stRequest.get('/third')
-                      .expect(200, { ace: 'greg' }, done);
-                  });
-              });
+            stRequest.get('/third').expect(200, { kingyy: 'greg' }, () => {
+              stRequest
+                .post('/admin/setMock')
+                .set('Content-Type', 'application/json')
+                .send({ verb: 'get', serviceUrl: 'third', mockFile: 'king.json' })
+                .expect(200, () => {
+                  stRequest.get('/third').expect(200, { ace: 'greg' }, done);
+                });
+            });
           });
       });
     });
@@ -445,8 +475,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
     });
 
     it('uses custom basepath if specified', (done) => {
-      stRequest.get('/apimocker/nested/ace')
-        .expect(200, { ace: 'greg' }, done);
+      stRequest.get('/apimocker/nested/ace').expect(200, { ace: 'greg' }, done);
     });
 
     after((done) => {
@@ -464,7 +493,8 @@ describe('apimocker with custom middleware: ', () => {
       res.header('foo', 'bar');
       next();
     };
-    mocker = apiMocker.createServer({ quiet: true, mockDirectory: './samplemocks/' })
+    mocker = apiMocker
+      .createServer({ quiet: true, mockDirectory: './samplemocks/' })
       .setConfigFile('test/test-config.json');
     mocker.middlewares.unshift(customMiddleware);
     mocker.start(null, done);
@@ -501,7 +531,8 @@ describe('apimocker with file upload: ', () => {
   it('single file upload', (done) => {
     const expected = { king: 'greg' };
 
-    stRequest.post('/upload?name=king')
+    stRequest
+      .post('/upload?name=king')
       .attach('sampleFile', 'samplemocks/king.json')
       .expect(200)
       .end((err, res) => {
@@ -514,7 +545,8 @@ describe('apimocker with file upload: ', () => {
   });
 
   it('multi file upload', (done) => {
-    stRequest.post('/upload/many')
+    stRequest
+      .post('/upload/many')
       .attach('sampleFile', 'samplemocks/sorry.json')
       .attach('sampleFile', 'samplemocks/users.json')
       .attach('sampleFile', 'samplemocks/ace.json')
@@ -537,7 +569,7 @@ describe('apimocker body filtering: ', () => {
     const config = {
       quiet: true,
       allowAvoidPreFlight: true,
-      mockDirectory: './samplemocks/'
+      mockDirectory: './samplemocks/',
     };
 
     mocker = apiMocker.createServer(config).setConfigFile('test/test-config.json');
@@ -551,25 +583,18 @@ describe('apimocker body filtering: ', () => {
   it('matches a raw body', (done) => {
     const postData = '{ "text": "Raw body filter test" }';
     const expected = { king: 'greg' };
-    verifyResponseBody(
-      createHttpPostOptions('/body/filter', postData), 
-      postData, 
-      expected, 
-      done);
+    verifyResponseBody(createHttpPostOptions('/body/filter', postData), postData, expected, done);
   });
 
   it('matches a hashed body', (done) => {
     const postData = '{ "text": "Hashed body filtering test" }';
     const expected = { king: 'greg' };
-    verifyResponseBody(
-      createHttpPostOptions('/body/filter', postData), 
-      postData, 
-      expected, 
-      done);
+    verifyResponseBody(createHttpPostOptions('/body/filter', postData), postData, expected, done);
   });
 
   it('fails to match unspecified body', (done) => {
-    stRequest.post('/body/filter')
+    stRequest
+      .post('/body/filter')
       .send('{ "text": "Missing body filtering test" }')
       .expect(404, done);
   });

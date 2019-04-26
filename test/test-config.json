@@ -48,17 +48,17 @@
       "verbs": ["post"],
       "switch": ["userId", "password"],
       "responses": {
-        "post": {"httpStatus": 401}
+        "post": { "httpStatus": 401 }
       },
       "switchResponses": {
-        "userIduser1passwordgood": {"httpStatus": 200}
+        "userIduser1passwordgood": { "httpStatus": 200 }
       }
     },
     "verify": {
       "verbs": ["post"],
       "switch": ["customerId"],
       "switchResponses": {
-        "customerId1234": {"mockFile": "ace.json"}
+        "customerId1234": { "mockFile": "ace.json" }
       }
     },
     "firstheaders": {
@@ -78,49 +78,44 @@
       "mockFile": "missing",
       "httpStatus": 203
     },
-    "template/:name/:number":{
-      "mockFile":"templateSample.json",
-      "enableTemplate" : true,
+    "template/:name/:number": {
+      "mockFile": "templateSample.json",
+      "enableTemplate": true,
       "contentType": "application/json",
       "verbs": ["get"]
     },
-    "templateSwitchGetParams" : {
+    "templateSwitchGetParams": {
       "mockFile": "templateSwitchSample.json",
-      "verbs":["get"],
-      "templateSwitch": ["appID",
-                         "appName",
-                         "userName",
-                         "userAge"],
+      "verbs": ["get"],
+      "templateSwitch": ["appID", "appName", "userName", "userAge"],
       "contentType": "application/json"
     },
-    "templateSwitchPostJsonPath" : {
+    "templateSwitchPostJsonPath": {
       "mockFile": "templateSwitchSample.json",
       "verbs": ["post"],
-      "templateSwitch": [{"key": "appID",
-                         "switch": "$.data.appID",
-                         "type": "jsonpath"},
-                         {"key": "appName",
-                          "switch": "$.data.appName",
-                          "type": "jsonpath"},
-                         {"key": "userName",
-                          "switch": "$.data.user.userName",
-                          "type": "jsonpath"},
-                         {"key": "userAge",
-                          "switch": "$.data.user.userAge",
-                          "type": "jsonpath"}],
+      "templateSwitch": [
+        { "key": "appID", "switch": "$.data.appID", "type": "jsonpath" },
+        { "key": "appName", "switch": "$.data.appName", "type": "jsonpath" },
+        {
+          "key": "userName",
+          "switch": "$.data.user.userName",
+          "type": "jsonpath"
+        },
+        {
+          "key": "userAge",
+          "switch": "$.data.user.userAge",
+          "type": "jsonpath"
+        }
+      ],
       "contentType": "application/json"
     },
     "users": {
       "mockFile": "users.json",
-      "verbs": [
-        "get"
-      ]
+      "verbs": ["get"]
     },
     "users/:id": {
       "mockFile": "users.json",
-      "verbs": [
-        "get"
-      ],
+      "verbs": ["get"],
       "switch": "id",
       "jsonPathSwitchResponse": {
         "jsonpath": "$[?(@.id==#id#)]",
@@ -130,9 +125,7 @@
     },
     "users/role/:role": {
       "mockFile": "users.json",
-      "verbs": [
-        "get"
-      ],
+      "verbs": ["get"],
       "switch": "role",
       "jsonPathSwitchResponse": {
         "jsonpath": "$[?(@.role==\"#role#\")]",
@@ -144,7 +137,7 @@
       "verbs": ["post"],
       "switch": "name",
       "switchResponses": {
-        "nameking": {"mockFile": "king.json"}
+        "nameking": { "mockFile": "king.json" }
       },
       "mockFile": "json",
       "uploadDirectory": "uploads"
@@ -165,9 +158,19 @@
     },
     "raw/template/:message": {
       "mockBody": "{ \"text\" : \"@message\" }",
-      "enableTemplate" : true,
+      "enableTemplate": true,
       "contentType": "application/json",
       "verbs": ["get"]
+    },
+    "body/filter": {
+      "verbs": ["post"],
+      "bodies": {
+        "post": [
+          "{ \"text\": \"Raw body filter test\" }",
+          { "sha1": "46607ed90dbc35ffa40bf49db6e341e92487f2bc" }
+        ]
+      },
+      "mockFile": "king.json"
     }
   }
 }

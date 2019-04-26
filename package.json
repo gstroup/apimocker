@@ -21,10 +21,10 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.9.0",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "grunt": "^1.0.3",
+    "grunt": "^1.0.4",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-mocha-cli": "^4.0.0",
     "gruntify-eslint": "^5.0.0",

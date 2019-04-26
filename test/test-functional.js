@@ -15,14 +15,14 @@ const createHttpReqOptions = (path, method) => ({
   hostname: 'localhost',
   port: 7879,
   method: method || 'GET',
-  path,
+  path
 });
 
 const createHttpPostOptions = (path, data) => _.extend(createHttpReqOptions(path, 'POST'), {
   headers: {
     'Content-Type': 'application/json',
-    'Content-Length': data.length,
-  },
+    'Content-Length': data.length
+  }
 });
 
 const MOCK_PORT = 7881;
@@ -76,7 +76,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
       const options = {
         quiet: true,
         mockDirectory: './samplemocks/',
-        proxyURL: `http://localhost:${MOCK_PORT}`,
+        proxyURL: `http://localhost:${MOCK_PORT}`
       };
       mocker = apiMocker.createServer(options).setConfigFile('test/test-config.json');
       mocker.start(null);
@@ -139,13 +139,13 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
 
       it('returns correct data for get to templateSwitch substituting GET params into mockFile ', (done) => {
         const reqOptions = createHttpReqOptions(
-          '/templateSwitchGetParams?appID=123456789&appName=myAppName&userName=MyName&userAge=21',
+          '/templateSwitchGetParams?appID=123456789&appName=myAppName&userName=MyName&userAge=21'
         );
         const expected = {
           appID: 123456789,
           appName: 'myAppName',
           userName: 'MyName',
-          userAge: 21,
+          userAge: 21
         };
         verifyResponseBody(reqOptions, null, expected, done);
       });
@@ -157,7 +157,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
           appID: 123456789,
           appName: 'myAppName',
           userName: 'MyName',
-          userAge: 21,
+          userAge: 21
         };
         verifyResponseBody(postOptions, postData, expected, done);
       });
@@ -179,7 +179,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         verifyResponseHeaders(
           reqOptions,
           { 'content-type': 'application/json; charset=UTF-8' },
-          done,
+          done
         );
       });
 
@@ -195,7 +195,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         const postOptions = createHttpPostOptions('/nested/ace', postData);
         const expected = {
           ace: 'greg',
-          note: 'request contained customerId = 1234',
+          note: 'request contained customerId = 1234'
         };
         verifyResponseBody(postOptions, postData, expected, done);
       });
@@ -204,7 +204,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         const postData = '{"customerId": 124}';
         const postOptions = createHttpPostOptions('/nested/ace', postData);
         const expected = {
-          ace: 'greg',
+          ace: 'greg'
         };
         verifyResponseBody(postOptions, postData, expected, done);
       });
@@ -213,7 +213,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         const postData = '{"phonenumber": 124}';
         const postOptions = createHttpPostOptions('/nested/ace', postData);
         const expected = {
-          ace: 'greg',
+          ace: 'greg'
         };
         verifyResponseBody(postOptions, postData, expected, done);
       });
@@ -222,7 +222,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         const reqOptions = createHttpReqOptions('/nested/ace?customerId=1234');
         const expected = {
           ace: 'greg',
-          note: 'request contained customerId = 1234',
+          note: 'request contained customerId = 1234'
         };
         verifyResponseBody(reqOptions, null, expected, done);
       });
@@ -269,13 +269,13 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
           {
             name: 'C3P0',
             role: 'droid',
-            id: 3,
+            id: 3
           },
           {
             name: 'R2D2',
             role: 'droid',
-            id: 4,
-          },
+            id: 4
+          }
         ];
         verifyResponseBody(reqOptions, null, expected, done);
       });
@@ -322,9 +322,9 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
             'x-requested-by':
               '4c2df03a17a803c063f21aa86a36f6f55bdde1f85b89e49ee1b383f281d18c09c2ba30654090df3531cd2318e3c',
             dummyheader: 'dummyvalue',
-            'content-type': 'foobar',
+            'content-type': 'foobar'
           },
-          done,
+          done
         );
       });
 
@@ -338,7 +338,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         verifyResponseHeaders(
           reqOptions,
           { 'access-control-allow-headers': 'Content-Type,my-custom-header' },
-          done,
+          done
         );
       });
 
@@ -406,7 +406,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
           verb: 'post',
           serviceUrl: 'third',
           mockFile: 'king.json',
-          httpStatus: 201,
+          httpStatus: 201
         };
         // const postOptions = createHttpPostOptions('/admin/setMock', postData);
         // const expected = {
@@ -468,7 +468,7 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         quiet: true,
         mockDirectory: './samplemocks/',
         proxyURL: `http://localhost:${MOCK_PORT}`,
-        basepath: '/apimocker',
+        basepath: '/apimocker'
       };
       mocker = apiMocker.createServer(options).setConfigFile('test/test-config.json');
       mocker.start(null, done);
@@ -516,7 +516,7 @@ describe('apimocker with file upload: ', () => {
     const config = {
       quiet: true,
       mockDirectory: './uploads/',
-      uploadRoot: './uploads/',
+      uploadRoot: './uploads/'
     };
 
     mocker = apiMocker.createServer(config).setConfigFile('test/test-config.json');
@@ -569,7 +569,7 @@ describe('apimocker body filtering: ', () => {
     const config = {
       quiet: true,
       allowAvoidPreFlight: true,
-      mockDirectory: './samplemocks/',
+      mockDirectory: './samplemocks/'
     };
 
     mocker = apiMocker.createServer(config).setConfigFile('test/test-config.json');

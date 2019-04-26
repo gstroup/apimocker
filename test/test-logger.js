@@ -36,15 +36,15 @@ describe('unit tests: logger : ', () => {
   describe('createMiddleware', () => {
     const req = {
       method: 'POST',
-      originalUrl: 'some/mock/route',
+      originalUrl: 'some/mock/route'
     };
 
     const res = {
       on: (name, cb) => cb(),
       statusCode: 400,
       locals: {
-        mockFile: 'foo.json',
-      },
+        mockFile: 'foo.json'
+      }
     };
 
     it('logs details of mock request and response', () => {

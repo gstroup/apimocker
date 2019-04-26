@@ -1,4 +1,3 @@
-
 // run "grunt test", or run "mocha" in this test directory to execute.
 
 const path = require('path');
@@ -48,7 +47,10 @@ describe('unit tests: ', () => {
     });
 
     it('should set a relative path correctly using node path resolver', () => {
-      assert.equal(path.resolve('../config.json'), mocker.setConfigFile('../config.json').configFilePath);
+      assert.equal(
+        path.resolve('../config.json'),
+        mocker.setConfigFile('../config.json').configFilePath
+      );
     });
 
     it('should set an absolute path correctly', () => {
@@ -79,27 +81,27 @@ describe('unit tests: ', () => {
           verbs: ['get', 'post'],
           responses: {
             get: {
-              mockFile: 'king.json',
+              mockFile: 'king.json'
             },
             post: {
-              mockFile: 'ace.json',
-            },
+              mockFile: 'ace.json'
+            }
           },
-          alternatePaths: ['1st'],
+          alternatePaths: ['1st']
         },
         'nested/ace': {
           mockFile: 'ace.json',
-          verbs: ['get'],
+          verbs: ['get']
         },
         'var/:id': {
           mockFile: 'xml/queen.xml',
-          verbs: ['get'],
+          verbs: ['get']
         },
         queen: {
           mockFile: 'xml/queen.xml',
-          verbs: ['all'],
-        },
-      },
+          verbs: ['all']
+        }
+      }
     };
 
     afterEach(() => {
@@ -117,8 +119,7 @@ describe('unit tests: ', () => {
       expect(mocker.options.allowedHeaders[0]).to.equal('my-custom1');
       expect(mocker.options.allowedHeaders[1]).to.equal('my-custom2');
 
-      expect(mocker.options.webServices.first)
-        .to.eql(mocker.options.webServices['1st']);
+      expect(mocker.options.webServices.first).to.eql(mocker.options.webServices['1st']);
       delete mocker.options.webServices['1st'];
       expect(mocker.options.webServices).to.deep.equal(mockConfig.webServices);
 
@@ -181,7 +182,7 @@ describe('unit tests: ', () => {
     it('should allow requests that avoid pre flight if specified in config', () => {
       const mocker = apiMocker.createServer({ quiet: true });
       mockRequire('/partial-config', {
-        allowAvoidPreFlight: true,
+        allowAvoidPreFlight: true
       });
       mocker.setConfigFile('/partial-config');
       mocker.loadConfigFile();
@@ -202,7 +203,7 @@ describe('unit tests: ', () => {
         body: {},
         params: {},
         query: {},
-        header: () => {},
+        header: () => {}
       };
     });
 
@@ -266,7 +267,7 @@ describe('unit tests: ', () => {
     it('sets correct http status based on matching switch value', () => {
       svcOptions.switch = 'password';
       svcOptions.switchResponses = {
-        passwordgood: { httpStatus: 200 },
+        passwordgood: { httpStatus: 200 }
       };
       reqStub.body.password = 'good';
       mocker.setSwitchOptions(svcOptions, reqStub);
@@ -276,7 +277,7 @@ describe('unit tests: ', () => {
     it('sets correct mock file path when switch matches and switchResponse contains a mockFile', () => {
       reqStub.body.productId = '678';
       svcOptions.switchResponses = {
-        productId678: { mockFile: 'specialFileName' },
+        productId678: { mockFile: 'specialFileName' }
       };
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal('specialFileName');
@@ -287,7 +288,7 @@ describe('unit tests: ', () => {
       svcOptions.httpStatus = 401;
 
       svcOptions.switchResponses = {
-        passwordgood: { httpStatus: 200 },
+        passwordgood: { httpStatus: 200 }
       };
       reqStub.body.password = 'bad';
       mocker.setSwitchOptions(svcOptions, reqStub);
@@ -298,7 +299,7 @@ describe('unit tests: ', () => {
       svcOptions.switch = ['userId', 'password'];
       svcOptions.httpStatus = 401;
       svcOptions.switchResponses = {
-        userId1234passwordgood: { httpStatus: 200 },
+        userId1234passwordgood: { httpStatus: 200 }
       };
       reqStub.body.password = 'good';
       reqStub.body.userId = '1234';
@@ -309,14 +310,14 @@ describe('unit tests: ', () => {
     it('sets correct mock file path when switch uses JsonPath and switch matches', () => {
       svcOptions.switch = '$.car.engine.part';
       svcOptions.switchResponses = {
-        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' },
+        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' }
       };
       reqStub.body = {
         car: {
           engine: {
-            part: 'Timing Belt',
-          },
-        },
+            part: 'Timing Belt'
+          }
+        }
       };
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal('product456');
@@ -325,12 +326,12 @@ describe('unit tests: ', () => {
     it('sets correct mock file path when switch uses JsonPath and switch value does not match', () => {
       svcOptions.switch = '$.car.engine.part';
       svcOptions.switchResponses = {
-        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' },
+        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' }
       };
       reqStub.body = {
         car: {
-          wheel: {},
-        },
+          wheel: {}
+        }
       };
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal('base');
@@ -339,17 +340,17 @@ describe('unit tests: ', () => {
     it('sets correct mock file path when switch uses JsonPath as a switch object and switch matches', () => {
       svcOptions.switch = {
         type: 'jsonpath',
-        switch: '$.car.engine.part',
+        switch: '$.car.engine.part'
       };
       svcOptions.switchResponses = {
-        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' },
+        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' }
       };
       reqStub.body = {
         car: {
           engine: {
-            part: 'Timing Belt',
-          },
-        },
+            part: 'Timing Belt'
+          }
+        }
       };
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal('product456');
@@ -358,15 +359,15 @@ describe('unit tests: ', () => {
     it('sets correct mock file path when switch uses JsonPath and switch value does not match', () => {
       svcOptions.switch = {
         type: 'jsonpath',
-        switch: '$.car.engine.part',
+        switch: '$.car.engine.part'
       };
       svcOptions.switchResponses = {
-        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' },
+        '$.car.engine.partTiming%20Belt': { mockFile: 'product456' }
       };
       reqStub.body = {
         car: {
-          wheel: {},
-        },
+          wheel: {}
+        }
       };
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal('base');
@@ -375,10 +376,9 @@ describe('unit tests: ', () => {
     it('sets the correct mock file path when switch uses RegExp and switch matches', () => {
       svcOptions.switch = '/"carEnginePart([^"]*)"/';
       svcOptions.switchResponses = {
-        '/"carEnginePart([^"]*)"/Belt': { mockFile: 'product456' },
+        '/"carEnginePart([^"]*)"/Belt': { mockFile: 'product456' }
       };
-      reqStub.body = '"carPartWheel":'
-            + ' wheel,\n"carEnginePartBelt": belt';
+      reqStub.body = '"carPartWheel": wheel,\n"carEnginePartBelt": belt';
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal('product456');
     });
@@ -386,7 +386,7 @@ describe('unit tests: ', () => {
     it('sets the correct mock file path when switch uses RegExp and switch value does not match', () => {
       svcOptions.switch = '/"carEnginePart([^"]*)"/';
       svcOptions.switchResponses = {
-        Belt: { mockFile: 'product456' },
+        Belt: { mockFile: 'product456' }
       };
       reqStub.body = '"carPartWheel": wheel';
       mocker.setSwitchOptions(svcOptions, reqStub);
@@ -397,13 +397,12 @@ describe('unit tests: ', () => {
       svcOptions.switch = {
         type: 'regexp',
         switch: '/"carEnginePart([^"]*)"/',
-        key: 'carenginepart',
+        key: 'carenginepart'
       };
       svcOptions.switchResponses = {
-        carenginepartBelt: { mockFile: 'product456' },
+        carenginepartBelt: { mockFile: 'product456' }
       };
-      reqStub.body = '"carPartWheel":'
-          + ' wheel,\n"carEnginePartBelt": belt';
+      reqStub.body = '"carPartWheel": wheel,\n"carEnginePartBelt": belt';
       mocker.setSwitchOptions(svcOptions, reqStub);
       expect(svcOptions.mockFile).to.equal('product456');
     });
@@ -412,10 +411,10 @@ describe('unit tests: ', () => {
       svcOptions.switch = {
         type: 'regexp',
         switch: '/"carEnginePart([^"]*)"/',
-        key: 'carenginepart',
+        key: 'carenginepart'
       };
       svcOptions.switchResponses = {
-        carenginepartBelt: { mockFile: 'product456' },
+        carenginepartBelt: { mockFile: 'product456' }
       };
       reqStub.body = '"carPartWheel": wheel';
       mocker.setSwitchOptions(svcOptions, reqStub);
@@ -431,7 +430,7 @@ describe('unit tests: ', () => {
         verb: 'get',
         latency: 0,
         serviceUrl: 'foo.com',
-        mockFile: 'file.json',
+        mockFile: 'file.json'
       };
       am.setRoute(options);
       expect(options.httpStatus).to.equal(undefined);
@@ -455,15 +454,21 @@ describe('unit tests: ', () => {
         first: {
           mockFile: 'king.json',
           latency: 20,
-          verbs: ['get', 'post'],
-        },
+          verbs: ['get', 'post']
+        }
       };
       am.options.webServices = webServices;
       setRouteMock.expects('setRoute').withExactArgs({
-        latency: 20, mockFile: 'king.json', serviceUrl: 'first', verb: 'get',
+        latency: 20,
+        mockFile: 'king.json',
+        serviceUrl: 'first',
+        verb: 'get'
       });
       setRouteMock.expects('setRoute').withExactArgs({
-        latency: 20, mockFile: 'king.json', serviceUrl: 'first', verb: 'post',
+        latency: 20,
+        mockFile: 'king.json',
+        serviceUrl: 'first',
+        verb: 'post'
       });
       am.setRoutes(webServices);
       setRouteMock.verify();
@@ -477,17 +482,24 @@ describe('unit tests: ', () => {
             delete: { httpStatus: 204 },
             post: {
               contentType: 'foobar',
-              mockFile: 'king.json',
-            },
-          },
-        },
+              mockFile: 'king.json'
+            }
+          }
+        }
       };
       am.options.webServices = webServices;
       setRouteMock.expects('setRoute').withExactArgs({
-        httpStatus: 204, latency: 0, serviceUrl: 'second', verb: 'delete',
+        httpStatus: 204,
+        latency: 0,
+        serviceUrl: 'second',
+        verb: 'delete'
       });
       setRouteMock.expects('setRoute').withExactArgs({
-        latency: 0, serviceUrl: 'second', verb: 'post', contentType: 'foobar', mockFile: 'king.json',
+        latency: 0,
+        serviceUrl: 'second',
+        verb: 'post',
+        contentType: 'foobar',
+        mockFile: 'king.json'
       });
       am.setRoutes(webServices);
       setRouteMock.verify();

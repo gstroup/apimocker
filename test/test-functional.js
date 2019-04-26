@@ -103,6 +103,16 @@ describe('Functional tests using an http client to test "end-to-end": ', () => {
         verifyResponseBody(reqOptions, null, { king: 'greg' }, done);
       });
 
+		  it('Returns correct body data', function(done){
+  			var reqOptions = createHttpReqOptions('/raw');
+			  verifyResponseBody(reqOptions, null, { "text" : "Good Job!" }, done);
+      });
+      
+		  it('Returns correct body data from message', function(done){
+  			var reqOptions = createHttpReqOptions('/raw/template/ATestHashToReturn');
+			  verifyResponseBody(reqOptions, null, { "text" : "ATestHashToReturn" }, done);
+		  });
+
       it('returns correct data for basic post request', (done) => {
         const reqOptions = createHttpReqOptions('/nested/ace');
         reqOptions.method = 'POST';

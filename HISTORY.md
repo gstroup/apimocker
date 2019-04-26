@@ -1,4 +1,8 @@
 ## Versions
+#### 1.1.2
+Ability to specify mockBody instead of mockFile and provide it's content as response body.  See PR #95.  Thanks @thejonan !
+Added body filtering based on raw body or provided hash. See PR #102.  Thanks @thejonan !
+Upgrade dependencuy versions to remove vulnerabilities.  Thanks @kopach !
 #### 1.1.1
 Pretty colored logging.  Thanks @twalker !
 #### 1.1.0

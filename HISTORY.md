@@ -1,4 +1,7 @@
 ## Versions
+
+#### 1.1.3
+Fix for old node versions 6 & 7.
 #### 1.1.2
 Ability to specify mockBody instead of mockFile and provide it's content as response body.  See PR #95.  Thanks @thejonan !
 Added body filtering based on raw body or provided hash. See PR #102.  Thanks @thejonan !

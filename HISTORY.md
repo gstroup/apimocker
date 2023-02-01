@@ -1,5 +1,7 @@
 ## Versions
 
+#### 1.1.5
+Update dependency versions.  Thanks @twalker !
 #### 1.1.4
 Update dependency versions.
 #### 1.1.3

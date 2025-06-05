@@ -2,7 +2,7 @@
 const commander = require('commander');
 const pkg = require('../package.json');
 
-const ApiMocker = require('../lib/apimocker.js');
+const ApiMocker = require('../lib/apimocker');
 
 commander
   .version(pkg.version)

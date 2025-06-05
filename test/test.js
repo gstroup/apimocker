@@ -6,7 +6,7 @@ const chai = require('chai');
 const sinon = require('sinon');
 const mockRequire = require('mock-require');
 const untildify = require('untildify');
-const apiMocker = require('../lib/apimocker.js');
+const apiMocker = require('../lib/apimocker');
 
 const { assert, expect } = chai;
 

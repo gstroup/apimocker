@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions, no-console */
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { createLogger, createMiddleware } = require('../lib/logger.js');
+const { createLogger, createMiddleware } = require('../lib/logger');
 
 describe('unit tests: logger : ', () => {
   beforeEach(() => {

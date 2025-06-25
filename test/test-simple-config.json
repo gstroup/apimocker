@@ -1,0 +1,35 @@
+{
+  "mockDirectory": "~/foo/bar/samplemocks/",
+  "quiet": true,
+  "port": "7879",
+  "latency": 50,
+  "logRequestHeaders": true,
+  "allowedDomains": ["abc"],
+  "allowedHeaders": ["my-custom1", "my-custom2"],
+  "webServices": {
+    "first": {
+      "verbs": ["get", "post"],
+      "responses": {
+        "get": {
+          "mockFile": "king.json"
+        },
+        "post": {
+          "mockFile": "ace.json"
+        }
+      },
+      "alternatePaths": ["1st"]
+    },
+    "nested/ace": {
+      "mockFile": "ace.json",
+      "verbs": ["get"]
+    },
+    "var/:id": {
+      "mockFile": "xml/queen.xml",
+      "verbs": ["get"]
+    },
+    "queen": {
+      "mockFile": "xml/queen.xml",
+      "verbs": ["all"]
+    }
+  }
+}

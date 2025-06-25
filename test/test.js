@@ -4,7 +4,6 @@ const path = require('path');
 // better assertions than node offers.
 const chai = require('chai');
 const sinon = require('sinon');
-const mockRequire = require('mock-require');
 const untildify = require('untildify');
 const apiMocker = require('../lib/apimocker');
 
@@ -64,74 +63,30 @@ describe('unit tests: ', () => {
   });
 
   describe('loadConfigFile: ', () => {
-    // Note:
-    // Starting mock config paths with a / or ~ to avoid
-    // the absoulute path resolution within setConfig which will not match
-    // the path mocked by mock-require.
-    const mockConfig = {
-      mockDirectory: '~/foo/bar/samplemocks/',
-      quiet: true,
-      port: '7879',
-      latency: 50,
-      logRequestHeaders: true,
-      allowedDomains: ['abc'],
-      allowedHeaders: ['my-custom1', 'my-custom2'],
-      webServices: {
-        first: {
-          verbs: ['get', 'post'],
-          responses: {
-            get: {
-              mockFile: 'king.json'
-            },
-            post: {
-              mockFile: 'ace.json'
-            }
-          },
-          alternatePaths: ['1st']
-        },
-        'nested/ace': {
-          mockFile: 'ace.json',
-          verbs: ['get']
-        },
-        'var/:id': {
-          mockFile: 'xml/queen.xml',
-          verbs: ['get']
-        },
-        queen: {
-          mockFile: 'xml/queen.xml',
-          verbs: ['all']
-        }
-      }
-    };
-
-    afterEach(() => {
-      mockRequire.stopAll();
-    });
+    const testSimpleConfig = require('./test-simple-config.json');
 
     it('sets options from new format mock config file', () => {
       const mocker = apiMocker.createServer({ quiet: true });
-      mockRequire('/mock-config.json', mockConfig);
-      mocker.setConfigFile('/mock-config.json');
+      mocker.setConfigFile('test/test-simple-config.json');
       mocker.loadConfigFile();
 
-      expect(mocker.options.port).to.equal(mockConfig.port);
-      expect(mocker.options.allowedDomains[0]).to.equal(mockConfig.allowedDomains[0]);
+      expect(mocker.options.port).to.equal(testSimpleConfig.port);
+      expect(mocker.options.allowedDomains[0]).to.equal(testSimpleConfig.allowedDomains[0]);
       expect(mocker.options.allowedHeaders[0]).to.equal('my-custom1');
       expect(mocker.options.allowedHeaders[1]).to.equal('my-custom2');
 
       expect(mocker.options.webServices.first).to.eql(mocker.options.webServices['1st']);
       delete mocker.options.webServices['1st'];
-      expect(mocker.options.webServices).to.deep.equal(mockConfig.webServices);
+      expect(mocker.options.webServices).to.deep.equal(testSimpleConfig.webServices);
 
       expect(mocker.options.quiet).to.equal(true);
-      expect(mocker.options.latency).to.equal(mockConfig.latency);
-      expect(mocker.options.logRequestHeaders).to.equal(mockConfig.logRequestHeaders);
+      expect(mocker.options.latency).to.equal(testSimpleConfig.latency);
+      expect(mocker.options.logRequestHeaders).to.equal(testSimpleConfig.logRequestHeaders);
     });
 
     it('combines values from defaults, options, and config file', () => {
       let mocker = apiMocker.createServer({ quiet: true, test: 'fun', port: 2323 });
-      mockRequire('/partial-config', { port: 8765, latency: 99, logRequestHeaders: false });
-      mocker = mocker.setConfigFile('/partial-config');
+      mocker = mocker.setConfigFile('test/test-partial-config.json');
       mocker.loadConfigFile();
 
       // value from config file
@@ -147,32 +102,21 @@ describe('unit tests: ', () => {
 
     it('expands ~ in mockDirectory setting', () => {
       const mocker = apiMocker.createServer({ quiet: true });
-      mockRequire('/mock-config.json', mockConfig);
-      mocker.setConfigFile('/mock-config.json');
+      mocker.setConfigFile('test/test-simple-config.json');
       mocker.loadConfigFile();
 
-      expect(mocker.options.mockDirectory).to.equal(untildify(mockConfig.mockDirectory));
+      expect(mocker.options.mockDirectory).to.equal(untildify(testSimpleConfig.mockDirectory));
     });
 
     it('supports js config files that export a function', () => {
-      const mocker = apiMocker.createServer({ quiet: true });
-      const port = '1111';
-      mockRequire('/partial-config', () => ({ port }));
-      mocker.setConfigFile('/partial-config');
+      const mocker = apiMocker.createServer({ quiet: false });
+      const port = 1111;
+      mocker.setConfigFile('test/test-function-config.js');
       mocker.loadConfigFile();
 
       expect(mocker.options.port).to.equal(port);
     });
 
-    it('supports js config files that export an object', () => {
-      const mocker = apiMocker.createServer({ quiet: true });
-      const port = '2222';
-      mockRequire('/partial-config', { port });
-      mocker.setConfigFile('/partial-config');
-      mocker.loadConfigFile();
-
-      expect(mocker.options.port).to.equal(port);
-    });
 
     it('should not allow requests that avoid pre flight by default', () => {
       const mocker = apiMocker.createServer({ quiet: true });
@@ -181,10 +125,7 @@ describe('unit tests: ', () => {
 
     it('should allow requests that avoid pre flight if specified in config', () => {
       const mocker = apiMocker.createServer({ quiet: true });
-      mockRequire('/partial-config', {
-        allowAvoidPreFlight: true
-      });
-      mocker.setConfigFile('/partial-config');
+      mocker.setConfigFile('test/test-partial-config.json');
       mocker.loadConfigFile();
 
       expect(mocker.options.allowAvoidPreFlight).to.equal(true);

@@ -7,7 +7,7 @@ const fs = require('fs');
 const { join: pathJoin } = require('path');
 
 const supertest = require('supertest');
-const apiMocker = require('../lib/apimocker.js');
+const apiMocker = require('../lib/apimocker');
 
 const stRequest = supertest('http://localhost:7879');
 

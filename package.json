@@ -9,29 +9,28 @@
   "author": "Greg Stroup <gstroup@gmail.com>",
   "dependencies": {
     "body-parser": "1.20.1",
-    "chalk": "^2.4.1",
+    "chalk": "^2.4.2",
     "commander": "2.11.0",
     "express": "4.18.2",
     "express-http-proxy": "1.6.3",
     "express-xml-bodyparser": "0.3.0",
     "jsonpath": "^1.1.1",
-    "multer": "^1.4.4",
-    "underscore": "^1.13.6",
+    "multer": "^2.0.1",
+    "underscore": "^1.13.7",
     "untildify": "3.0.3"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
+    "chai": "^4.5.0",
     "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "grunt": "^1.0.4",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.31.0",
+    "grunt": "^1.6.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-mocha-cli": "^4.0.0",
     "gruntify-eslint": "^5.0.0",
     "mocha": "^5.2.0",
-    "mock-require": "^3.0.2",
-    "sinon": "^7.1.1",
-    "supertest": "^3.3.0"
+    "sinon": "^7.5.0",
+    "supertest": "^3.4.2"
   },
   "main": "./lib/apimocker.js",
   "bin": {

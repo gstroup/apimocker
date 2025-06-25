@@ -1,5 +1,9 @@
 ## Versions
 
+#### 1.1.6
+Update dependency versions.  Thanks @twalker !
+Fix broken default config file.  Thanks @johnmarty !
+Fix some tests.
 #### 1.1.5
 Update dependency versions.  Thanks @twalker !
 #### 1.1.4

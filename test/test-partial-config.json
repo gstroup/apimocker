@@ -1,0 +1,6 @@
+{ 
+    "port": 8765, 
+    "latency": 99, 
+    "logRequestHeaders": false,
+    "allowAvoidPreFlight": true
+}
